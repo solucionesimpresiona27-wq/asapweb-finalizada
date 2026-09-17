@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add('js');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ASAP Gestión de Proyectos 369 — Trabajos verticales y mantenimiento de fachadas</title>
+<meta name="description" content="Lavado de cristales, sellado, pintura de fachada, impermeabilización y lavado industrial mediante trabajos verticales. Operamos en Querétaro, Guadalajara, Puerto Vallarta y Morelia.">
+<meta name="theme-color" content="#070B14">
+<meta name="author" content="ASAP Gestión de Proyectos 369">
+<link rel="canonical" href="https://www.asap369.mx/">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_MX">
+<meta property="og:site_name" content="ASAP Gestión de Proyectos 369">
+<meta property="og:title" content="ASAP 369 — Trabajos verticales y mantenimiento de fachadas">
+<meta property="og:description" content="Mantenimiento integral en altura con acceso por cuerdas: cristales, sellado, pintura, impermeabilización y lavado industrial.">
+<meta property="og:image" content="/assets/img/hero-fachada.svg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/img/favicon.svg">
+<link rel="manifest" href="/site.webmanifest">
+
+<link rel="preload" href="/assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/base.css">
+<link rel="stylesheet" href="/assets/css/components.css">
+<link rel="stylesheet" href="/assets/css/sections.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "ASAP Gestión de Proyectos 369",
+  "description": "Mantenimiento de fachadas y trabajos verticales: lavado de cristales, sellado, pintura de fachada, lavado de membrana, lavado estructural, lavado industrial, reparación de grietas e impermeabilización.",
+  "url": "https://www.asap369.mx/",
+  "telephone": "+52-442-000-0000",
+  "email": "contacto@asap369.mx",
+  "image": "https://www.asap369.mx/assets/img/hero-fachada.svg",
+  "address": { "@type": "PostalAddress", "addressLocality": "Santiago de Querétaro", "addressRegion": "Querétaro", "addressCountry": "MX" },
+  "areaServed": [
+    { "@type": "City", "name": "Santiago de Querétaro" },
+    { "@type": "City", "name": "Guadalajara" },
+    { "@type": "City", "name": "Puerto Vallarta" },
+    { "@type": "City", "name": "Morelia" }
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Servicios principales",
+    "itemListElement": [
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Lavado de cristales" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Sellado" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Pintura de fachada" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Lavado de membrana" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Lavado estructural" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Lavado industrial" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reparación de grietas" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Impermeabilizado" } }
+    ]
+  }
+}
+</script>
+</head>
+<body>
+
+<a class="skip" href="#inicio">Saltar al contenido</a>
+
+<!-- ============================ PRECARGA ============================== -->
+<div class="preload" id="preload" aria-hidden="true">
+  <div class="preload__inner">
+    <svg class="preload__mark" viewBox="0 0 48 48" fill="none">
+      <defs>
+        <linearGradient id="plg" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#2E9BC9"/><stop offset="1" stop-color="#A9C7DE"/>
+        </linearGradient>
+      </defs>
+      <g stroke="url(#plg)" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round">
+        <path class="pl-stroke" d="M9 39.5V23l7.2-7.2V39.5"/>
+        <path class="pl-stroke" d="M19.4 39.5V9.5l7 4.6V39.5"/>
+        <path class="pl-stroke" d="M29 39.5V17.4h9.6V39.5"/>
+        <path class="pl-stroke" d="M4.6 40.4h38.8"/>
+      </g>
+    </svg>
+    <div class="preload__bar"><i id="preloadBar"></i></div>
+    <div class="preload__meta t-mono">
+      <span>ASAP Gestión de Proyectos 369</span>
+      <span id="preloadPct">0%</span>
+    </div>
+  </div>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"><span>Ver</span></div>
+<div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
+
+<!-- ========================== NAVEGACIÓN ============================== -->
+<header class="nav" id="nav">
+  <div class="nav__in">
+    <a href="#inicio" class="logo" aria-label="ASAP Gestión de Proyectos 369 — Inicio">
+      <svg class="logo__mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="lgm" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#2E9BC9"/><stop offset="1" stop-color="#AFC9DF"/>
+          </linearGradient>
+        </defs>
+        <g stroke="url(#lgm)" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M9 39.5V23l7.2-7.2V39.5"/>
+          <path d="M19.4 39.5V9.5l7 4.6V39.5"/>
+          <path d="M29 39.5V17.4h9.6V39.5"/>
+          <path d="M4.6 40.4h38.8"/>
+        </g>
+      </svg>
+      <span class="logo__type">
+        <span class="logo__word">asa<i>p</i></span>
+        <span class="logo__sub">Gestión de Proyectos 369</span>
+      </span>
+    </a>
+
+    <nav class="nav__links" aria-label="Principal">
+      <a class="nav__link" href="#nosotros">Nosotros</a>
+      <a class="nav__link" href="#servicios">Servicios</a>
+      <a class="nav__link" href="#verticales">Trabajos verticales</a>
+      <a class="nav__link" href="#cobertura">Cobertura</a>
+      <a class="nav__link" href="#proyectos">Proyectos</a>
+      <a class="nav__link" href="#proceso">Proceso</a>
+    </nav>
+
+    <div class="nav__side">
+      <a class="nav__tel" href="tel:+524420000000" data-magnetic>+52 442 000 0000</a>
+      <a class="btn btn--primary btn--sm" href="#contacto" data-magnetic>
+        Cotizar proyecto
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+      </a>
+      <button class="nav__burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
+        <i></i><i></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- =========================== MENÚ MÓVIL ============================= -->
+<div class="menu" id="menu" role="dialog" aria-label="Menú de navegación" aria-modal="true">
+  <ul class="menu__list">
+    <li class="menu__item"><a href="#inicio" style="--d:80ms"><span>01</span>Inicio</a></li>
+    <li class="menu__item"><a href="#nosotros" style="--d:140ms"><span>02</span>Nosotros</a></li>
+    <li class="menu__item"><a href="#servicios" style="--d:200ms"><span>03</span>Servicios</a></li>
+    <li class="menu__item"><a href="#verticales" style="--d:260ms"><span>04</span>Trabajos verticales</a></li>
+    <li class="menu__item"><a href="#cobertura" style="--d:320ms"><span>05</span>Cobertura</a></li>
+    <li class="menu__item"><a href="#proyectos" style="--d:380ms"><span>06</span>Proyectos</a></li>
+    <li class="menu__item"><a href="#contacto" style="--d:440ms"><span>07</span>Contacto</a></li>
+  </ul>
+  <div class="menu__cta">
+    <a class="btn btn--primary" href="#contacto">
+      Cotizar proyecto
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+    </a>
+  </div>
+
+  <div class="menu__foot">
+    <a href="tel:+524420000000" class="t-h4">+52 442 000 0000</a>
+    <a href="mailto:contacto@asap369.mx">contacto@asap369.mx</a>
+    <p class="t-mono u-mt-2" style="color:var(--tx-low)">Querétaro · Guadalajara · Puerto Vallarta · Morelia</p>
+  </div>
+</div>
+
+<main id="main">
+
+<!-- ============================== HERO =============================== -->
+<section class="hero" id="inicio">
+  <div class="ambient" aria-hidden="true">
+    <div class="ambient__blob ambient__blob--a"></div>
+    <div class="ambient__blob ambient__blob--b"></div>
+    <div class="ambient__blob ambient__blob--c"></div>
+    <div class="ambient__grid"></div>
+  </div>
+
+  <div class="wrap hero__wrap">
+    <div class="hero__grid">
+      <div class="hero__copy">
+        <span class="t-kicker" data-reveal="fade">Gestión de proyectos · Trabajos en altura</span>
+
+        <h1 class="t-hero" data-split>Mantenimiento vertical con <em>estándar de ingeniería</em></h1>
+
+        <p class="t-lead hero__lead" data-reveal style="--d:220ms">
+          Intervenimos fachadas, cubiertas y estructura mediante acceso por cuerdas.
+          Sin andamios, sin detener la operación del inmueble y con un protocolo de
+          seguridad que no admite atajos.
+        </p>
+
+        <div class="hero__cta" data-reveal style="--d:320ms">
+          <a class="btn btn--primary" href="#contacto" data-magnetic>
+            Solicitar diagnóstico
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </a>
+          <a class="btn btn--ghost" href="#proyectos" data-magnetic>
+            Ver proyectos
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+
+        <ul class="hero__stats" data-reveal style="--d:420ms">
+          <li class="hero__stat"><b>+350</b><span>Proyectos</span></li>
+          <li class="hero__stat"><b>+180k m²</b><span>Intervenidos</span></li>
+          <li class="hero__stat"><b>4</b><span>Ciudades</span></li>
+          <li class="hero__stat"><b>0</b><span>Incidentes</span></li>
+        </ul>
+      </div>
+
+      <div class="hero__visual" data-reveal="zoom" style="--d:180ms">
+        <div class="hero__rope" aria-hidden="true"></div>
+        <figure class="hero__frame" data-curtain data-parallax="-.045">
+          <img src="/assets/img/hero-fachada.svg" alt="Ilustración de referencia: técnico descendiendo por cuerdas sobre una fachada de muro cortina" width="1600" height="1100" fetchpriority="high">
+        </figure>
+        <div class="hero__badge glass">
+          <span class="pill pill--live"><i class="pill__dot"></i> Obra en curso</span>
+          <b>Torre Corporativa Central</b>
+          <div class="hero__badge-row"><span>Querétaro</span><span>78 m · 19 niveles</span></div>
+          <div class="hero__badge-row"><span>Cristal + sellado</span><span>Avance 74%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__foot">
+      <ul class="hero__cities">
+        <li>Querétaro</li>
+        <li>Guadalajara</li>
+        <li>Puerto Vallarta</li>
+        <li>Morelia</li>
+      </ul>
+      <span class="scroll-cue">Desliza para explorar <i></i></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ MARQUESINA =========================== -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track" id="marqueeTrack"></div>
+</div>
+
+<!-- ============================ NOSOTROS ============================= -->
+<section class="section" id="nosotros">
+  <div class="wrap">
+    <div class="nosotros__grid">
+      <figure class="nosotros__media" data-curtain data-parallax=".05">
+        <img src="/assets/img/nosotros.svg" alt="Ilustración de referencia: cuadrilla de ASAP 369 trabajando en altura" width="1200" height="1400" loading="lazy">
+        <figcaption class="nosotros__stamp glass">
+          <b>2013</b>
+          <span>Primera fachada</span>
+        </figcaption>
+      </figure>
+
+      <div>
+        <span class="t-kicker" data-reveal="fade">Sobre nosotros</span>
+        <h2 class="t-display u-mt-3" data-split>Una empresa de gestión, no una cuadrilla</h2>
+        <p class="t-lead u-mt-3" data-reveal style="--d:120ms">
+          ASAP Gestión de Proyectos 369 nació en Querétaro para resolver un problema concreto:
+          los inmuebles se construyen con ingeniería, pero se mantienen con improvisación.
+          Nosotros aplicamos el mismo rigor de obra al mantenimiento: diagnóstico, ficha técnica,
+          programa, bitácora y entrega documentada.
+        </p>
+        <p data-reveal style="--d:200ms" class="u-mt-2">
+          Trabajamos con acceso por cuerdas —trabajos verticales— porque es el método más rápido,
+          más económico y menos invasivo para llegar a donde el edificio lo necesita. Detrás de cada
+          descenso hay un análisis de riesgos, un plan de rescate y personal capacitado.
+        </p>
+
+        <div class="vm-grid">
+          <article class="vm-card" data-reveal style="--d:120ms">
+            <h3 class="t-h4">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg>
+              Misión
+            </h3>
+            <p id="txt-mision"></p>
+          </article>
+          <article class="vm-card" data-reveal style="--d:220ms">
+            <h3 class="t-h4">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.8-6.5 10-6.5S22 12 22 12s-3.8 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg>
+              Visión
+            </h3>
+            <p id="txt-vision"></p>
+          </article>
+        </div>
+
+        <ul class="valores" id="valores"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FUNDADOR ============================= -->
+<section class="section fundador">
+  <div class="ambient" aria-hidden="true"><div class="ambient__blob ambient__blob--c" style="opacity:.3"></div></div>
+  <div class="wrap">
+    <div class="fundador__grid">
+      <div class="fundador__media" data-reveal="left">
+        <figure class="fundador__photo" data-curtain>
+          <img src="/assets/img/fundador.svg" alt="Retrato pendiente del fundador de ASAP Gestión de Proyectos 369" width="900" height="1100" loading="lazy">
+        </figure>
+      </div>
+
+      <div class="fundador__body">
+        <span class="fundador__quote-mark" aria-hidden="true">“</span>
+        <span class="t-kicker" data-reveal="fade">Mensaje de nuestro fundador</span>
+        <div class="u-mt-3" id="fundadorTexto"></div>
+
+        <div class="fundador__sign" data-reveal style="--d:300ms">
+          <div>
+            <div class="fundador__sign-name">Fundador y Director General</div>
+            <div class="fundador__sign-role">ASAP Gestión de Proyectos 369</div>
+          </div>
+          <svg class="fundador__rubric" viewBox="0 0 200 60" fill="none" stroke="#93AAC4" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+            <path d="M8 44c14-6 20-30 30-30s6 28 14 30 14-24 24-26 10 22 18 24 14-16 22-20 16 10 24 8 18-12 24-16" stroke-opacity=".75"/>
+            <path d="M36 50h124" stroke-opacity=".28"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ SERVICIOS ============================ -->
+<section class="section servicios" id="servicios">
+  <div class="wrap">
+    <div class="sec-split">
+      <div class="section-head">
+        <span class="t-kicker" data-reveal="fade">Servicios principales</span>
+        <h2 class="t-display u-mt-3" data-split>Ocho especialidades, un solo responsable de obra</h2>
+      </div>
+      <p class="t-lead" data-reveal style="--d:160ms">
+        Cada servicio se cotiza por partida, con ficha técnica del material y programa
+        de ejecución. Toca cualquier servicio para ver el alcance detallado.
+      </p>
+    </div>
+
+    <div class="servicios__list" id="serviciosList"></div>
+  </div>
+</section>
+
+<!-- ======================== TRABAJOS VERTICALES ====================== -->
+<section class="section verticales" id="verticales">
+  <div class="verticales__bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="sec-split u-mt-0">
+      <div class="section-head">
+        <span class="t-kicker" data-reveal="fade">Trabajos verticales</span>
+        <h2 class="t-display u-mt-3" data-split>Llegamos donde el andamio no llega</h2>
+      </div>
+      <p class="t-lead" data-reveal style="--d:160ms">
+        El acceso por cuerdas es nuestra especialidad y el eje de toda la operación:
+        dos líneas independientes, anclajes calculados y un plan de rescate para cada maniobra.
+      </p>
+    </div>
+
+    <div class="verticales__grid u-mt-5">
+      <figure class="verticales__media" data-curtain>
+        <img src="/assets/img/verticales.svg" alt="Ilustración de referencia: descenso controlado por cuerdas sobre fachada de gran altura" width="1200" height="1500" loading="lazy">
+        <figcaption class="verticales__overlay">
+          <div class="verticales__gauge">
+            <div class="verticales__gauge-meta"><span>Descenso controlado</span><b id="gaugePct">0 m</b></div>
+            <div class="verticales__gauge-bar"><i id="gaugeBar"></i></div>
+            <div class="verticales__gauge-meta"><span>Doble línea de vida</span><span>NOM-009-STPS-2011</span></div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <div>
+        <h3 class="t-h3" data-reveal>Por qué el método vertical cambia el proyecto</h3>
+        <div class="vent-list" id="ventajasList"></div>
+
+        <h3 class="t-h3 u-mt-5" data-reveal>Técnica y equipo</h3>
+        <div class="tec-grid" id="tecnicasList"></div>
+
+        <div class="seguridad" data-reveal>
+          <h4 class="t-h4">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v6c0 4.6 3.2 8 7.5 9 4.3-1 7.5-4.4 7.5-9V6z"/><path d="m8.8 12.2 2.2 2.2 4.2-4.4"/></svg>
+            Seguridad, sin concesiones
+          </h4>
+          <ul id="seguridadList"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ COBERTURA ============================ -->
+<section class="section cobertura" id="cobertura">
+  <div class="wrap">
+    <div class="sec-split">
+      <div class="section-head">
+        <span class="t-kicker" data-reveal="fade">Dónde hemos trabajado</span>
+        <h2 class="t-display u-mt-3" data-split>Cuatro ciudades, un mismo estándar</h2>
+      </div>
+      <p class="t-lead" data-reveal style="--d:160ms">
+        Selecciona una ciudad para ubicar en el mapa los proyectos ejecutados en ese estado
+        y revisar su ficha técnica.
+      </p>
+    </div>
+
+    <div class="ciudades" id="ciudadesBtns" role="tablist" aria-label="Ciudades con cobertura"></div>
+
+    <div class="cobertura__grid">
+      <div class="mapa" id="mapa">
+        <div class="mapa__grid" aria-hidden="true"></div>
+        <!-- El SVG del mapa se inyecta desde assets/js/map.js -->
+        <div class="mapa__hud">
+          <span class="pill" id="mapaEstado">Vista nacional</span>
+          <div class="mapa__legend">
+            <span><b></b> Base operativa</span>
+            <span><b class="obra"></b> Proyecto</span>
+          </div>
+        </div>
+        <div class="mapa__tip" id="mapaTip"></div>
+      </div>
+
+      <aside class="zona-panel" id="zonaPanel" aria-live="polite"></aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PROYECTOS ============================ -->
+<section class="section proyectos" id="proyectos">
+  <div class="wrap">
+    <div class="sec-split">
+      <div class="section-head">
+        <span class="t-kicker" data-reveal="fade">Catálogo de proyectos</span>
+        <h2 class="t-display u-mt-3" data-split>Obra entregada, documentada y verificable</h2>
+      </div>
+      <p class="t-lead" data-reveal style="--d:160ms">
+        Filtra por servicio o por ciudad. Cada ficha incluye reto, solución técnica
+        y resultado medible del proyecto.
+      </p>
+    </div>
+
+    <div class="filtros">
+      <div class="filtro-grupo">
+        <b>Servicio</b>
+        <div class="filtro-chips" id="filtroServicios"></div>
+      </div>
+      <div class="filtro-grupo">
+        <b>Ciudad</b>
+        <div class="filtro-chips" id="filtroCiudades"></div>
+      </div>
+      <span class="filtro-count"><b id="proyCount">0</b> proyectos</span>
+    </div>
+
+    <div class="proy-grid" id="proyGrid"></div>
+    <p class="proy-empty u-hide" id="proyEmpty">No hay proyectos con esa combinación de filtros.</p>
+  </div>
+</section>
+
+<!-- ============================= PROCESO ============================= -->
+<section class="proceso panel-light" id="proceso">
+  <div class="proceso__pin" id="procesoPin">
+    <div class="proceso__stage">
+      <div class="proceso__head">
+        <span class="t-kicker is-ink" data-reveal="fade">Cómo trabajamos</span>
+        <h2 class="t-h2 u-mt-2" data-split>Del levantamiento a la carta garantía</h2>
+      </div>
+      <div class="proceso__track" id="procesoTrack"></div>
+      <div class="proceso__prog">
+        <span class="proceso__prog-num" id="procesoNum">01</span>
+        <div class="proceso__prog-bar"><i id="procesoBar"></i></div>
+        <span class="proceso__prog-num">05</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ MÉTRICAS ============================= -->
+<section class="section metricas">
+  <div class="wrap">
+    <div class="sec-split">
+      <div class="section-head">
+        <span class="t-kicker" data-reveal="fade">En números</span>
+        <h2 class="t-h2 u-mt-3" data-split>Lo que sostiene nuestra palabra</h2>
+      </div>
+    </div>
+  </div>
+  <div class="wrap u-mt-4">
+    <div class="metricas__grid" id="metricasGrid"></div>
+  </div>
+</section>
+
+<!-- ============================ CINTA CTA ============================ -->
+<section class="cta-band">
+  <div class="cta-band__bg" aria-hidden="true"></div>
+  <div class="wrap cta-band__in">
+    <span class="t-kicker is-plain" data-reveal="fade">¿Listo para subir?</span>
+    <h2 class="t-display" data-split>Diagnóstico de fachada sin costo en tu ciudad</h2>
+    <p class="t-lead" style="max-width:52ch" data-reveal>
+      Agenda una visita técnica: levantamos superficies, identificamos patologías y
+      entregamos propuesta por partida en menos de 72 horas.
+    </p>
+    <a class="btn btn--primary" href="#contacto" data-magnetic data-reveal style="--d:120ms">
+      Agendar visita técnica
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ============================ CONTACTO ============================= -->
+<section class="section contacto" id="contacto">
+  <div class="wrap">
+    <div class="contacto__grid">
+      <div>
+        <span class="t-kicker" data-reveal="fade">Contacto</span>
+        <h2 class="t-display u-mt-3" data-split>Hablemos de tu edificio</h2>
+        <p class="t-lead u-mt-3" data-reveal style="--d:140ms">
+          Cuéntanos qué necesitas y en qué ciudad. Respondemos el mismo día hábil.
+        </p>
+
+        <div class="contacto__datos">
+          <div class="dato">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 5.5c0-.8.7-1.5 1.5-1.5h2.3c.7 0 1.3.5 1.5 1.2l.8 3c.1.6-.1 1.2-.6 1.5L8.4 11c1 2.2 2.4 3.6 4.6 4.6l1.3-1.6c.4-.5 1-.7 1.5-.6l3 .8c.7.2 1.2.8 1.2 1.5V18c0 .8-.7 1.5-1.5 1.5C10.9 19.5 4.5 13.1 4.5 5.5z"/></svg>
+            <div><b>Teléfono</b><a href="tel:+524420000000">+52 442 000 0000</a></div>
+          </div>
+          <div class="dato">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></svg>
+            <div><b>Correo</b><a href="mailto:contacto@asap369.mx">contacto@asap369.mx</a></div>
+          </div>
+          <div class="dato">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+            <div><b>Base operativa</b><span>Santiago de Querétaro, Qro.</span></div>
+          </div>
+          <div class="dato">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5.2l3.4 2"/></svg>
+            <div><b>Horario</b><span>Lunes a viernes · 8:00 – 18:00 h</span></div>
+          </div>
+        </div>
+      </div>
+
+      <form class="form" id="form" novalidate>
+        <div class="form__row">
+          <div class="field">
+            <label for="f-nombre">Nombre</label>
+            <input id="f-nombre" name="nombre" type="text" placeholder="Tu nombre" required autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="f-empresa">Empresa</label>
+            <input id="f-empresa" name="empresa" type="text" placeholder="Nombre de la empresa" autocomplete="organization">
+          </div>
+        </div>
+        <div class="form__row">
+          <div class="field">
+            <label for="f-email">Correo</label>
+            <input id="f-email" name="email" type="email" placeholder="correo@empresa.com" required autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="f-tel">Teléfono</label>
+            <input id="f-tel" name="telefono" type="tel" placeholder="10 dígitos" autocomplete="tel">
+          </div>
+        </div>
+        <div class="form__row">
+          <div class="field">
+            <label for="f-ciudad">Ciudad</label>
+            <select id="f-ciudad" name="ciudad">
+              <option value="">Selecciona una ciudad</option>
+              <option>Querétaro</option>
+              <option>Guadalajara</option>
+              <option>Puerto Vallarta</option>
+              <option>Morelia</option>
+              <option>Otra</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-servicio">Servicio de interés</label>
+            <select id="f-servicio" name="servicio"><option value="">Selecciona un servicio</option></select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-msg">Cuéntanos del inmueble</label>
+          <textarea id="f-msg" name="mensaje" rows="3" placeholder="Altura aproximada, niveles, tipo de fachada y qué necesitas resolver."></textarea>
+        </div>
+
+        <div class="form__foot">
+          <p class="form__note">Al enviar aceptas ser contactado por ASAP 369 con fines informativos.</p>
+          <button class="btn btn--primary" type="submit" data-magnetic>
+            Enviar solicitud
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </button>
+        </div>
+        <div class="form__ok" id="formOk" role="status">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          <span>Solicitud lista para enviarse. Conecta el formulario a tu correo o CRM para recibirla (ver README).</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================== PIE ================================ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <a href="#inicio" class="logo">
+          <svg class="logo__mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <defs><linearGradient id="lgf" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#2E9BC9"/><stop offset="1" stop-color="#AFC9DF"/></linearGradient></defs>
+            <g stroke="url(#lgf)" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round">
+              <path d="M9 39.5V23l7.2-7.2V39.5"/><path d="M19.4 39.5V9.5l7 4.6V39.5"/>
+              <path d="M29 39.5V17.4h9.6V39.5"/><path d="M4.6 40.4h38.8"/>
+            </g>
+          </svg>
+          <span class="logo__type">
+            <span class="logo__word">asa<i>p</i></span>
+            <span class="logo__sub">Gestión de Proyectos 369</span>
+          </span>
+        </a>
+        <p style="font-size:.92rem">
+          Mantenimiento integral de fachadas, cubiertas y estructura mediante
+          trabajos verticales. Operación en Querétaro, Guadalajara, Puerto Vallarta y Morelia.
+        </p>
+        <a class="link-arrow" href="#contacto">
+          Solicitar cotización
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </a>
+      </div>
+
+      <div class="footer__col">
+        <b>Servicios</b>
+        <ul id="footServicios"></ul>
+      </div>
+
+      <div class="footer__col">
+        <b>Cobertura</b>
+        <ul>
+          <li><a href="#cobertura">Querétaro</a></li>
+          <li><a href="#cobertura">Guadalajara</a></li>
+          <li><a href="#cobertura">Puerto Vallarta</a></li>
+          <li><a href="#cobertura">Morelia</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <b>Contacto</b>
+        <ul>
+          <li><a href="tel:+524420000000">+52 442 000 0000</a></li>
+          <li><a href="mailto:contacto@asap369.mx">contacto@asap369.mx</a></li>
+          <li><span>Santiago de Querétaro, Qro.</span></li>
+          <li><span>Lun a vie · 8:00 – 18:00 h</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__word" aria-hidden="true">asa<i>p</i></div>
+
+    <div class="footer__bottom">
+      <span>© <span id="year">2026</span> ASAP Gestión de Proyectos 369. Todos los derechos reservados.</span>
+      <span>Trabajos verticales · NOM-009-STPS-2011</span>
+      <span>Mapa base: <a href="https://github.com/VictorCazanave/svg-maps" rel="noopener nofollow" target="_blank">svg-maps</a> · CC BY 4.0</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ======================= MODAL DE PROYECTO ========================= -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="fichaTitle" aria-hidden="true">
+  <div class="modal__veil" data-close></div>
+  <div class="modal__box" id="modalBox">
+    <button class="modal__close" data-close aria-label="Cerrar ficha">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<noscript>
+  <div style="padding:2rem;text-align:center;color:#93AAC4">
+    Esta página usa JavaScript para el mapa interactivo y el catálogo de proyectos.
+    Escríbenos a <a href="mailto:contacto@asap369.mx" style="color:#5EC4EC">contacto@asap369.mx</a>.
+  </div>
+</noscript>
+
+<script type="module" src="/assets/js/main.js"></script>
+</body>
+</html>
