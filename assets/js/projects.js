@@ -15,7 +15,7 @@ const estadoZona = id => ZONAS.find(z => z.id === id)?.estado ?? '';
 
 /* Imagen de referencia asignada por posición en el catálogo */
 PROYECTOS.forEach((p, i) => {
-  p.img = `/assets/img/proyecto-${String((i % 16) + 1).padStart(2, '0')}.svg`;
+  p.img = `assets/img/proyecto-${String((i % 16) + 1).padStart(2, '0')}.svg`;
 });
 
 const estado = { servicio: 'todos', zona: 'todas' };

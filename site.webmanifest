@@ -2,12 +2,12 @@
   "name": "ASAP Gestión de Proyectos 369",
   "short_name": "ASAP 369",
   "description": "Trabajos verticales y mantenimiento de fachadas en Querétaro, Guadalajara, Puerto Vallarta y Morelia.",
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#070B14",
   "theme_color": "#070B14",
   "lang": "es-MX",
   "icons": [
-    { "src": "/assets/img/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+    { "src": "assets/img/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ]
 }
