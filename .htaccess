@@ -1,0 +1,76 @@
+# =============================================================================
+#  ASAP Gestión de Proyectos 369 — configuración del servidor
+#  Para hosting Apache o LiteSpeed (Hostinger usa LiteSpeed).
+#  Todo está protegido con <IfModule>: si el servidor no tiene alguno de estos
+#  módulos, simplemente lo ignora y el sitio sigue funcionando.
+# =============================================================================
+
+# --- Documento de inicio -----------------------------------------------------
+DirectoryIndex index.html
+
+# --- No listar el contenido de las carpetas ----------------------------------
+Options -Indexes
+
+# --- Forzar HTTPS ------------------------------------------------------------
+#  DESACTIVADO por precaución. Actívalo quitando el "#" de las cuatro líneas
+#  de abajo SOLO cuando el certificado SSL ya esté instalado y el sitio abra
+#  bien con https://. Si lo activas antes, el navegador dará error.
+#  En Hostinger el SSL se instala en hPanel → Seguridad → SSL.
+#
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+#   RewriteCond %{HTTPS} !=on
+#   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# </IfModule>
+
+# --- Tipos de archivo --------------------------------------------------------
+<IfModule mod_mime.c>
+  AddType font/woff2                  .woff2
+  AddType image/svg+xml               .svg
+  AddType application/manifest+json   .webmanifest
+  AddType text/javascript             .js
+  AddCharset UTF-8                    .html .css .js .json .webmanifest .svg
+</IfModule>
+
+# --- Compresión --------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
+  AddOutputFilterByType DEFLATE text/javascript application/javascript
+  AddOutputFilterByType DEFLATE application/json application/manifest+json
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# --- Caché del navegador -----------------------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault                          "access plus 1 week"
+  ExpiresByType text/html                 "access plus 0 seconds"
+  ExpiresByType text/css                  "access plus 1 year"
+  ExpiresByType text/javascript           "access plus 1 year"
+  ExpiresByType application/javascript    "access plus 1 year"
+  ExpiresByType font/woff2                "access plus 1 year"
+  ExpiresByType image/svg+xml             "access plus 6 months"
+  ExpiresByType image/webp                "access plus 6 months"
+  ExpiresByType image/jpeg                "access plus 6 months"
+  ExpiresByType image/png                 "access plus 6 months"
+  ExpiresByType video/mp4                 "access plus 6 months"
+</IfModule>
+
+# --- Encabezados de seguridad ------------------------------------------------
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# --- Proteger archivos que no deben servirse ---------------------------------
+<FilesMatch "^\.(htaccess|gitignore)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>

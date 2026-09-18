@@ -65,6 +65,7 @@ Detalles de implementación relevantes:
 ```
 .
 ├── index.html                  Documento único (estructura y metadatos)
+├── .htaccess                   Compresión, caché y encabezados (Apache/LiteSpeed)
 ├── site.webmanifest            Manifiesto PWA
 ├── robots.txt · sitemap.xml    SEO
 └── assets/
@@ -260,11 +261,14 @@ Cualquier hosting estático sirve, sin configuración adicional:
 
 - **Netlify / Vercel / Cloudflare Pages**: arrastra la carpeta o conecta el
   repositorio. Sin comando de build; directorio de publicación: la raíz.
-- **Hosting tradicional (cPanel, FTP)**: sube todo a `public_html`.
+- **Hosting tradicional (Hostinger, cPanel, FTP)**: sube todo a `public_html`.
+  El `.htaccess` incluido ya activa compresión, caché y encabezados de
+  seguridad. Trae el redirector a HTTPS comentado: quítale los `#` cuando el
+  certificado SSL ya esté instalado y el sitio abra bien con `https://`.
 - **GitHub Pages**: publica la rama y listo.
 
-Conviene servir con compresión (gzip o brotli) y caché larga para
-`assets/fonts`, `assets/img` y `assets/css`.
+En hosting Apache o LiteSpeed eso ya lo resuelve el `.htaccess`. En Netlify,
+Vercel o Cloudflare Pages viene activado de fábrica.
 
 ---
 
