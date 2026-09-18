@@ -38,13 +38,13 @@ export const SERVICIOS = [
     icono: '<path d="M3 15c3-6.5 15-6.5 18 0"/><path d="M3 15v4M21 15v4"/><path d="M8 12.4 6.6 19M16 12.4l1.4 6.6M12 11.6V19"/>'
   },
   {
-    id: 'pulido',
+    id: 'impermeabilizacion',
     num: '04',
-    nombre: 'Pulido de cristales',
-    claim: 'Adiós al sarro y a las marcas de agua',
-    desc: 'Descontaminación de cristales para eliminar sarro y marcas de agua.',
-    puntos: ['Descontaminación de cristal', 'Eliminación de sarro', 'Marcas de agua'],
-    icono: '<rect x="3" y="5" width="13" height="13" rx="1"/><path d="M6.5 14.5 10.5 10.5"/><path d="m19.2 2.8 1 2.2 2.2 1-2.2 1-1 2.2-1-2.2-2.2-1 2.2-1z"/>'
+    nombre: 'Impermeabilización',
+    claim: 'Cubiertas selladas contra la filtración',
+    desc: 'Impermeabilización de azoteas, pretiles, domos y juntas, con preparación previa de la superficie y sellado de las penetraciones.',
+    puntos: ['Azoteas y cubiertas', 'Pretiles y domos', 'Juntas y penetraciones', 'Preparación de superficie'],
+    icono: '<path d="M12 3.4 5 6.1v5.5c0 4.2 2.9 7.3 7 8.4 4.1-1.1 7-4.2 7-8.4V6.1z"/><path d="M12 8.7s2.4 2.3 2.4 3.9a2.4 2.4 0 0 1-4.8 0C9.6 11 12 8.7 12 8.7z"/>'
   },
   {
     id: 'empastado',
