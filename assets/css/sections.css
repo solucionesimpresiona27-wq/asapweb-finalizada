@@ -112,9 +112,70 @@
   box-shadow: 0 60px 120px -50px rgba(0, 0, 0, .9);
 }
 .hero__frame img { width: 100%; height: 100%; object-fit: cover; }
-.hero__frame::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(7, 11, 20, .78), transparent 52%);
+
+/* =============================================================================
+   OBRA EN CURSO
+   Capas encima de la imagen del hero. Una banda de luz baja por la fachada
+   —el descenso de la cuadrilla— y detrás va quedando el cristal limpio;
+   debajo de la banda la superficie se ve todavía apagada. Al ser capas
+   independientes, el efecto sigue funcionando si la imagen se cambia por una
+   fotografía o un video.
+   ========================================================================== */
+.obra { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+
+/* Línea de vida: el riel por el que desciende la cuadrilla.
+   `--obra-x` la alinea con las cuerdas de la ilustración. Al cambiar la
+   imagen por una fotografía, ajusta ese valor para que coincida con las
+   cuerdas reales. */
+.hero__visual { --obra-x: 35%; }
+.obra__riel {
+  position: absolute; top: 0; bottom: 0; right: var(--obra-x);
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(232, 243, 251, .28), rgba(232, 243, 251, .07));
+}
+
+/* Banda que limpia. Mide el doble del marco: su mitad es la línea de avance,
+   y lo que queda por debajo se oscurece un poco. Al desplazarla con
+   `transform` el navegador la compone en la tarjeta gráfica. */
+.obra__barrido {
+  position: absolute; left: 0; right: 0; top: 0;
+  height: 200%;
+  transform: translateY(-50%);
+  background: linear-gradient(to bottom,
+    rgba(180, 222, 245, 0)    0%,
+    rgba(180, 222, 245, 0)    44%,
+    rgba(180, 222, 245, .10)  49%,
+    rgba(200, 235, 252, .85)  49.85%,
+    rgba(200, 235, 252, .95)  50%,
+    rgba(94, 196, 236, .30)   50.5%,
+    rgba(10, 17, 32, .34)     52.5%,
+    rgba(10, 17, 32, .34)     100%);
+  animation: obra-barrido 7.5s linear infinite;
+}
+
+/* Descensor: el punto que viaja sobre la línea de avance */
+.obra__barrido::after {
+  content: '';
+  position: absolute; right: var(--obra-x); top: 50%;
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background: var(--brand-lit);
+  border: 2px solid rgba(240, 250, 255, .9);
+  box-shadow: 0 0 22px 6px rgba(94, 196, 236, .5);
+  transform: translate(50%, -50%);
+}
+
+@keyframes obra-barrido {
+  0%   { transform: translateY(-50%); opacity: 0; }
+  7%   { opacity: 1; }
+  86%  { opacity: 1; }
+  100% { transform: translateY(0);    opacity: 0; }
+}
+
+/* Degradado inferior, para que el texto de la tarjeta se lea sobre la imagen */
+.obra__velo {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(7, 11, 20, .72), transparent 52%);
 }
 .hero__badge {
   position: absolute; left: clamp(-1rem, -2vw, -2.6rem); bottom: 8%;
@@ -130,23 +191,40 @@
   font-family: 'Outfit', sans-serif; font-size: 1.02rem; font-weight: 500;
   color: var(--tx-hi); letter-spacing: -.02em;
 }
+.hero__prog {
+  display: block; height: 2px; border-radius: 2px;
+  background: rgba(232, 243, 251, .15);
+  overflow: hidden;
+}
+.hero__prog i {
+  display: block; height: 100%; width: 100%;
+  background: var(--g-brand);
+  transform-origin: left;
+  transform: scaleX(0);
+  animation: obra-avance 7.5s linear infinite;
+}
+@keyframes obra-avance {
+  0%   { transform: scaleX(0);   opacity: 0; }
+  7%   { opacity: 1; }
+  86%  { opacity: 1; }
+  100% { transform: scaleX(1);   opacity: 0; }
+}
+
 .hero__badge-row { display: flex; justify-content: space-between; gap: 1rem; font-size: .76rem; color: var(--tx-low); }
 .hero__badge-row span:last-child { color: var(--steel-soft); }
 
 .hero__rope {
-  position: absolute; top: -10%; right: 16%;
-  width: 1px; height: 46%;
+  position: absolute; top: -10%; right: var(--obra-x);
+  width: 1px; height: 22%;
   background: linear-gradient(to bottom, transparent, rgba(232, 243, 251, .55));
   z-index: 3;
 }
 .hero__rope::after {
-  content: ''; position: absolute; left: -4px; bottom: -6px;
-  width: 9px; height: 9px; border-radius: 50%;
-  background: var(--brand-lit);
-  box-shadow: 0 0 18px 4px rgba(94, 196, 236, .55);
-  animation: rope-slide 9s var(--ease-soft) infinite alternate;
+  content: ''; position: absolute; left: -1px; top: 0;
+  width: 3px; height: 34%;
+  background: linear-gradient(to bottom, transparent, rgba(94, 196, 236, .5));
+  filter: blur(2px);
 }
-@keyframes rope-slide { to { transform: translateY(-46px); } }
 
 /* Pie del hero */
 .hero__foot {
@@ -186,6 +264,9 @@
 }
 
 @media (max-width: 980px) {
+  /* el marco cambia de proporción y la imagen se recorta distinto: la línea
+     de vida se recoloca para seguir coincidiendo con las cuerdas */
+  .hero__visual { --obra-x: 41%; }
   .hero__grid { grid-template-columns: 1fr; gap: 2.6rem; }
   .hero__visual { order: -1; max-width: 30rem; }
   .hero__frame { aspect-ratio: 16 / 12; }
