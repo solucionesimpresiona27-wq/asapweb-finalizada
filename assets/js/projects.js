@@ -1,6 +1,8 @@
 /* =============================================================================
-   ASAP 369 — Catálogo de proyectos
-   Filtrado por servicio y ciudad + ficha ampliada en modal.
+   ASAP 369 — Portafolio de proyectos
+   Filtrado por ciudad (y por servicio cuando el contenido lo declara) más
+   ficha ampliada. Los campos técnicos son opcionales: la tarjeta y la ficha
+   muestran solo los que tienen contenido.
    ========================================================================== */
 import { PROYECTOS, SERVICIOS, ZONAS } from './data.js';
 
@@ -12,35 +14,48 @@ const ICON_PIN = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" st
 
 const nombreServicio = id => SERVICIOS.find(s => s.id === id)?.nombre ?? id;
 const estadoZona = id => ZONAS.find(z => z.id === id)?.estado ?? '';
+const serviciosDe = p => p.servicios ?? [];
 
-/* Imagen de referencia asignada por posición en el catálogo */
+/* ¿Algún proyecto declara servicios? De eso depende que exista ese filtro. */
+const HAY_SERVICIOS = PROYECTOS.some(p => serviciosDe(p).length);
+
+/* Imagen de referencia asignada por posición en el portafolio */
 PROYECTOS.forEach((p, i) => {
-  p.img = `assets/img/proyecto-${String((i % 16) + 1).padStart(2, '0')}.svg`;
+  if (!p.img) p.img = `assets/img/proyecto-${String((i % 16) + 1).padStart(2, '0')}.svg`;
 });
 
 const estado = { servicio: 'todos', zona: 'todas' };
 let ultimoFoco = null;
 
+/* Ubicación legible: "Juriquilla, Querétaro" o solo "Morelia" si se repite.
+   Se prefiere el estado propio del proyecto, porque una zona puede abarcar
+   más de una entidad (Puerto Vallarta en Jalisco y Nuevo Vallarta en Nayarit). */
+function ubicacion(p) {
+  const e = p.estado ?? estadoZona(p.zona);
+  return e && e !== p.ciudad ? `${p.ciudad}, ${e}` : p.ciudad;
+}
+
 /* -----------------------------------------------------------------------------
    Tarjetas
    -------------------------------------------------------------------------- */
 function cardHTML(p, i) {
+  const servicios = serviciosDe(p);
   return `
   <button class="proy-card" type="button" data-proy="${p.id}" data-reveal style="--d:${(i % 3) * 90}ms" data-cur-view
-          aria-label="Ver ficha del proyecto ${p.nombre}">
+          aria-label="Ver ${p.nombre}">
     <span class="proy-card__media">
-      <img src="${p.img}" alt="Ilustración de referencia del proyecto ${p.nombre}" loading="lazy" width="1200" height="900">
-      <span class="proy-card__year">${p.anio}</span>
-      <span class="proy-card__place">${ICON_PIN}${p.ciudad}</span>
+      <img src="${p.img}" alt="Imagen de referencia del proyecto ${p.nombre}" loading="lazy" width="1200" height="900">
+      ${p.anio ? `<span class="proy-card__year">${p.anio}</span>` : ''}
+      <span class="proy-card__place">${ICON_PIN}${ubicacion(p)}</span>
     </span>
     <span class="proy-card__body">
       <span class="proy-card__title">${p.nombre}</span>
-      <span class="proy-card__tags">
-        ${p.servicios.map(s => `<span>${nombreServicio(s)}</span>`).join('')}
-      </span>
+      ${servicios.length
+        ? `<span class="proy-card__tags">${servicios.map(s => `<span>${nombreServicio(s)}</span>`).join('')}</span>`
+        : ''}
       <span class="proy-card__foot">
-        <span><b>${p.superficie}</b> · ${p.altura}</span>
-        <span class="proy-card__ver">Ver ficha ${ICON_ARROW}</span>
+        <span>${p.sector ?? ''}</span>
+        <span class="proy-card__ver">Ver ${ICON_ARROW}</span>
       </span>
     </span>
   </button>`;
@@ -60,7 +75,7 @@ function aplicarFiltros(inicial = false) {
   PROYECTOS.forEach(p => {
     const card = grid.querySelector(`[data-proy="${p.id}"]`);
     if (!card) return;
-    const okS = estado.servicio === 'todos' || p.servicios.includes(estado.servicio);
+    const okS = estado.servicio === 'todos' || serviciosDe(p).includes(estado.servicio);
     const okZ = estado.zona === 'todas' || p.zona === estado.zona;
     const ok = okS && okZ;
     card.classList.toggle('is-out', !ok);
@@ -87,19 +102,24 @@ function aplicarFiltros(inicial = false) {
 function renderFiltros() {
   const fs = $('#filtroServicios');
   const fc = $('#filtroCiudades');
-  if (!fs || !fc) return;
+  if (!fc) return;
 
-  fs.innerHTML = [
-    `<button class="chip is-on" type="button" data-f="servicio" data-v="todos">Todos</button>`,
-    ...SERVICIOS.map(s => `<button class="chip" type="button" data-f="servicio" data-v="${s.id}">${s.nombre}</button>`)
-  ].join('');
+  if (HAY_SERVICIOS && fs) {
+    fs.innerHTML = [
+      `<button class="chip is-on" type="button" data-f="servicio" data-v="todos">Todos</button>`,
+      ...SERVICIOS.map(s => `<button class="chip" type="button" data-f="servicio" data-v="${s.id}">${s.nombre}</button>`)
+    ].join('');
+  } else {
+    // sin servicios declarados por proyecto, el filtro no aportaría nada
+    fs?.closest('.filtro-grupo')?.remove();
+  }
 
   fc.innerHTML = [
     `<button class="chip is-on" type="button" data-f="zona" data-v="todas">Todas</button>`,
     ...ZONAS.map(z => `<button class="chip" type="button" data-f="zona" data-v="${z.id}">${z.ciudad}</button>`)
   ].join('');
 
-  [fs, fc].forEach(box => box.addEventListener('click', e => {
+  [fs, fc].forEach(box => box?.addEventListener('click', e => {
     const chip = e.target.closest('.chip');
     if (!chip) return;
     $$('.chip', box).forEach(c => c.classList.remove('is-on'));
@@ -113,9 +133,7 @@ function renderFiltros() {
 export function filtrarPorZona(zonaId) {
   estado.zona = zonaId || 'todas';
   const fc = $('#filtroCiudades');
-  if (fc) {
-    $$('.chip', fc).forEach(c => c.classList.toggle('is-on', c.dataset.v === estado.zona));
-  }
+  if (fc) $$('.chip', fc).forEach(c => c.classList.toggle('is-on', c.dataset.v === estado.zona));
   aplicarFiltros();
 }
 
@@ -123,52 +141,62 @@ export function filtrarPorZona(zonaId) {
    Ficha del proyecto
    -------------------------------------------------------------------------- */
 function fichaHTML(p) {
+  const servicios = serviciosDe(p);
+  const datos = [
+    ['Ciudad', ubicacion(p)],
+    ['Sector', p.sector],
+    ['Año', p.anio],
+    ['Altura', p.altura],
+    ['Niveles', p.niveles],
+    ['Superficie', p.superficie],
+    ['Duración', p.duracion],
+    ['Método', 'Acceso por cuerdas']
+  ].filter(([, v]) => v);
+
+  const bloques = [
+    ['El reto', p.reto],
+    ['Nuestra solución', p.solucion],
+    ['Resultado', p.resultado]
+  ].filter(([, v]) => v);
+
   return `
   <article class="ficha">
     <figure class="ficha__hero">
-      <img src="${p.img}" alt="Ilustración de referencia del proyecto ${p.nombre}" width="1200" height="900">
+      <img src="${p.img}" alt="Imagen de referencia del proyecto ${p.nombre}" width="1200" height="900">
       <figcaption class="ficha__head">
-        <span class="pill">${p.sector}</span>
+        ${p.sector ? `<span class="pill">${p.sector}</span>` : ''}
         <h3 class="ficha__title font-display u-mt-2" id="fichaTitle">${p.nombre}</h3>
         <div class="ficha__sub">
-          <span>${ICON_PIN} ${p.ciudad}${estadoZona(p.zona) && estadoZona(p.zona) !== p.ciudad ? ', ' + estadoZona(p.zona) : ''}</span>
-          <span>${p.anio}</span>
-          <span>${p.niveles}</span>
-          <span>${p.altura} de altura</span>
+          <span>${ICON_PIN} ${ubicacion(p)}</span>
+          ${p.anio ? `<span>${p.anio}</span>` : ''}
+          ${p.altura ? `<span>${p.altura} de altura</span>` : ''}
         </div>
       </figcaption>
     </figure>
 
     <div class="ficha__body">
       <div>
-        <div class="ficha__block">
-          <h4>El reto</h4>
-          <p>${p.reto}</p>
-        </div>
-        <div class="ficha__block">
-          <h4>Nuestra solución</h4>
-          <p>${p.solucion}</p>
-        </div>
-        <div class="ficha__block">
-          <h4>Resultado</h4>
-          <p>${p.resultado}</p>
-        </div>
-        <div class="ficha__servicios">
-          ${p.servicios.map(s => `<span class="pill">${nombreServicio(s)}</span>`).join('')}
-        </div>
+        ${bloques.length
+          ? bloques.map(([t, v]) => `
+            <div class="ficha__block">
+              <h4>${t}</h4>
+              <p>${v}</p>
+            </div>`).join('')
+          : `<div class="ficha__block">
+               <h4>Trabajos verticales</h4>
+               <p>Proyecto atendido con acceso por cuerdas, sin andamios y sin detener la
+                  operación del inmueble. Escríbenos si quieres conocer el detalle de
+                  esta intervención o cotizar algo similar.</p>
+             </div>`}
+        ${servicios.length
+          ? `<div class="ficha__servicios">${servicios.map(s => `<span class="pill">${nombreServicio(s)}</span>`).join('')}</div>`
+          : ''}
       </div>
 
       <aside>
         <h4 class="t-mono" style="color:var(--tx-low);margin-bottom:.9rem">Ficha técnica</h4>
         <div class="ficha__datos">
-          <div class="ficha__dato"><span>Ciudad</span><b>${p.ciudad}</b></div>
-          <div class="ficha__dato"><span>Año</span><b>${p.anio}</b></div>
-          <div class="ficha__dato"><span>Sector</span><b>${p.sector}</b></div>
-          <div class="ficha__dato"><span>Altura</span><b>${p.altura}</b></div>
-          <div class="ficha__dato"><span>Niveles</span><b>${p.niveles}</b></div>
-          <div class="ficha__dato"><span>Superficie</span><b>${p.superficie}</b></div>
-          <div class="ficha__dato"><span>Duración</span><b>${p.duracion}</b></div>
-          <div class="ficha__dato"><span>Método</span><b>Acceso por cuerdas</b></div>
+          ${datos.map(([t, v]) => `<div class="ficha__dato"><span>${t}</span><b>${v}</b></div>`).join('')}
         </div>
         <a class="btn btn--ghost u-mt-3" href="#contacto" data-close style="width:100%">
           Quiero algo así

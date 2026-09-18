@@ -75,7 +75,7 @@ function construirSVG() {
   gPines = $('#mapaPines', svg);
   tip = $('#mapaTip');
 
-  const conZona = new Set(ZONAS.map(z => z.estadoId));
+  const conZona = new Set(ZONAS.flatMap(z => z.estados));
 
   ESTADOS.forEach(e => {
     const path = document.createElementNS(NS, 'path');
@@ -262,8 +262,8 @@ function panelNacional() {
   $('#zonaPanel').innerHTML = `
     <div class="zona-panel__head">
       <div>
-        <div class="zona-panel__ciudad">Cobertura nacional</div>
-        <div class="zona-panel__estado">4 ciudades · 3 estados</div>
+        <div class="zona-panel__ciudad">Dónde trabajamos</div>
+        <div class="zona-panel__estado">${ZONAS.length} ciudades · 4 estados</div>
       </div>
       <div class="zona-panel__desde">
         <b>${total}</b>
@@ -271,23 +271,27 @@ function panelNacional() {
       </div>
     </div>
     <p class="zona-panel__resumen">
-      Operamos desde Querétaro hacia el occidente del país. Elige una ciudad en el mapa
-      o en los botones superiores para ver la obra ejecutada en ese estado.
+      Operamos desde Guadalajara hacia el occidente y el centro del país. Elige una ciudad
+      en el mapa o en los botones de arriba para ver la obra ejecutada en ese estado.
     </p>
     <div class="zona-panel__sep"></div>
     <div class="zona-panel__label"><b>Ciudades</b><i>Selecciona una</i></div>
     <div class="zona-proyectos">
-      ${ZONAS.map(z => `
+      ${ZONAS.map(z => {
+        const n = proyectosDe(z.id).length;
+        const nota = z.base ? 'Base operativa' : `${n} ${n === 1 ? 'proyecto' : 'proyectos'}`;
+        return `
         <button class="zona-proy" type="button" data-ir="${z.id}">
           <span>
             <b>${z.ciudad}</b>
-            <span>${z.estado} · desde ${z.desde} · ${proyectosDe(z.id).length} proyectos</span>
+            <span>${z.estado} · ${nota}</span>
           </span>
           ${ICON_ARROW}
-        </button>`).join('')}
+        </button>`;
+      }).join('')}
     </div>
     <div class="zona-panel__cta">
-      <a class="btn btn--ghost btn--sm" href="#proyectos">Ver catálogo completo ${ICON_ARROW}</a>
+      <a class="btn btn--ghost btn--sm" href="#proyectos">Ver portafolio completo ${ICON_ARROW}</a>
     </div>`;
 }
 
@@ -300,28 +304,36 @@ function panelZona(zona) {
         <div class="zona-panel__estado">${zona.estado}</div>
       </div>
       <div class="zona-panel__desde">
-        <b>${zona.desde}</b>
-        <span>Desde</span>
+        <b>${zona.base ? 'Base' : lista.length}</b>
+        <span>${zona.base ? 'Operativa' : lista.length === 1 ? 'Proyecto' : 'Proyectos'}</span>
       </div>
     </div>
     <p class="zona-panel__resumen">${zona.resumen}</p>
     <div class="zona-panel__tags">${zona.destacados.map(d => `<span>${d}</span>`).join('')}</div>
     <div class="zona-panel__sep"></div>
-    <div class="zona-panel__label"><b>Proyectos en la zona</b><i>${lista.length}</i></div>
-    <div class="zona-proyectos">
-      ${lista.map(p => `
-        <button class="zona-proy" type="button" data-proy="${p.id}">
-          <span>
-            <b>${p.nombre}</b>
-            <span>${p.ciudad} · ${p.anio} · ${p.superficie}</span>
-          </span>
-          ${ICON_ARROW}
-        </button>`).join('')}
-    </div>
+    ${lista.length ? `
+      <div class="zona-panel__label"><b>Proyectos en la zona</b><i>${lista.length}</i></div>
+      <div class="zona-proyectos">
+        ${lista.map(p => `
+          <button class="zona-proy" type="button" data-proy="${p.id}">
+            <span>
+              <b>${p.nombre}</b>
+              <span>${p.ciudad}${p.sector ? ' · ' + p.sector : ''}</span>
+            </span>
+            ${ICON_ARROW}
+          </button>`).join('')}
+      </div>` : `
+      <div class="zona-panel__label"><b>Desde aquí operamos</b></div>
+      <p class="zona-panel__resumen">
+        Coordinamos desde Guadalajara los proyectos de Puerto Vallarta, Morelia y Querétaro.
+        Selecciona cualquiera de esas ciudades para ver la obra ejecutada.
+      </p>`}
     <div class="zona-panel__cta">
-      <button class="btn btn--ghost btn--sm" type="button" data-filtrar="${zona.id}">
-        Ver estos proyectos en el catálogo ${ICON_ARROW}
-      </button>
+      ${lista.length ? `
+        <button class="btn btn--ghost btn--sm" type="button" data-filtrar="${zona.id}">
+          Ver estos proyectos en el portafolio ${ICON_ARROW}
+        </button>` : `
+        <a class="btn btn--ghost btn--sm" href="#contacto">Contáctanos ${ICON_ARROW}</a>`}
     </div>`;
 }
 
@@ -342,7 +354,9 @@ function seleccionar(zonaId) {
   mapaBox.classList.toggle('is-focus', !!zona);
 
   if (zona) {
-    $$(`.st[data-estado="${zona.estadoId}"]`, gEstados).forEach(p => p.classList.add('st--on'));
+    zona.estados.forEach(id => {
+      $$(`.st[data-estado="${id}"]`, gEstados).forEach(p => p.classList.add('st--on'));
+    });
     $('#mapaEstado').textContent = `${zona.ciudad}, ${zona.estado}`;
     irA(encuadre(zona));
     panelZona(zona);
@@ -382,7 +396,7 @@ function renderBotones() {
    Eventos del mapa
    -------------------------------------------------------------------------- */
 function zonaMasCercana(estadoId, punto) {
-  const cands = ZONAS.filter(z => z.estadoId === estadoId);
+  const cands = ZONAS.filter(z => z.estados.includes(estadoId));
   if (cands.length < 2 || !punto) return cands[0];
   let mejor = cands[0], dist = Infinity;
   cands.forEach(z => {
@@ -420,7 +434,7 @@ function bindMapa() {
     const path = e.target.closest('.st--zona');
     if (!path) return;
     e.preventDefault();
-    const zona = ZONAS.find(z => z.estadoId === path.dataset.estado);
+    const zona = ZONAS.find(z => z.estados.includes(path.dataset.estado));
     if (zona) seleccionar(zona.id);
   });
 
@@ -477,7 +491,7 @@ export function initMapa() {
     entries.forEach(e => {
       if (!e.isIntersecting) return;
       obs.disconnect();
-      setTimeout(() => { if (!zonaActiva) seleccionar('queretaro'); }, 900);
+      setTimeout(() => { if (!zonaActiva) seleccionar('vallarta'); }, 900);
     });
   }, { threshold: 0.4 });
   io.observe($('#cobertura'));

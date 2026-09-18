@@ -18,12 +18,12 @@ carpeta a cualquier hosting estático.
 | 2 | Marquesina | — | Listado de servicios en movimiento continuo |
 | 3 | Sobre nosotros | `#nosotros` | Historia, **misión**, **visión** y valores |
 | 4 | Mensaje del fundador | — | Carta firmada con retrato |
-| 5 | Servicios principales | `#servicios` | Los 8 servicios, cada uno desplegable con alcance, puntos clave e indicador |
+| 5 | Servicios principales | `#servicios` | Los 8 servicios, cada uno desplegable con su alcance |
 | 6 | Trabajos verticales | `#verticales` | Ventajas del método, técnica, equipo y protocolo de seguridad |
 | 7 | Cobertura | `#cobertura` | **Mapa 2D interactivo de México** con acercamiento por ciudad y pines de proyecto |
-| 8 | Catálogo de proyectos | `#proyectos` | 16 proyectos filtrables por servicio y ciudad, con ficha ampliada |
+| 8 | Portafolio | `#proyectos` | 12 proyectos filtrables por ciudad, con ficha ampliada |
 | 9 | Proceso | `#proceso` | Cinco pasos con desplazamiento horizontal fijado al scroll |
-| 10 | En números | — | Contadores animados |
+| 10 | En números | — | Contadores animados, calculados desde el propio contenido |
 | 11 | Cinta de cierre | — | Llamado a la acción |
 | 12 | Contacto | `#contacto` | Datos de contacto y formulario |
 | 13 | Pie | — | Navegación secundaria, avisos y créditos |
@@ -39,6 +39,8 @@ Detalles de implementación relevantes:
 
 - Los pines están **geolocalizados**: sus coordenadas provienen de latitud y
   longitud reales proyectadas al sistema del mapa (error medio ≈ 1 %).
+- Una ciudad puede abarcar varias entidades: la zona de Puerto Vallarta resalta
+  Jalisco y Nayarit, porque Nuevo Vallarta pertenece a Nayarit.
 - Los marcadores mantienen su tamaño en pantalla sin importar el acercamiento.
 - Las etiquetas se acomodan solas: si dos se encimarían, una se desplaza y se
   dibuja una línea guía hasta su pin; si una se sale del lienzo, salta al otro
@@ -95,18 +97,19 @@ reconstruye sola: no hay que tocar el HTML.
 | Servicios (nombre, descripción, puntos, indicador) | `SERVICIOS` |
 | Ventajas, técnicas y puntos de seguridad | `VERTICALES` |
 | Ciudades, pines del mapa y textos de cobertura | `ZONAS` |
-| Catálogo de proyectos y sus fichas | `PROYECTOS` |
+| Portafolio y sus fichas | `PROYECTOS` |
 | Pasos del proceso | `PROCESO` |
-| Cifras de la sección "En números" | `METRICAS` |
-| Misión, visión, valores, mensaje del fundador y datos de contacto | `EMPRESA` |
+| Cifras de la sección "En números" | `METRICAS` (se calculan solas) |
+| Intro, misión, visión, valores, mensaje del fundador y contacto | `EMPRESA` |
 
 Los textos fijos (titulares de sección, portada y pie) están directamente en
 `index.html`, identificados con comentarios por sección.
 
 ### Agregar una ciudad nueva
 
-1. Añade el objeto a `ZONAS` con su `estadoId` (clave de tres letras: `que`,
-   `jal`, `mic`, `gua`, `cmx`…; la lista completa está en `map-paths.js`).
+1. Añade el objeto a `ZONAS` con su arreglo `estados` (claves de tres letras:
+   `jal`, `mic`, `que`, `nay`, `gua`, `cmx`…; la lista completa está en
+   `map-paths.js`). Si la ciudad abarca dos entidades, inclúyelas todas.
 2. Calcula la posición de cada pin. Las coordenadas `p: [x, y]` se obtienen de
    latitud/longitud con:
 
@@ -117,6 +120,27 @@ Los textos fijos (titulares de sección, portada y pie) están directamente en
 
    (Ejemplo: Monterrey, 25.6866 N / −100.3161 O → `x ≈ 449.6`, `y ≈ 198.9`.)
 3. Agrega sus proyectos a `PROYECTOS` con `zona` igual al `id` de la ciudad.
+
+### Enriquecer una ficha del portafolio
+
+Cada proyecto necesita solo `id`, `nombre`, `zona`, `ciudad` y `estado`. Todos
+los demás campos son **opcionales** y la interfaz se adapta a los que existan:
+
+```js
+{
+  id: 'westin', nombre: 'Hotel Westin',
+  zona: 'vallarta', ciudad: 'Puerto Vallarta', estado: 'Jalisco',
+  sector: 'Hotelería',
+  servicios: ['cristales', 'sellado'],   // activa el filtro por servicio
+  anio: '2024', altura: '52 m', niveles: '14 niveles',
+  superficie: '13,700 m²', duracion: '31 días',
+  reto: '…', solucion: '…', resultado: '…'
+}
+```
+
+En cuanto **algún** proyecto declare `servicios`, aparece solo el filtro por
+servicio en el portafolio. Los campos que se llenen se suman a la ficha técnica
+y a la tarjeta; los que falten simplemente no se muestran.
 
 ---
 
@@ -132,12 +156,13 @@ actualizando la ruta— sin tocar nada más.
 | `assets/img/nosotros.svg` | Sobre nosotros | Foto vertical 5:6 de cuadrilla en obra |
 | `assets/img/fundador.svg` | Mensaje del fundador | Retrato 4:5, mínimo 900 × 1100 px |
 | `assets/img/verticales.svg` | Trabajos verticales | Foto vertical 3:4 de descenso por cuerdas |
-| `assets/img/proyecto-01…16.svg` | Catálogo y fichas | Foto 4:3 por proyecto, mínimo 1200 × 900 px |
+| `assets/img/proyecto-01…16.svg` | Portafolio y fichas | Foto 4:3 por proyecto, mínimo 1200 × 900 px |
 
 Recomendaciones: exportar en **WebP** (calidad 80) o JPG, con peso objetivo
 menor a 300 KB por imagen. Al cambiar de extensión, actualiza la ruta en
 `index.html` (portada, nosotros, fundador, verticales) y la línea de
-`projects.js` que arma `p.img` para el catálogo.
+`projects.js` que arma `p.img`. También puedes fijar la imagen de un proyecto
+concreto agregándole `img: 'assets/img/westin.webp'` en `data.js`.
 
 **Para poner video en la portada** sustituye la etiqueta `<img>` dentro de
 `.hero__frame` por:
@@ -180,24 +205,33 @@ esfuerzo:
 
 ## 7. Datos a confirmar antes de publicar
 
-El sitio está poblado con contenido de muestra para que se pueda ver terminado.
-**Revisa y sustituye** lo siguiente:
+Ya están cargados los datos reales de contacto, los ocho servicios, la misión,
+la visión, el mensaje del fundador y el portafolio de 12 proyectos.
+**Falta confirmar o completar:**
 
-- [ ] Teléfono `+52 442 000 0000` (aparece en navegación, menú, contacto, pie y
-      en el bloque de datos estructurados del `<head>`).
-- [ ] Correo `contacto@asap369.mx` y dominio `www.asap369.mx`
-      (`<link rel="canonical">`, Open Graph, `sitemap.xml`, `robots.txt`).
-- [ ] Nombre del fundador y su cargo exacto (hoy aparece solo el cargo).
-- [ ] Cifras de "En números" y de los indicadores de cada servicio
-      (+350 proyectos, +180 mil m², 12 años, 0 incidentes).
-- [ ] Año de fundación (2013) y años de llegada a cada ciudad.
-- [ ] Nombres, clientes y fichas técnicas de los 16 proyectos del catálogo.
-- [ ] Mención a la **NOM-009-STPS-2011** y al resto de afirmaciones sobre
-      seguridad, capacitación y pólizas: deben corresponder con lo que la
-      empresa efectivamente acredita.
-- [ ] Dirección fiscal / base operativa y horario de atención.
-- [ ] Aviso de privacidad (falta la página; el formulario ya lo referencia de
-      forma genérica).
+- [ ] **Holiday Inn Express / Select**: en la lista original este proyecto no
+      traía ciudad. Quedó provisionalmente en Puerto Vallarta (en `data.js`,
+      marcado con un comentario). Corrígelo si corresponde a otra ciudad.
+- [ ] **Dominio del sitio**: se usa `www.asapgp.com.mx`, deducido del correo.
+      Si el dominio es otro, actualízalo en `<link rel="canonical">`, en las
+      etiquetas Open Graph, en los datos estructurados del `<head>`, en
+      `sitemap.xml` y en `robots.txt`.
+- [ ] **Formato de los teléfonos**: se normalizaron a
+      `33 1323 0878` (Guadalajara) y `322 383 5244` (Puerto Vallarta).
+- [ ] **Nombre del fundador**: hoy la firma muestra solo el cargo.
+- [ ] **Ficha técnica de cada proyecto** (año, superficie, altura, servicios,
+      reto, solución y resultado): opcional, pero es lo que convierte el
+      portafolio en un catálogo consultable. Ver "Enriquecer una ficha".
+- [ ] **Sección de seguridad**: la mención a la **NOM-009-STPS-2011** y las
+      afirmaciones sobre capacitación, análisis de riesgos y bitácoras de
+      equipo deben corresponder con lo que la empresa efectivamente acredita.
+- [ ] **Aviso de privacidad**: falta la página; el formulario ya lo menciona de
+      forma genérica.
+
+Los indicadores de "En números" y las cifras de la portada se calculan solos a
+partir de `data.js` (especialidades, proyectos, ciudades). Si prefieres mostrar
+los totales históricos de la empresa en vez de lo publicado en el portafolio,
+edita `METRICAS` con los valores reales.
 
 ---
 
@@ -217,8 +251,8 @@ Conviene servir con compresión (gzip o brotli) y caché larga para
 
 ## 9. Detalles técnicos
 
-**Rendimiento.** Sin frameworks ni librerías. El sitio completo pesa ~750 KB:
-68 KB de JavaScript propio, 73 KB de geometría del mapa, 73 KB de CSS, 200 KB
+**Rendimiento.** Sin frameworks ni librerías. El sitio completo pesa ~730 KB:
+~65 KB de JavaScript propio, 73 KB de geometría del mapa, 73 KB de CSS, 200 KB
 de tipografías y el resto en ilustraciones. Tipografías autoalojadas en woff2
 variable con `font-display: swap` y precarga del subconjunto latino. Imágenes
 bajo demanda con `loading="lazy"` salvo la de portada.

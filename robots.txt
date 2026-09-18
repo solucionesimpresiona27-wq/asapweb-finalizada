@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.asap369.mx/sitemap.xml
+Sitemap: https://www.asapgp.com.mx/sitemap.xml

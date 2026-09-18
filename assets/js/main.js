@@ -312,17 +312,19 @@ function renderMarquee() {
 }
 
 function renderNosotros() {
+  $('#txt-intro').textContent = EMPRESA.intro;
   $('#txt-mision').textContent = EMPRESA.mision;
   $('#txt-vision').textContent = EMPRESA.vision;
+
   $('#valores').innerHTML = EMPRESA.valores.map((v, i) => `
     <li class="valor" data-reveal style="--d:${i * 80}ms">
-      <span class="valor__n">0${i + 1}</span>
+      <span class="valor__n">${String(i + 1).padStart(2, '0')}</span>
       <span class="valor__t">${v.t}</span>
       <span class="valor__d">${v.d}</span>
     </li>`).join('');
 
-  $('#fundadorTexto').innerHTML = EMPRESA.fundador.parrafos
-    .map((p, i) => `<p data-reveal style="--d:${i * 110}ms">${p}</p>`).join('');
+  $('#fundadorTexto').innerHTML = `<p data-reveal>${EMPRESA.fundador.mensaje}</p>`;
+  $('#fundadorCargo').textContent = EMPRESA.fundador.cargo;
 }
 
 function renderServicios() {
@@ -346,10 +348,6 @@ function renderServicios() {
             <ul class="srv__puntos">
               ${s.puntos.map(p => `<li>${ICON_CHECK}<span>${p}</span></li>`).join('')}
             </ul>
-            <div class="srv__metric">
-              <b>${s.metrica.valor}</b>
-              <span>${s.metrica.unidad}</span>
-            </div>
           </div>
         </div>
       </div>
@@ -422,6 +420,31 @@ function renderMetricas() {
 /* -----------------------------------------------------------------------------
    Formulario (maqueta — sin backend)
    -------------------------------------------------------------------------- */
+function renderContacto() {
+  const tels = EMPRESA.telefonos
+    .map(t => `<a href="tel:${t.href}">${t.display}<em>${t.ciudad}</em></a>`).join('');
+  const box = $('#datoTelefonos');
+  if (box) box.innerHTML = tels;
+
+  $$('[data-email]').forEach(a => {
+    a.textContent = EMPRESA.email;
+    a.href = 'mailto:' + EMPRESA.email;
+  });
+  $$('[data-tel-principal]').forEach(a => {
+    a.textContent = EMPRESA.telefonos[0].display;
+    a.href = 'tel:' + EMPRESA.telefonos[0].href;
+  });
+  $$('[data-dir]').forEach(el => { el.textContent = EMPRESA.dir; });
+
+  const footTel = $('#footTelefonos');
+  if (footTel) {
+    footTel.innerHTML = EMPRESA.telefonos
+      .map(t => `<li><a href="tel:${t.href}">${t.display} <span style="color:var(--tx-low)">· ${t.ciudad}</span></a></li>`)
+      .join('') + `<li><a href="mailto:${EMPRESA.email}">${EMPRESA.email}</a></li>`
+      + `<li><span>${EMPRESA.dir}</span></li>`;
+  }
+}
+
 function initForm() {
   const form = $('#form');
   if (!form) return;
@@ -453,6 +476,7 @@ function boot() {
   renderVerticales();
   renderProceso();
   renderMetricas();
+  renderContacto();
   initProyectos();
   initMapa();
 
