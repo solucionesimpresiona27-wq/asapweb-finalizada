@@ -4,7 +4,7 @@
    y marcadores geolocalizados de los proyectos ejecutados.
    ========================================================================== */
 import { ESTADOS, MAP_VIEWBOX } from './map-paths.js';
-import { ZONAS, PROYECTOS } from './data.js';
+import { ZONAS, PROYECTOS, CIUDADES } from './data.js';
 import { abrirProyecto, filtrarPorZona } from './projects.js';
 
 const $  = (s, c = document) => c.querySelector(s);
@@ -96,106 +96,238 @@ function construirSVG() {
 
 /* -----------------------------------------------------------------------------
    Marcadores
+   -----------------------------------------------------------------------------
+   Cada proyecto del portafolio se señala en el mapa. Los que comparten ciudad
+   —o están a tiro de piedra, como Puerto Vallarta y Nuevo Vallarta— se agrupan
+   en un solo anclaje geográfico del que sale una columna con un marcador por
+   proyecto. Las medidas de la columna están en unidades locales del grupo, que
+   por la contraescala equivalen a píxeles en pantalla.
    -------------------------------------------------------------------------- */
-function crearPin(pin, zona, conEtiqueta) {
+/* Escala del grupo de un marcador: hace que una unidad local valga exactamente
+   un píxel CSS, sin importar el zoom ni el ancho del lienzo. Así los marcadores
+   se ven igual en un monitor que en un celular. */
+function escalaLocal(caja = vista) {
+  const w = mapaBox?.clientWidth || BASE[2];
+  return w ? caja[2] / w : 1;
+}
+
+const FUSION = 9;      // unidades del viewBox por debajo de las cuales dos ciudades se agrupan
+const FILA = 19;       // separación vertical entre proyectos de una columna
+const COL_X = 32;      // distancia del anclaje a la columna
+const ALTO_FILA = 15;  // alto aproximado de una fila, para separar columnas
+
+/* Agrupa los proyectos por ciudad y fusiona las ciudades muy cercanas */
+function agrupar(lista) {
+  const porCiudad = new Map();
+  lista.forEach(p => {
+    const c = CIUDADES[p.ciudad];
+    if (!c) return;
+    if (!porCiudad.has(p.ciudad)) {
+      porCiudad.set(p.ciudad, { ciudades: [p.ciudad], x: c[0], y: c[1], items: [] });
+    }
+    porCiudad.get(p.ciudad).items.push(p);
+  });
+
+  const grupos = [...porCiudad.values()];
+  for (let i = 0; i < grupos.length; i++) {
+    if (!grupos[i]) continue;
+    for (let j = i + 1; j < grupos.length; j++) {
+      if (!grupos[j]) continue;
+      const a = grupos[i], b = grupos[j];
+      if (Math.hypot(a.x - b.x, a.y - b.y) >= FUSION) continue;
+      a.items.push(...b.items);
+      a.ciudades.push(...b.ciudades);
+      a.x = (a.x + b.x) / 2;
+      a.y = (a.y + b.y) / 2;
+      grupos[j] = null;
+    }
+  }
+  return grupos.filter(Boolean);
+}
+
+/* Reparte verticalmente las columnas que se encimarían entre sí */
+function separarColumnas(grupos) {
+  const k = escalaLocal(destino);
+  const puestas = [];
+  grupos.forEach(g => {
+    const alto = Math.max(1, g.items.length) * FILA;
+    // centro de la columna en unidades del viewBox
+    let centro = g.y;
+    const medio = (alto / 2) * k;
+    let intentos = 0;
+    let choca = true;
+    while (choca && intentos < 20) {
+      choca = false;
+      for (const q of puestas) {
+        const cercaX = Math.abs(q.x - g.x) < 70 * k;
+        const cruza = centro - medio < q.abajo + 6 * k && centro + medio > q.arriba - 6 * k;
+        if (cercaX && cruza) {
+          centro = q.abajo + medio + 8 * k;
+          choca = true;
+        }
+      }
+      intentos++;
+    }
+    g.desfase = (centro - g.y) / k;   // desplazamiento en unidades locales del grupo
+    puestas.push({ x: g.x, arriba: centro - medio, abajo: centro + medio });
+  });
+}
+
+/* Ancho aproximado que necesita la columna, en píxeles de pantalla */
+function anchoColumna(grupo) {
+  const masLargo = Math.max(...grupo.items.map(p => p.nombre.length));
+  const encabezado = grupo.ciudades.join(' · ').length * 5.6;
+  return COL_X + 14 + Math.max(masLargo * 5.9, encabezado);
+}
+
+/* ¿Cabe la columna a la derecha del anclaje? Si no, se dibuja hacia la izquierda.
+   Se mide contra el encuadre de destino: cuando se pintan los marcadores la
+   animación del viewBox apenas va empezando. */
+function ladoColumna(grupo) {
+  const r = mapaBox.getBoundingClientRect();
+  if (!r.width) return 1;
+  const pxPorUnidad = r.width / destino[2];
+  const libreDerecha = (destino[0] + destino[2] - grupo.x) * pxPorUnidad;
+  return libreDerecha >= anchoColumna(grupo) + 14 ? 1 : -1;
+}
+
+function crearGrupo(grupo) {
   const g = document.createElementNS(NS, 'g');
-  g.setAttribute('class', `mapa__pin mapa__pin--${pin.tipo}`);
-  g.dataset.zona = zona.id;
+  g.setAttribute('class', 'mapa__cluster');
+  g.dataset.x = grupo.x;
+  g.dataset.y = grupo.y;
+
+  const n = grupo.items.length;
+  const lado = ladoColumna(grupo);
+  const ancho = anchoColumna(grupo);
+  const desfase = grupo.desfase || 0;
+  const y0 = desfase - ((n - 1) * FILA) / 2;
+  const ciudad = grupo.ciudades.join(' · ');
+
+  const colX = COL_X * lado;
+  const spineX = (COL_X - 12) * lado;
+  const anclaje = lado > 0 ? 'start' : 'end';
+
+  const filas = grupo.items.map((p, i) => {
+    const y = y0 + i * FILA;
+    const zonaX = lado > 0 ? COL_X - 9 : -(ancho);
+    return `
+      <g class="mapa__obra" data-proy="${p.id}" tabindex="0" role="button"
+         aria-label="Ver ${p.nombre}, ${p.ciudad}">
+        <rect class="mapa__obra-zona" x="${zonaX.toFixed(1)}" y="${(y - 8.5).toFixed(1)}" width="${(ancho + 4).toFixed(1)}" height="17" rx="5"/>
+        <path class="mapa__obra-tick" d="M${spineX} ${y} H${(COL_X - 4) * lado}"/>
+        <circle class="mapa__obra-dot" cx="${colX}" cy="${y}" r="2.9"/>
+        <text class="mapa__obra-label" x="${(COL_X + 8) * lado}" y="${(y + 3.4).toFixed(1)}" text-anchor="${anclaje}">${p.nombre}</text>
+      </g>`;
+  }).join('');
+
+  const spine = n > 1
+    ? `<path class="mapa__cluster-spine" d="M${spineX} ${y0} V${y0 + (n - 1) * FILA}"/>`
+    : '';
+
   g.innerHTML = `
-    <path class="mapa__pin-leader" d="M0 0"/>
+    <path class="mapa__cluster-link" d="M${5 * lado} 0 H${spineX} V${desfase}"/>
+    ${spine}
     <circle class="mapa__pin-ring" cx="0" cy="0" r="4"/>
-    <circle class="mapa__pin-dot" cx="0" cy="0" r="${pin.tipo === 'sede' ? 3.4 : 2.6}"/>
-    ${conEtiqueta ? `<text class="mapa__pin-label" x="9" y="3.6">${pin.n}</text>` : ''}`;
-  g.dataset.x = pin.p[0];
-  g.dataset.y = pin.p[1];
+    <circle class="mapa__pin-dot" cx="0" cy="0" r="3.6"/>
+    <text class="mapa__cluster-ciudad" x="${(COL_X - 4) * lado}" y="${(y0 - 13).toFixed(1)}" text-anchor="${anclaje}">${ciudad}</text>
+    ${filas}`;
   return g;
 }
 
+/* Marcador simple de la vista nacional: una ciudad por zona */
+function crearPinZona(zona) {
+  const c = CIUDADES[zona.centro];
+  if (!c) return null;
+  const n = proyectosDe(zona.id).length;
+  const r = mapaBox.getBoundingClientRect();
+  const pxPorUnidad = r.width ? r.width / destino[2] : 1;
+  const libre = (destino[0] + destino[2] - c[0]) * pxPorUnidad;
+  const lado = libre >= zona.ciudad.length * 6.4 + 40 ? 1 : -1;
+
+  const g = document.createElementNS(NS, 'g');
+  g.setAttribute('class', 'mapa__pin mapa__pin--sede');
+  g.dataset.x = c[0];
+  g.dataset.y = c[1];
+  g.dataset.ir = zona.id;
+  g.setAttribute('tabindex', '0');
+  g.setAttribute('role', 'button');
+  g.setAttribute('aria-label', `Ver ${zona.ciudad}`);
+  g.innerHTML = `
+    <circle class="mapa__pin-ring" cx="0" cy="0" r="4"/>
+    <circle class="mapa__pin-dot" cx="0" cy="0" r="3.4"/>
+    <text class="mapa__pin-label" x="${9 * lado}" y="3.6" text-anchor="${lado > 0 ? 'start' : 'end'}">${zona.ciudad}${n ? ` · ${n}` : ''}</text>`;
+  return g;
+}
+
+function pintarPines(zona) {
+  gPines.innerHTML = '';
+
+  if (zona) {
+    const grupos = agrupar(proyectosDe(zona.id));
+    separarColumnas(grupos);
+    grupos.forEach(gr => gPines.appendChild(crearGrupo(gr)));
+
+    // una zona sin proyectos (la base) conserva su marcador de ciudad
+    if (!grupos.length) {
+      const pin = crearPinZona(zona);
+      if (pin) gPines.appendChild(pin);
+    }
+  } else {
+    ZONAS.forEach(z => {
+      const pin = crearPinZona(z);
+      if (pin) gPines.appendChild(pin);
+    });
+  }
+
+  escalarPines();
+  requestAnimationFrame(() => {
+    acomodarEtiquetas();
+    [...gPines.children].forEach((g, i) => {
+      setTimeout(() => g.classList.add('is-live'), REDUCED ? 0 : i * 110);
+    });
+  });
+}
+
 /* -----------------------------------------------------------------------------
-   Colocación de etiquetas sin traslapes
-   Las etiquetas parten de su posición natural (a la derecha del marcador) y se
-   separan verticalmente hasta que ninguna se encima con otra; si una se sale
-   por el costado derecho del lienzo, salta al lado izquierdo del marcador.
+   Separa las etiquetas de los marcadores simples (vista nacional) cuando dos
+   ciudades quedan tan cerca que sus nombres se encimarían.
    -------------------------------------------------------------------------- */
 function acomodarEtiquetas() {
   const textos = $$('.mapa__pin-label', gPines);
-  if (!textos.length) return;
-  const limite = mapaBox.getBoundingClientRect();
+  textos.forEach(t => t.setAttribute('y', '3.6'));
+  if (textos.length < 2) return;
 
-  // 1. reinicio y volteo lateral cuando la etiqueta se sale del lienzo
-  textos.forEach(t => {
-    t.setAttribute('x', '9');
-    t.setAttribute('y', '3.6');
-    t.setAttribute('text-anchor', 'start');
-    const r = t.getBoundingClientRect();
-    if (r.right > limite.right - 10) {
-      t.setAttribute('x', '-9');
-      t.setAttribute('text-anchor', 'end');
-    }
-  });
-
-  // 2. separación vertical
-  const escala = textos[0].getScreenCTM()?.d || 1;   // unidades locales → píxeles
+  const escala = textos[0].getScreenCTM()?.d || 1;
   const cajas = textos
     .map(t => ({ t, r: t.getBoundingClientRect() }))
     .sort((a, b) => a.r.top - b.r.top);
 
   const puestas = [];
   cajas.forEach(item => {
-    let top = item.r.top, bottom = item.r.bottom;
-    let desplazado = 0;
-    let choque = true;
-    let vueltas = 0;
-
+    let top = item.r.top, abajo = item.r.bottom, corrido = 0, choque = true, vueltas = 0;
     while (choque && vueltas < 24) {
       choque = false;
-      for (const p of puestas) {
-        const cruzaX = item.r.left < p.right + 6 && item.r.right > p.left - 6;
-        const cruzaY = top < p.bottom + 3 && bottom > p.top - 3;
+      for (const q of puestas) {
+        const cruzaX = item.r.left < q.right + 6 && item.r.right > q.left - 6;
+        const cruzaY = top < q.abajo + 3 && abajo > q.top - 3;
         if (cruzaX && cruzaY) {
-          const salto = p.bottom + 4 - top;
-          top += salto; bottom += salto; desplazado += salto;
+          const salto = q.abajo + 4 - top;
+          top += salto; abajo += salto; corrido += salto;
           choque = true;
         }
       }
       vueltas++;
     }
-
-    if (desplazado) {
-      item.t.setAttribute('y', (3.6 + desplazado / escala).toFixed(2));
-      const g = item.t.closest('.mapa__pin');
-      const leader = $('.mapa__pin-leader', g);
-      const dx = item.t.getAttribute('text-anchor') === 'end' ? -7 : 7;
-      const dy = (desplazado / escala).toFixed(2);
-      leader?.setAttribute('d', `M0 0 L${dx * 0.5} ${dy * 0.7} L${dx} ${dy}`);
-    }
-    puestas.push({ left: item.r.left, right: item.r.right, top, bottom });
-  });
-}
-
-function pintarPines(zona) {
-  gPines.innerHTML = '';
-  if (zona) {
-    zona.pines.forEach(p => gPines.appendChild(crearPin(p, zona, true)));
-  } else {
-    ZONAS.forEach(z => {
-      const sede = z.pines.find(p => p.tipo === 'sede') || z.pines[0];
-      gPines.appendChild(crearPin({ ...sede, n: z.ciudad }, z, true));
-    });
-  }
-  escalarPines();
-  requestAnimationFrame(() => {
-    acomodarEtiquetas();
-    $$('.mapa__pin', gPines).forEach((g, i) => {
-      setTimeout(() => g.classList.add('is-live'), REDUCED ? 0 : i * 90);
-    });
+    if (corrido) item.t.setAttribute('y', (3.6 + corrido / escala).toFixed(2));
+    puestas.push({ left: item.r.left, right: item.r.right, top, abajo });
   });
 }
 
 /* Los marcadores mantienen su tamaño en pantalla aunque cambie el zoom */
 function escalarPines() {
-  const k = vista[2] / BASE[2];
-  $$('.mapa__pin', gPines).forEach(g => {
+  const k = escalaLocal();
+  [...gPines.children].forEach(g => {
     g.setAttribute('transform', `translate(${g.dataset.x} ${g.dataset.y}) scale(${k.toFixed(4)})`);
   });
 }
@@ -209,7 +341,6 @@ function irA(box) {
     vista = [...destino];
     svg.setAttribute('viewBox', vista.join(' '));
     escalarPines();
-    requestAnimationFrame(acomodarEtiquetas);
     return;
   }
   if (animando) return;
@@ -237,10 +368,20 @@ function irA(box) {
   requestAnimationFrame(paso);
 }
 
-/* Encuadre calculado a partir de los marcadores de la zona */
+/* Puntos de una zona: las ciudades donde tiene proyectos, o su ciudad centro */
+function puntosDe(zona) {
+  const ciudades = new Set(proyectosDe(zona.id).map(p => p.ciudad));
+  if (!ciudades.size && zona.centro) ciudades.add(zona.centro);
+  return [...ciudades].map(c => CIUDADES[c]).filter(Boolean);
+}
+
+/* Encuadre calculado a partir de las ciudades de la zona */
 function encuadre(zona) {
-  const xs = zona.pines.map(p => p.p[0]);
-  const ys = zona.pines.map(p => p.p[1]);
+  const pts = puntosDe(zona);
+  if (!pts.length) return vistaNacional();
+
+  const xs = pts.map(p => p[0]);
+  const ys = pts.map(p => p[1]);
   const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
   const cy = (Math.min(...ys) + Math.max(...ys)) / 2;
 
@@ -250,8 +391,8 @@ function encuadre(zona) {
   const alto = Math.max(...ys) - Math.min(...ys) + 66;
   if (alto > h) { h = alto; w = h * a; }
 
-  // el encuadre se desplaza a la izquierda para dejar aire a las etiquetas
-  return [cx - w * 0.42, cy - h / 2, w, h];
+  // el encuadre se desplaza a la izquierda para dejar aire a la columna
+  return [cx - w * 0.34, cy - h / 2, w, h];
 }
 
 /* -----------------------------------------------------------------------------
@@ -400,8 +541,8 @@ function zonaMasCercana(estadoId, punto) {
   if (cands.length < 2 || !punto) return cands[0];
   let mejor = cands[0], dist = Infinity;
   cands.forEach(z => {
-    z.pines.forEach(p => {
-      const d = (p.p[0] - punto.x) ** 2 + (p.p[1] - punto.y) ** 2;
+    puntosDe(z).forEach(c => {
+      const d = (c[0] - punto.x) ** 2 + (c[1] - punto.y) ** 2;
       if (d < dist) { dist = d; mejor = z; }
     });
   });
@@ -449,6 +590,20 @@ function bindMapa() {
   });
   gEstados.addEventListener('mouseleave', () => tip.classList.remove('is-on'));
 
+  // los marcadores abren la ficha del proyecto o entran a la zona
+  const activarPin = el => {
+    const obra = el.closest('.mapa__obra');
+    if (obra) { abrirProyecto(obra.dataset.proy); return true; }
+    const pin = el.closest('[data-ir]');
+    if (pin) { seleccionar(pin.dataset.ir); return true; }
+    return false;
+  };
+  gPines.addEventListener('click', e => activarPin(e.target));
+  gPines.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    if (activarPin(e.target)) e.preventDefault();
+  });
+
   $('#zonaPanel').addEventListener('click', e => {
     const ir = e.target.closest('[data-ir]');
     if (ir) { seleccionar(ir.dataset.ir); return; }
@@ -468,8 +623,7 @@ function bindMapa() {
     clearTimeout(reajuste);
     reajuste = setTimeout(() => {
       irA(zonaActiva ? encuadre(zonaActiva) : vistaNacional());
-      escalarPines();
-      acomodarEtiquetas();
+      pintarPines(zonaActiva);
     }, 140);
   });
 }

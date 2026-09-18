@@ -110,58 +110,65 @@ export const VERTICALES = {
 };
 
 /* -----------------------------------------------------------------------------
-   3. Cobertura — ciudades, pines geolocalizados y proyectos por zona
-   Las coordenadas `p` están en el sistema del viewBox del mapa (0 0 793 498)
-   y fueron proyectadas desde latitud/longitud reales.
-   `estados` acepta varias entidades: la zona de Vallarta abarca Jalisco
-   (Puerto Vallarta) y Nayarit (Nuevo Vallarta).
+   3. Cobertura
+   -----------------------------------------------------------------------------
+   CIUDADES guarda la posición de cada localidad en el sistema del viewBox del
+   mapa (0 0 793 498), proyectada desde su latitud y longitud reales. Los
+   marcadores del mapa se arman con esto: cada proyecto se coloca en la ciudad
+   que trae en `PROYECTOS`, así que basta agregarlo ahí para que aparezca.
+
+   Para sumar una ciudad nueva, calcula sus coordenadas con:
+     x =  25.289593 · longitud −  0.456255 · latitud + 2998.2434
+     y =  −1.361053 · longitud − 28.023522 · latitud +  782.1887
    -------------------------------------------------------------------------- */
+export const CIUDADES = {
+  'Guadalajara':     [375.1, 343.9],
+  'Puerto Vallarta': [327.7, 346.6],
+  'Nuevo Vallarta':  [326.1, 345.6],
+  'Morelia':         [430.3, 367.8],
+  'Juriquilla':      [448.5, 338.7]
+};
+
+/* `estados` acepta varias entidades: la zona de Vallarta abarca Jalisco
+   (Puerto Vallarta) y Nayarit (Nuevo Vallarta). `centro` es la ciudad que
+   representa a la zona en la vista nacional. */
 export const ZONAS = [
   {
     id: 'guadalajara',
     ciudad: 'Guadalajara',
     estado: 'Jalisco',
     estados: ['jal'],
+    centro: 'Guadalajara',
     base: true,
     resumen: 'Nuestra base de operaciones. Desde aquí coordinamos el equipo, el material y los programas de trabajo de las cuatro ciudades.',
-    destacados: ['Base operativa', 'Coordinación de obra', 'Atención comercial'],
-    pines: [
-      { n: 'Guadalajara', p: [375.1, 343.9], tipo: 'sede' }
-    ]
+    destacados: ['Base operativa', 'Coordinación de obra', 'Atención comercial']
   },
   {
     id: 'vallarta',
     ciudad: 'Puerto Vallarta',
     estado: 'Jalisco y Nayarit',
     estados: ['jal', 'nay'],
+    centro: 'Puerto Vallarta',
     resumen: 'Costa del Pacífico y la mayor concentración de nuestro portafolio: hotelería, condominios verticales y plazas frente al mar.',
-    destacados: ['Hotelería', 'Condominios verticales', 'Plazas comerciales'],
-    pines: [
-      { n: 'Puerto Vallarta', p: [327.7, 346.6], tipo: 'sede' },
-      { n: 'Nuevo Vallarta',  p: [326.1, 345.6], tipo: 'obra' }
-    ]
+    destacados: ['Hotelería', 'Condominios verticales', 'Plazas comerciales']
   },
   {
     id: 'morelia',
     ciudad: 'Morelia',
     estado: 'Michoacán',
     estados: ['mic'],
+    centro: 'Morelia',
     resumen: 'Centro del país. Hospital, plaza comercial y centro corporativo atendidos con acceso por cuerdas.',
-    destacados: ['Salud', 'Retail', 'Corporativo'],
-    pines: [
-      { n: 'Morelia', p: [430.3, 367.8], tipo: 'sede' }
-    ]
+    destacados: ['Salud', 'Retail', 'Corporativo']
   },
   {
     id: 'queretaro',
     ciudad: 'Querétaro',
     estado: 'Querétaro',
     estados: ['que'],
+    centro: 'Juriquilla',
     resumen: 'Corredor corporativo del Bajío, en la zona de Juriquilla.',
-    destacados: ['Corporativo', 'Usos mixtos'],
-    pines: [
-      { n: 'Juriquilla', p: [448.5, 338.7], tipo: 'sede' }
-    ]
+    destacados: ['Corporativo', 'Usos mixtos']
   }
 ];
 

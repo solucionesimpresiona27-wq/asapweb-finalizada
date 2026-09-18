@@ -32,8 +32,14 @@ carpeta a cualquier hosting estático.
 
 Render vectorial de las 32 entidades federativas. Al elegir una ciudad
 —con los botones o haciendo clic sobre el estado— el mapa **se acerca con
-animación** a esa zona, resalta la entidad, despliega los pines de cada obra
-y el panel lateral lista los proyectos de esa ciudad.
+animación** a esa zona, resalta la entidad y **señala cada proyecto** del
+portafolio ejecutado ahí; el panel lateral lista los mismos proyectos.
+
+Los marcadores salen directo de `PROYECTOS`: agregar un proyecto a esa lista
+basta para que aparezca en el mapa, sin tocar código. Los que comparten ciudad
+—o están a tiro de piedra, como Puerto Vallarta y Nuevo Vallarta— se agrupan en
+un solo anclaje geográfico del que cuelga una columna con un renglón por obra.
+Al hacer clic en cualquiera se abre su ficha.
 
 Detalles de implementación relevantes:
 
@@ -41,6 +47,10 @@ Detalles de implementación relevantes:
   longitud reales proyectadas al sistema del mapa (error medio ≈ 1 %).
 - Una ciudad puede abarcar varias entidades: la zona de Puerto Vallarta resalta
   Jalisco y Nayarit, porque Nuevo Vallarta pertenece a Nayarit.
+- La columna de proyectos se dibuja a la derecha del anclaje y salta a la
+  izquierda si no cabe; si dos columnas se encimaran, se separan solas.
+- Los marcadores miden lo mismo en pantalla a cualquier zoom y en cualquier
+  ancho de lienzo, del monitor al celular.
 - Los marcadores mantienen su tamaño en pantalla sin importar el acercamiento.
 - Las etiquetas se acomodan solas: si dos se encimarían, una se desplaza y se
   dibuja una línea guía hasta su pin; si una se sale del lienzo, salta al otro
@@ -96,7 +106,8 @@ reconstruye sola: no hay que tocar el HTML.
 |---|---|
 | Servicios (nombre, descripción, puntos, indicador) | `SERVICIOS` |
 | Ventajas, técnicas y puntos de seguridad | `VERTICALES` |
-| Ciudades, pines del mapa y textos de cobertura | `ZONAS` |
+| Coordenadas de cada ciudad en el mapa | `CIUDADES` |
+| Zonas del selector y textos de cobertura | `ZONAS` |
 | Portafolio y sus fichas | `PROYECTOS` |
 | Pasos del proceso | `PROCESO` |
 | Cifras de la sección "En números" | `METRICAS` (se calculan solas) |
@@ -105,21 +116,29 @@ reconstruye sola: no hay que tocar el HTML.
 Los textos fijos (titulares de sección, portada y pie) están directamente en
 `index.html`, identificados con comentarios por sección.
 
+### Agregar un proyecto
+
+Basta con sumarlo a `PROYECTOS` indicando una `ciudad` que ya exista en
+`CIUDADES`. Aparece solo en el portafolio, en el panel del mapa y como marcador
+sobre el mapa.
+
 ### Agregar una ciudad nueva
 
-1. Añade el objeto a `ZONAS` con su arreglo `estados` (claves de tres letras:
-   `jal`, `mic`, `que`, `nay`, `gua`, `cmx`…; la lista completa está en
-   `map-paths.js`). Si la ciudad abarca dos entidades, inclúyelas todas.
-2. Calcula la posición de cada pin. Las coordenadas `p: [x, y]` se obtienen de
-   latitud/longitud con:
+1. Calcula sus coordenadas a partir de latitud y longitud, y añádela a
+   `CIUDADES`:
 
    ```
-   x = 25.289593 · longitud − 0.456255 · latitud + 2998.2434
-   y = −1.361053 · longitud − 28.023522 · latitud + 782.1887
+   x =  25.289593 · longitud −  0.456255 · latitud + 2998.2434
+   y =  −1.361053 · longitud − 28.023522 · latitud +  782.1887
    ```
 
    (Ejemplo: Monterrey, 25.6866 N / −100.3161 O → `x ≈ 449.6`, `y ≈ 198.9`.)
-3. Agrega sus proyectos a `PROYECTOS` con `zona` igual al `id` de la ciudad.
+2. Si además es una zona nueva del selector, añádela a `ZONAS` con su arreglo
+   `estados` (claves de tres letras: `jal`, `mic`, `que`, `nay`, `nle`, `cmx`…;
+   la lista completa está en `map-paths.js`) y su `centro`, que es la ciudad
+   que la representa en la vista nacional. Si la zona abarca dos entidades,
+   inclúyelas todas en `estados`.
+3. Agrega sus proyectos a `PROYECTOS` con `zona` igual al `id` de la zona.
 
 ### Enriquecer una ficha del portafolio
 
