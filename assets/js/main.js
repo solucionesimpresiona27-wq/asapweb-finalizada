@@ -2,7 +2,7 @@
    ASAP 369 — Orquestador de interfaz
    Precarga · cursor · navegación · revelados · parallax · secciones dinámicas
    ========================================================================== */
-import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA } from './data.js';
+import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS } from './data.js';
 import { initMapa } from './map.js';
 import { initProyectos } from './projects.js';
 
@@ -15,6 +15,7 @@ const FINE = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
 const ICON_ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>';
 const ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+const ICON_PIN = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>';
 
 /* -----------------------------------------------------------------------------
    Precarga
@@ -311,6 +312,39 @@ function renderMarquee() {
   track.after(clone);
 }
 
+/* Tarjeta de obra en curso sobre la imagen de portada */
+function renderObraActiva() {
+  const caja = $('#heroObra');
+  if (!caja) return;
+
+  const o = OBRA_ACTIVA;
+  const p = o.proyecto ? PROYECTOS.find(x => x.id === o.proyecto) : null;
+  const titulo = o.titulo || p?.nombre;
+  const ciudad = o.ciudad || p?.ciudad;
+  const estado = o.estado || p?.estado;
+  const barra = '<span class="hero__prog" aria-hidden="true"><i></i></span>';
+
+  if (!o.mostrar || !titulo) {
+    caja.innerHTML = `
+      <span class="pill pill--live"><i class="pill__dot"></i> Trabajos verticales</span>
+      <b>Alturas y difícil acceso</b>
+      ${barra}
+      <div class="hero__badge-row"><span>Acceso por cuerdas</span><span>Sin andamios</span></div>`;
+    return;
+  }
+
+  const lugar = [ciudad, estado && estado !== ciudad ? estado : null].filter(Boolean).join(', ');
+  caja.innerHTML = `
+    <span class="pill pill--live"><i class="pill__dot"></i> Obra en curso</span>
+    <b>${titulo}</b>
+    ${lugar ? `<span class="hero__badge-lugar">${ICON_PIN}${lugar}</span>` : ''}
+    ${barra}
+    <div class="hero__badge-row">
+      <span>${o.servicio || 'Trabajos verticales'}</span>
+      <span>Acceso por cuerdas</span>
+    </div>`;
+}
+
 function renderNosotros() {
   $('#txt-intro').textContent = EMPRESA.intro;
   $('#txt-mision').textContent = EMPRESA.mision;
@@ -471,6 +505,7 @@ function boot() {
   $('#year').textContent = new Date().getFullYear();
 
   renderMarquee();
+  renderObraActiva();
   renderNosotros();
   renderServicios();
   renderVerticales();

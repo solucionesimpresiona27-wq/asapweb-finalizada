@@ -110,12 +110,33 @@ reconstruye sola: no hay que tocar el HTML.
 | Coordenadas de cada ciudad en el mapa | `CIUDADES` |
 | Zonas del selector y textos de cobertura | `ZONAS` |
 | Portafolio y sus fichas | `PROYECTOS` |
+| Obra anunciada en la portada | `OBRA_ACTIVA` |
 | Pasos del proceso | `PROCESO` |
 | Cifras de la sección "En números" | `METRICAS` (se calculan solas) |
 | Intro, misión, visión, valores, mensaje del fundador y contacto | `EMPRESA` |
 
 Los textos fijos (titulares de sección, portada y pie) están directamente en
 `index.html`, identificados con comentarios por sección.
+
+### Cambiar la obra que anuncia la portada
+
+La tarjeta sobre la imagen principal dice «Obra en curso» y muestra el nombre
+y la ubicación de un proyecto. Se controla desde `OBRA_ACTIVA` en `data.js`:
+
+```js
+export const OBRA_ACTIVA = {
+  mostrar: true,
+  proyecto: 'westin',          // id de PROYECTOS: toma solo nombre y ubicación
+  titulo: null,                // o escríbelo a mano dejando `proyecto: null`
+  ciudad: null,
+  estado: null,
+  servicio: 'Lavado de fachada'
+};
+```
+
+Con `mostrar: false` la tarjeta vuelve al texto genérico de trabajos verticales
+y deja de anunciar una obra activa. **Mantén este dato al día**: dice que ese
+trabajo se está ejecutando en este momento.
 
 ### Agregar un proyecto
 
@@ -229,6 +250,10 @@ Ya están cargados los datos reales de contacto, los ocho servicios, la misión,
 la visión, el mensaje del fundador y el portafolio de 12 proyectos.
 **Falta confirmar o completar:**
 
+- [ ] **Obra anunciada en la portada**: la tarjeta dice «Obra en curso · Hotel
+      Westin · Puerto Vallarta». Es un valor de arranque tomado del portafolio;
+      cámbialo por el trabajo que realmente esté en ejecución, o apágalo con
+      `mostrar: false` en `OBRA_ACTIVA` (`data.js`).
 - [ ] **Holiday Inn Express / Select**: en la lista original este proyecto no
       traía ciudad. Quedó provisionalmente en Puerto Vallarta (en `data.js`,
       marcado con un comentario). Corrígelo si corresponde a otra ciudad.

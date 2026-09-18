@@ -196,6 +196,28 @@ export const PROYECTOS = [
 ];
 
 /* -----------------------------------------------------------------------------
+   4b. Obra en curso — tarjeta de la portada
+   -----------------------------------------------------------------------------
+   Es lo que aparece sobre la imagen principal, con la animación de avance.
+
+   · Para anunciar otra obra, cambia `proyecto` por el `id` de cualquier
+     proyecto de la lista de arriba y se toman solos su nombre y su ubicación.
+   · Si la obra todavía no está en el portafolio, deja `proyecto: null` y
+     escribe `titulo`, `ciudad` y `estado` a mano.
+   · Si en algún momento no quieres anunciar ninguna obra, pon
+     `mostrar: false`: la tarjeta vuelve al texto genérico de trabajos
+     verticales y deja de decir «Obra en curso».
+   -------------------------------------------------------------------------- */
+export const OBRA_ACTIVA = {
+  mostrar: true,
+  proyecto: 'westin',          // id de PROYECTOS, o null para escribirlo abajo
+  titulo: null,                // se usa solo si `proyecto` es null
+  ciudad: null,
+  estado: null,
+  servicio: 'Lavado de fachada'
+};
+
+/* -----------------------------------------------------------------------------
    5. Proceso de trabajo
    -------------------------------------------------------------------------- */
 export const PROCESO = [
