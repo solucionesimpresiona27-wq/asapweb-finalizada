@@ -145,8 +145,9 @@ body.cur-hidden .cursor, body.cur-hidden .cursor-ring { opacity: 0; }
   -webkit-backdrop-filter: blur(18px) saturate(140%);
   border-bottom-color: var(--line);
 }
-.nav.is-hidden { transform: translateY(-104%); }
-.nav { transition: transform .55s var(--ease), background .5s var(--ease), height .45s var(--ease), border-color .5s; }
+/* El encabezado permanece visible durante todo el recorrido: el logotipo
+   nunca debe perderse de vista. */
+.nav { transition: background .5s var(--ease), height .45s var(--ease), border-color .5s; }
 
 .nav__in {
   width: 100%; max-width: var(--wrap); margin-inline: auto;

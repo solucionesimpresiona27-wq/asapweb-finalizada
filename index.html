@@ -273,18 +273,28 @@
 
         <div class="vm-grid">
           <article class="vm-card" data-reveal style="--d:120ms">
-            <h3 class="t-h4">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg>
-              Misión
+            <h3>
+              <button class="vm-card__head" type="button" aria-expanded="false" aria-controls="panel-mision">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg>
+                <span class="vm-card__t t-h4">Misión</span>
+                <span class="vm-card__plus" aria-hidden="true"></span>
+              </button>
             </h3>
-            <p id="txt-mision"></p>
+            <div class="vm-card__panel" id="panel-mision">
+              <div class="vm-card__panel-in"><p id="txt-mision"></p></div>
+            </div>
           </article>
           <article class="vm-card" data-reveal style="--d:220ms">
-            <h3 class="t-h4">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.8-6.5 10-6.5S22 12 22 12s-3.8 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg>
-              Visión
+            <h3>
+              <button class="vm-card__head" type="button" aria-expanded="false" aria-controls="panel-vision">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.8-6.5 10-6.5S22 12 22 12s-3.8 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg>
+                <span class="vm-card__t t-h4">Visión</span>
+                <span class="vm-card__plus" aria-hidden="true"></span>
+              </button>
             </h3>
-            <p id="txt-vision"></p>
+            <div class="vm-card__panel" id="panel-vision">
+              <div class="vm-card__panel-in"><p id="txt-vision"></p></div>
+            </div>
           </article>
         </div>
 

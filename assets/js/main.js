@@ -178,13 +178,10 @@ function initNav() {
   const burger = $('#burger');
   const menu = $('#menu');
   const bar = $('#progressBar');
-  let last = 0;
 
   const onScroll = () => {
     const y = scrollY;
     nav.classList.toggle('is-stuck', y > 40);
-    nav.classList.toggle('is-hidden', y > 560 && y > last && !document.body.classList.contains('menu-open'));
-    last = y;
     const h = document.documentElement.scrollHeight - innerHeight;
     bar.style.setProperty('--p', h > 0 ? clamp(y / h) : 0);
   };
@@ -359,6 +356,15 @@ function renderNosotros() {
 
   $('#fundadorTexto').innerHTML = `<p data-reveal>${EMPRESA.fundador.mensaje}</p>`;
   $('#fundadorCargo').textContent = EMPRESA.fundador.cargo;
+
+  // Las tarjetas de misión y visión llegan plegadas y se abren por separado
+  $$('.vm-card').forEach(card => {
+    const boton = $('.vm-card__head', card);
+    boton?.addEventListener('click', () => {
+      const abierta = card.classList.toggle('is-open');
+      boton.setAttribute('aria-expanded', String(abierta));
+    });
+  });
 }
 
 function renderServicios() {
