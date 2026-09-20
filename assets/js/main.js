@@ -270,6 +270,74 @@ function initScrollFX() {
 }
 
 /* -----------------------------------------------------------------------------
+   Técnico en descenso
+   -----------------------------------------------------------------------------
+   Desciende por el margen conforme avanza la lectura: entra al terminar la
+   portada y llega abajo al final de la página. El balanceo responde a la
+   velocidad del scroll con un resorte amortiguado, más una oscilación suave
+   cuando no hay movimiento. Solo se escribe `transform`, nunca medidas.
+   -------------------------------------------------------------------------- */
+function initVertical() {
+  const caja = $('#vertical');
+  if (!caja || REDUCED) return;
+
+  const fig = $('.vertical__fig', caja);
+  const hero = $('#inicio');
+  const claros = $$('.panel-light');
+  const mq = matchMedia('(min-width: 1440px)');
+
+  let y = -innerHeight, destinoY = y;
+  let giro = 0, velGiro = 0;
+  let ultimoScroll = scrollY, velScroll = 0;
+  let corriendo = false;
+
+  const paso = t => {
+    if (!corriendo) return;
+
+    const arranque = (hero?.offsetHeight ?? innerHeight) * 0.88;
+    const tramo = Math.max(1, document.documentElement.scrollHeight - innerHeight - arranque);
+    const avance = clamp((scrollY - arranque) / tramo);
+    destinoY = lerp(-0.24, 0.70, avance) * innerHeight;
+
+    const delta = scrollY - ultimoScroll;
+    ultimoScroll = scrollY;
+    velScroll = lerp(velScroll, delta, 0.18);
+
+    y = lerp(y, destinoY, 0.075);
+
+    // resorte del balanceo: la cuerda se queda atrás del movimiento
+    const objetivo = clamp(-velScroll * 0.5, -9, 9);
+    velGiro += (objetivo - giro) * 0.014;
+    velGiro *= 0.9;
+    giro += velGiro;
+    const vaiven = Math.sin(t / 1500) * 1.4;
+
+    fig.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0) rotate(${(giro + vaiven).toFixed(2)}deg)`;
+    caja.classList.toggle('is-on', scrollY > arranque - innerHeight * 0.55);
+
+    // ¿está pasando por una sección de fondo claro?
+    const centro = y + 60;
+    caja.classList.toggle('is-claro', claros.some(sec => {
+      const r = sec.getBoundingClientRect();
+      return centro > r.top && centro < r.bottom;
+    }));
+
+    requestAnimationFrame(paso);
+  };
+
+  const arrancar = () => {
+    if (corriendo || !mq.matches) return;
+    corriendo = true;
+    ultimoScroll = scrollY;
+    requestAnimationFrame(paso);
+  };
+  const detener = () => { corriendo = false; caja.classList.remove('is-on'); };
+
+  mq.addEventListener('change', () => (mq.matches ? arrancar() : detener()));
+  arrancar();
+}
+
+/* -----------------------------------------------------------------------------
    Contadores
    -------------------------------------------------------------------------- */
 function initCounters() {
@@ -538,6 +606,7 @@ function boot() {
   initCounters();
   initCursor();
   initMagnetic();
+  initVertical();
   initForm();
 
   document.dispatchEvent(new CustomEvent('asap:rendered'));

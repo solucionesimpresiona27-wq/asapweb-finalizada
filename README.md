@@ -16,6 +16,7 @@ carpeta a cualquier hosting estático.
 |---|---------|-------|-------------|
 | 1 | Portada | `#inicio` | Titular animado, indicadores y tarjeta de obra en curso |
 | 2 | Marquesina | — | Listado de servicios en movimiento continuo |
+| — | Técnico en descenso | — | Personaje colgado de su cuerda que baja por el margen izquierdo durante todo el recorrido |
 | 3 | Sobre nosotros | `#nosotros` | Historia, **misión**, **visión** y valores |
 | 4 | Mensaje del fundador | — | Carta firmada con retrato |
 | 5 | Servicios principales | `#servicios` | Los 8 servicios, cada uno desplegable con su alcance |
@@ -308,6 +309,15 @@ bajo demanda con `loading="lazy"` salvo la de portada.
 **Animación.** Revelados con `IntersectionObserver`, efectos de scroll sobre
 `requestAnimationFrame` y el resto en CSS. Se respeta
 `prefers-reduced-motion`: quien lo tenga activo ve la página completa y estática.
+
+El **técnico en descenso** del margen izquierdo es una capa fija
+(`.vertical`, en `components.css`) que no recibe eventos de puntero y solo
+escribe `transform`, así que no provoca recálculos de maquetación ni tapa
+nada. Aparece a partir de **1440 px de ancho**, que es donde el margen libre
+da holgura suficiente; por debajo se retira por completo, igual que con
+movimiento reducido. Su tamaño crece con la ventana en la misma proporción que
+el margen, de modo que la separación con el texto se mantiene. El balanceo
+responde a la velocidad del scroll con un resorte amortiguado.
 
 **Accesibilidad.** Navegación por teclado en el menú, el acordeón de servicios,
 el mapa y la ficha de proyecto (con foco atrapado y cierre con `Esc`); enlace
