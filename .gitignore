@@ -4,3 +4,6 @@ Thumbs.db
 *.log
 .vscode/
 .idea/
+
+# Salida accidental de scripts de verificación sin variable de entorno
+undefined/
