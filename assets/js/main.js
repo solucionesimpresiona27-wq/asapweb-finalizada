@@ -349,20 +349,31 @@ function renderNosotros() {
 
   $('#valores').innerHTML = EMPRESA.valores.map((v, i) => `
     <li class="valor" data-reveal style="--d:${i * 80}ms">
-      <span class="valor__n">${String(i + 1).padStart(2, '0')}</span>
-      <span class="valor__t">${v.t}</span>
-      <span class="valor__d">${v.d}</span>
+      <button class="valor__head" type="button" aria-expanded="false" aria-controls="valor-${i}">
+        <span class="valor__n">${String(i + 1).padStart(2, '0')}</span>
+        <span class="valor__t">${v.t}</span>
+        <span class="valor__plus" aria-hidden="true"></span>
+      </button>
+      <div class="valor__panel" id="valor-${i}">
+        <div class="valor__panel-in"><p class="valor__d">${v.d}</p></div>
+      </div>
     </li>`).join('');
 
   $('#fundadorTexto').innerHTML = `<p data-reveal>${EMPRESA.fundador.mensaje}</p>`;
   $('#fundadorCargo').textContent = EMPRESA.fundador.cargo;
 
-  // Las tarjetas de misión y visión llegan plegadas y se abren por separado
-  $$('.vm-card').forEach(card => {
-    const boton = $('.vm-card__head', card);
+  // Misión, visión y valores llegan plegados: cada uno abre por separado
+  activarPlegables('.vm-card', '.vm-card__head');
+  activarPlegables('.valor', '.valor__head');
+}
+
+/* Abre y cierra un bloque al pulsar su encabezado, manteniendo aria-expanded */
+function activarPlegables(item, encabezado) {
+  $$(item).forEach(el => {
+    const boton = $(encabezado, el);
     boton?.addEventListener('click', () => {
-      const abierta = card.classList.toggle('is-open');
-      boton.setAttribute('aria-expanded', String(abierta));
+      const abierto = el.classList.toggle('is-open');
+      boton.setAttribute('aria-expanded', String(abierto));
     });
   });
 }
