@@ -501,24 +501,29 @@ body.menu-open .menu__foot { opacity: 1; }
   height: 100vh;
   z-index: 40;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 1.1s var(--ease);
+  opacity: 0;          /* la opacidad la lleva el scroll desde main.js */
 }
-.vertical.is-on { opacity: 1; }
 
-/* Línea de vida: sube fuera de cuadro, hacia la azotea.
+/* Línea de vida. No está dibujada de antemano: se suelta desde la azotea al
+   mismo ritmo que el técnico baja, y termina exactamente en su descensor. Se
+   estira con `scaleY` desde el borde superior, así que la compone la tarjeta
+   gráfica y no recalcula maquetación en ningún cuadro.
+
    Va en un tono medio a propósito: el personaje cruza secciones oscuras y
    claras, y con frecuencia la cuerda ocupa las dos a la vez, así que un solo
-   color tiene que contrastar contra ambas. */
+   color tiene que contrastar contra ambas. El extremo de abajo va más marcado
+   para que el encuentro con el descensor se lea limpio. */
 .vertical__cuerda {
-  position: absolute; top: 0; bottom: 0;
+  position: absolute; top: 0;
   left: var(--cuerda-x);
   width: 2px; margin-left: -1px;
+  height: 100vh;
+  transform: scaleY(0);
+  transform-origin: 0 0;
+  will-change: transform;
   background: linear-gradient(to bottom,
-    rgba(126, 152, 182, 0)   0%,
-    rgba(126, 152, 182, .72) 14%,
-    rgba(126, 152, 182, .72) 86%,
-    rgba(126, 152, 182, 0)   100%);
+    rgba(126, 152, 182, .38) 0%,
+    rgba(126, 152, 182, .8)  100%);
 }
 
 .vertical__fig {

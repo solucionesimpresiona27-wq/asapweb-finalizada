@@ -282,11 +282,23 @@ function initVertical() {
   if (!caja || REDUCED) return;
 
   const fig = $('.vertical__fig', caja);
+  const cuerda = $('.vertical__cuerda', caja);
   const hero = $('#inicio');
   const claros = $$('.panel-light');
   const mq = matchMedia('(min-width: 1440px)');
 
-  let y = -innerHeight, destinoY = y;
+  const ENTRADA = 520;      // px de scroll que dura el descenso de entrada
+  const SUAVE = t => 1 - Math.pow(1 - t, 3);
+
+  let heroFin = 0, finPagina = 1, anclaje = 40;
+  const medir = () => {
+    heroFin = hero ? hero.offsetTop + hero.offsetHeight : innerHeight;
+    finPagina = Math.max(heroFin + 1, document.documentElement.scrollHeight - innerHeight);
+    // el descensor está a 52 de 136 unidades de alto del dibujo
+    anclaje = fig.getBoundingClientRect().width * (52 / 104);
+  };
+
+  let y = -260, destinoY = y;
   let giro = 0, velGiro = 0;
   let ultimoScroll = scrollY, velScroll = 0;
   let corriendo = false;
@@ -294,18 +306,23 @@ function initVertical() {
   const paso = t => {
     if (!corriendo) return;
 
-    const arranque = (hero?.offsetHeight ?? innerHeight) * 0.88;
-    const tramo = Math.max(1, document.documentElement.scrollHeight - innerHeight - arranque);
-    const avance = clamp((scrollY - arranque) / tramo);
-    destinoY = lerp(-0.24, 0.70, avance) * innerHeight;
+    // --- posición: entra rápido al pasar la portada, luego baja despacio ---
+    const recorrido = scrollY - heroFin;
+    const entrada = clamp(recorrido / ENTRADA);
+    const reposo = 0.18 * innerHeight;
+    const resto = clamp((recorrido - ENTRADA) / Math.max(1, finPagina - heroFin - ENTRADA));
 
+    destinoY = entrada < 1
+      ? lerp(-anclaje - 18, reposo, SUAVE(entrada))
+      : lerp(reposo, 0.72 * innerHeight, resto);
+
+    // --- balanceo: la cuerda se queda atrás del movimiento ---
     const delta = scrollY - ultimoScroll;
     ultimoScroll = scrollY;
     velScroll = lerp(velScroll, delta, 0.18);
 
-    y = lerp(y, destinoY, 0.075);
+    y = lerp(y, destinoY, 0.09);
 
-    // resorte del balanceo: la cuerda se queda atrás del movimiento
     const objetivo = clamp(-velScroll * 0.5, -9, 9);
     velGiro += (objetivo - giro) * 0.014;
     velGiro *= 0.9;
@@ -313,10 +330,16 @@ function initVertical() {
     const vaiven = Math.sin(t / 1500) * 1.4;
 
     fig.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0) rotate(${(giro + vaiven).toFixed(2)}deg)`;
-    caja.classList.toggle('is-on', scrollY > arranque - innerHeight * 0.55);
 
-    // ¿está pasando por una sección de fondo claro?
-    const centro = y + 60;
+    // --- la cuerda se suelta con él: termina justo en el descensor ---
+    const largo = Math.max(0, y + anclaje);
+    cuerda.style.transform = `scaleY(${(largo / innerHeight).toFixed(4)})`;
+
+    // --- aparece al quedar la portada atrás, y se retira igual al subir ---
+    caja.style.opacity = clamp(recorrido / 240).toFixed(3);
+
+    // --- ¿está pasando por una sección de fondo claro? ---
+    const centro = y + anclaje;
     caja.classList.toggle('is-claro', claros.some(sec => {
       const r = sec.getBoundingClientRect();
       return centro > r.top && centro < r.bottom;
@@ -327,13 +350,20 @@ function initVertical() {
 
   const arrancar = () => {
     if (corriendo || !mq.matches) return;
+    medir();
     corriendo = true;
     ultimoScroll = scrollY;
+    y = destinoY = -anclaje - 18;
     requestAnimationFrame(paso);
   };
-  const detener = () => { corriendo = false; caja.classList.remove('is-on'); };
+  const detener = () => {
+    corriendo = false;
+    caja.style.opacity = '0';
+  };
 
   mq.addEventListener('change', () => (mq.matches ? arrancar() : detener()));
+  addEventListener('resize', () => { if (corriendo) medir(); });
+  document.addEventListener('asap:rendered', () => { if (corriendo) medir(); });
   arrancar();
 }
 

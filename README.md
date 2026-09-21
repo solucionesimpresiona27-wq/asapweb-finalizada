@@ -313,7 +313,12 @@ bajo demanda con `loading="lazy"` salvo la de portada.
 El **técnico en descenso** del margen izquierdo es una capa fija
 (`.vertical`, en `components.css`) que no recibe eventos de puntero y solo
 escribe `transform`, así que no provoca recálculos de maquetación ni tapa
-nada. Aparece a partir de **1440 px de ancho**, que es donde el margen libre
+nada. Su cuerda no está dibujada de antemano: se suelta desde la azotea al
+mismo ritmo que él baja y termina exactamente en su descensor, de modo que
+durante la portada no se ve nada. Entra al quedar la portada atrás —con un
+descenso de entrada más vivo en los primeros 520 px de scroll, y un recorrido
+lento el resto de la página— y se retira igual al volver a subir, porque todo
+depende de la posición del scroll y no de un estado guardado. Aparece a partir de **1440 px de ancho**, que es donde el margen libre
 da holgura suficiente; por debajo se retira por completo, igual que con
 movimiento reducido. Su tamaño crece con la ventana en la misma proporción que
 el margen, de modo que la separación con el texto se mantiene. El balanceo
