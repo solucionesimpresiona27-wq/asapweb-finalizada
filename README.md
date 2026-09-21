@@ -296,6 +296,32 @@ Cualquier hosting estático sirve, sin configuración adicional:
 En hosting Apache o LiteSpeed eso ya lo resuelve el `.htaccess`. En Netlify,
 Vercel o Cloudflare Pages viene activado de fábrica.
 
+### Versionado y caché
+
+Cada publicación lleva un número de versión visible en el código fuente:
+
+```html
+<meta name="asap-version" content="11 — 2026-09-21">
+```
+
+Para saber qué versión está viva en el servidor, abre el sitio, pulsa `Ctrl+U`
+y busca esa línea. Es la forma más rápida de distinguir "no se subió" de "el
+navegador está mostrando su copia guardada".
+
+El `.htaccess` guarda las tipografías, imágenes y video un año —nunca cambian—
+pero obliga al navegador a revalidar `html`, `css` y `js` en cada visita. Eso
+significa que al editar un archivo en el servidor el cambio se ve de inmediato,
+sin pedirle a nadie que limpie su caché. El costo es una petición condicional
+por archivo, que el servidor contesta con un `304 Not Modified` de pocos bytes.
+
+Como segunda red de seguridad, los estilos y los scripts se piden con un sufijo
+de versión (`base.css?v=11`, y lo mismo en los `import` de `assets/js/`). Al
+cambiar ese número la URL cambia, así que ninguna copia guardada puede
+reutilizarse. Si subes una versión nueva, actualiza el número en los cuatro
+sitios de `index.html`, en los `import` de `main.js`, `map.js` y `projects.js`,
+y en el `<meta name="asap-version">`. Todos deben coincidir: si `data.js` se
+pide con dos sufijos distintos, el navegador lo carga dos veces.
+
 ---
 
 ## 9. Detalles técnicos

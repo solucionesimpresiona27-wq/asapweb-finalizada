@@ -41,19 +41,35 @@ Options -Indexes
 </IfModule>
 
 # --- Caché del navegador -----------------------------------------------------
+# Las tipografías, imágenes y videos nunca cambian: se guardan mucho tiempo.
+# El HTML, los estilos y los scripts SÍ cambian cada vez que se actualiza el
+# sitio, así que el navegador vuelve a preguntar por ellos en cada visita. Si
+# no cambiaron, el servidor contesta "sigue igual" y no se descarga nada, pero
+# si cambiaron el visitante ve la versión nueva de inmediato.
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresDefault                          "access plus 1 week"
   ExpiresByType text/html                 "access plus 0 seconds"
-  ExpiresByType text/css                  "access plus 1 year"
-  ExpiresByType text/javascript           "access plus 1 year"
-  ExpiresByType application/javascript    "access plus 1 year"
+  ExpiresByType text/css                  "access plus 0 seconds"
+  ExpiresByType text/javascript           "access plus 0 seconds"
+  ExpiresByType application/javascript    "access plus 0 seconds"
   ExpiresByType font/woff2                "access plus 1 year"
   ExpiresByType image/svg+xml             "access plus 6 months"
   ExpiresByType image/webp                "access plus 6 months"
   ExpiresByType image/jpeg                "access plus 6 months"
   ExpiresByType image/png                 "access plus 6 months"
   ExpiresByType video/mp4                 "access plus 6 months"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Revalidar (no "no guardar"): el navegador conserva la copia y sólo la
+  # descarga otra vez si de verdad cambió.
+  <FilesMatch "\.(html|css|js)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\.(woff2|svg|webp|jpg|jpeg|png|mp4)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
 </IfModule>
 
 # --- Encabezados de seguridad ------------------------------------------------
