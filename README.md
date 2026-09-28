@@ -16,7 +16,7 @@ carpeta a cualquier hosting estático.
 |---|---------|-------|-------------|
 | 1 | Portada | `#inicio` | Titular animado, indicadores y tarjeta de obra en curso |
 | 2 | Marquesina | — | Listado de servicios en movimiento continuo |
-| — | Técnico en descenso | — | Personaje colgado de su cuerda que baja por el margen izquierdo durante todo el recorrido |
+| — | Técnico en descenso | — | Técnico de la cuadrilla, colgado de dos cuerdas, que baja por el margen izquierdo durante todo el recorrido |
 | 3 | Sobre nosotros | `#nosotros` | Historia, **misión**, **visión** y valores |
 | 4 | Mensaje del fundador | — | Carta firmada con retrato |
 | 5 | Servicios principales | `#servicios` | Los 8 servicios, cada uno desplegable con su alcance |
@@ -301,7 +301,7 @@ Vercel o Cloudflare Pages viene activado de fábrica.
 Cada publicación lleva un número de versión visible en el código fuente:
 
 ```html
-<meta name="asap-version" content="11 — 2026-09-21">
+<meta name="asap-version" content="12 — 2026-09-28">
 ```
 
 Para saber qué versión está viva en el servidor, abre el sitio, pulsa `Ctrl+U`
@@ -315,7 +315,7 @@ sin pedirle a nadie que limpie su caché. El costo es una petición condicional
 por archivo, que el servidor contesta con un `304 Not Modified` de pocos bytes.
 
 Como segunda red de seguridad, los estilos y los scripts se piden con un sufijo
-de versión (`base.css?v=11`, y lo mismo en los `import` de `assets/js/`). Al
+de versión (`base.css?v=12`, y lo mismo en los `import` de `assets/js/`). Al
 cambiar ese número la URL cambia, así que ninguna copia guardada puede
 reutilizarse. Si subes una versión nueva, actualiza el número en los cuatro
 sitios de `index.html`, en los `import` de `main.js`, `map.js` y `projects.js`,
@@ -336,19 +336,32 @@ bajo demanda con `loading="lazy"` salvo la de portada.
 `requestAnimationFrame` y el resto en CSS. Se respeta
 `prefers-reduced-motion`: quien lo tenga activo ve la página completa y estática.
 
-El **técnico en descenso** del margen izquierdo es una capa fija
-(`.vertical`, en `components.css`) que no recibe eventos de puntero y solo
-escribe `transform`, así que no provoca recálculos de maquetación ni tapa
-nada. Su cuerda no está dibujada de antemano: se suelta desde la azotea al
-mismo ritmo que él baja y termina exactamente en su descensor, de modo que
-durante la portada no se ve nada. Entra al quedar la portada atrás —con un
-descenso de entrada más vivo en los primeros 520 px de scroll, y un recorrido
-lento el resto de la página— y se retira igual al volver a subir, porque todo
-depende de la posición del scroll y no de un estado guardado. Aparece a partir de **1440 px de ancho**, que es donde el margen libre
-da holgura suficiente; por debajo se retira por completo, igual que con
-movimiento reducido. Su tamaño crece con la ventana en la misma proporción que
-el margen, de modo que la separación con el texto se mantiene. El balanceo
-responde a la velocidad del scroll con un resorte amortiguado.
+El **técnico en descenso** del margen izquierdo está dibujado a partir de una
+fotografía de la cuadrilla: casco blanco, camisola gris con el logotipo en la
+espalda, arnés, bolsa blanca y cubeta. Es una capa fija (`.vertical`, en
+`components.css`) que no recibe eventos de puntero; al personaje solo se le
+escribe `transform`, así que no provoca recálculos de maquetación.
+
+Cuelga de **dos cuerdas**, como en la foto: bajan de la azotea a su mano y a su
+casco, y siguen desde la mano y el arnés hasta el pie de la ventana, donde se
+desvanecen. `main.js` las tiende en cada cuadro desde la posición real —ya
+girada— de cada punto de amarre, así que nunca se despegan de él. Ninguna está
+dibujada de antemano: durante la portada no se ve nada. Al quedar la portada
+atrás entra desde arriba soltando cuerda —con un descenso de entrada más vivo
+en los primeros 560 px de scroll y un recorrido lento el resto de la página—,
+las cuerdas de abajo se despliegan con él, y todo se recoge igual al volver a
+subir, porque depende de la posición del scroll y no de un estado guardado.
+El balanceo responde a la velocidad del scroll con un resorte amortiguado, y
+la cubeta tiene su propio péndulo.
+
+No tapa nada: vive fuera del ancho del contenido, y la única sección cuyo
+contenido invade los márgenes —«Cómo trabajamos», con sus tarjetas que se
+deslizan de borde a borde— va por delante de la capa (`z-index: 41`), así que
+ahí el técnico pasa por detrás del panel. Aparece a partir de **1440 px de
+ancho**, que es donde el margen libre da holgura suficiente; por debajo se
+retira por completo, igual que con movimiento reducido. Su tamaño crece con la
+ventana en la misma proporción que el margen, de modo que la separación con el
+texto se mantiene.
 
 **Accesibilidad.** Navegación por teclado en el menú, el acordeón de servicios,
 el mapa y la ficha de proyecto (con foco atrapado y cierre con `Esc`); enlace

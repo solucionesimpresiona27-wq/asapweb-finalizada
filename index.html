@@ -10,7 +10,7 @@
 <meta name="author" content="ASAP Gestión de Proyectos 369">
 <!-- Versión del sitio. Para saber qué versión está publicada, abre el
      código fuente de la página (Ctrl+U) y busca esta línea. -->
-<meta name="asap-version" content="11 — 2026-09-21">
+<meta name="asap-version" content="12 — 2026-09-28">
 <link rel="canonical" href="https://www.asapgp.com.mx/">
 
 <meta property="og:type" content="website">
@@ -27,9 +27,9 @@
 
 <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/base.css?v=11">
-<link rel="stylesheet" href="assets/css/components.css?v=11">
-<link rel="stylesheet" href="assets/css/sections.css?v=11">
+<link rel="stylesheet" href="assets/css/base.css?v=12">
+<link rel="stylesheet" href="assets/css/components.css?v=12">
+<link rel="stylesheet" href="assets/css/sections.css?v=12">
 
 <script type="application/ld+json">
 {
@@ -101,64 +101,140 @@
 <!-- ===================== TÉCNICO EN DESCENSO ========================== -->
 <!-- Capa fija en el margen izquierdo, fuera del ancho del contenido. No
      recibe eventos de puntero y solo se muestra cuando hay margen de sobra
-     (desde 1440 px), así que en ningún caso tapa ni desplaza nada. -->
+     (desde 1440 px), así que en ningún caso tapa ni desplaza nada.
+     El técnico está dibujado a partir de una fotografía de la cuadrilla:
+     casco blanco, camisola con el logotipo en la espalda, arnés, bolsa y
+     cubeta. Cuelga de dos cuerdas que llegan desde arriba y siguen hacia
+     abajo; main.js las tiende en cada cuadro desde sus puntos de amarre. -->
 <div class="vertical" id="vertical" aria-hidden="true">
-  <span class="vertical__cuerda"></span>
+  <svg class="vertical__cuerdas" focusable="false">
+    <defs>
+      <linearGradient id="vertColaDegradado" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="1000">
+        <stop offset="0" stop-color="#fff"/>
+        <stop offset=".5" stop-color="#fff"/>
+        <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+      </linearGradient>
+      <mask id="vertColaMascara" maskUnits="userSpaceOnUse" x="-4000" y="-4000" width="8000" height="12000">
+        <rect id="vertColaRect" x="-4000" y="0" width="8000" height="1000" fill="url(#vertColaDegradado)"/>
+      </mask>
+    </defs>
+    <g mask="url(#vertColaMascara)">
+      <g data-cuerda="cola-a"><line class="vertical__borde"/><line class="vertical__alma"/></g>
+      <g data-cuerda="cola-b"><line class="vertical__borde"/><line class="vertical__alma"/></g>
+    </g>
+    <g data-cuerda="arriba-a"><line class="vertical__borde"/><line class="vertical__alma"/></g>
+    <g data-cuerda="arriba-b"><line class="vertical__borde"/><line class="vertical__alma"/></g>
+  </svg>
   <span class="vertical__fig">
-    <svg viewBox="0 0 104 136" focusable="false">
+    <svg viewBox="36 18 148 272" focusable="false">
       <defs>
-        <linearGradient id="vertCasco" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#6ECBF0"/><stop offset="1" stop-color="#2E9BC9"/>
+        <linearGradient id="tcCasco" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#ECEDEA"/><stop offset="1" stop-color="#B7BBC1"/>
         </linearGradient>
-        <linearGradient id="vertChaleco" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#2E9BC9"/><stop offset="1" stop-color="#17638F"/>
+        <linearGradient id="tcCamisa" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#9598A7"/><stop offset=".5" stop-color="#888B9A"/><stop offset="1" stop-color="#6A6D7C"/>
+        </linearGradient>
+        <linearGradient id="tcManga" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#989BAA"/><stop offset="1" stop-color="#777A89"/>
+        </linearGradient>
+        <linearGradient id="tcPierna" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#50535D"/><stop offset=".6" stop-color="#40434B"/><stop offset="1" stop-color="#2E3036"/>
+        </linearGradient>
+        <linearGradient id="tcCubeta" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#7D8DA5"/><stop offset=".55" stop-color="#5E6D86"/><stop offset="1" stop-color="#404C62"/>
+        </linearGradient>
+        <linearGradient id="tcBolsa" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#FFFFFF"/><stop offset=".6" stop-color="#EBEEF2"/><stop offset="1" stop-color="#C5CBD3"/>
         </linearGradient>
       </defs>
-    
-      <!-- PIERNA LEJANA -->
-      <path d="M42 74 L62 82 L66 100" fill="none" stroke="#0E1A2E" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M66 100 q6 2 6 5 q-1 2.5 -5 2 l-6 -2 q-2 -1 -1 -3 z" fill="#0B1524"/>
-    
-      <!-- PIERNA CERCANA -->
-      <path d="M44 78 L68 90 L73 108" fill="none" stroke="#19294A" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M73 108 q6.5 2 6.5 5.2 q-1 2.6 -5.2 2 l-6.2 -2 q-2.2 -1 -1 -3.2 z" fill="#101C30"/>
-    
-      <!-- TORSO -->
-      <path d="M39 50 q1.5 -7 9 -8.5 q8 -1.5 11 4 q1.8 3.4 1.4 8 l-1.6 16 q-0.6 5.4 -6 6.4 l-9 1.6 q-5 0.8 -5.6 -4.4 z" fill="#19294A"/>
-      <path d="M46 44 q7 -1.4 10.4 3 l-1.6 18.6 q-4.6 2.6 -10.6 2.6 l-1.2 -20 q0 -3 3 -4.2 z" fill="url(#vertChaleco)"/>
-      <path d="M40 58 q-3.4 1.4 -3 5 l0.6 5 q0.4 3 3.4 2.4 z" fill="#0E1A2E"/>
-    
-      <!-- ARNÉS -->
-      <g fill="none" stroke="#8ADCF6" stroke-width="2" stroke-linecap="round">
-        <path d="M47 43 Q49 56 50.5 68"/>
-        <path d="M39.5 66 Q49 68 58.5 64"/>
-        <path d="M42 74 Q47 78 52 76"/>
+
+      <!-- PIERNAS -->
+      <path d="M76 168 L102 170 L100 210 Q97 238 94 266 L79 266 Q78 238 78 210 Z" fill="url(#tcPierna)"/>
+      <path d="M110 170 L141 166 L143 210 Q143 238 142 264 L128 265 Q127 238 121 210 Z" fill="url(#tcPierna)"/>
+      <path d="M84 214 Q88 232 87 258" fill="none" stroke="#63666F" stroke-width="1.4" stroke-linecap="round" opacity=".7"/>
+      <path d="M127 214 Q132 234 133 256" fill="none" stroke="#5C5F69" stroke-width="1.4" stroke-linecap="round" opacity=".6"/>
+      <!-- perneras del arnés -->
+      <g fill="none" stroke-linecap="round">
+        <path d="M77 187 Q89 194 101 188" stroke="#26231E" stroke-width="4.2"/>
+        <path d="M111 187 Q126 194 142 184" stroke="#26231E" stroke-width="4.2"/>
+        <path d="M77 187 Q89 194 101 188" stroke="#CDB44E" stroke-width="1.3"/>
+        <path d="M111 187 Q126 194 142 184" stroke="#CDB44E" stroke-width="1.3"/>
       </g>
-      <circle cx="49" cy="70" r="2.6" fill="#0E1A2E" stroke="#8ADCF6" stroke-width="1.5"/>
-    
-      <!-- BRAZO LEJANO, sobre el descensor -->
-      <path d="M45 52 L38 58 L41 64" fill="none" stroke="#0E1A2E" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
-    
-      <!-- CABEZA -->
-      <path d="M51 28 q8.5 0 9 8 q0.4 6.6 -5 8.6 q-6 2 -8.6 -2.6 q-2.4 -4.6 -0.8 -9.6 z" fill="#0E1A2E"/>
-      <path d="M56 34.5 q4.2 0.6 3.8 4.4 q-0.4 3.4 -4.2 4.2 z" fill="#C4D3E3"/>
-      <!-- casco -->
-      <path d="M42 33.5 q0.6 -11 9.8 -11 q9 0 9.6 11 z" fill="url(#vertCasco)"/>
-      <path d="M60 30.6 q5.4 0.2 6 3 q0.4 2.4 -5.4 2.6 z" fill="#2E9BC9"/>
-      <path d="M42.4 33.9 L61 33.9" stroke="#15638F" stroke-width="1.5" stroke-linecap="round"/>
-      <path d="M46 23.6 q5.6 -2.4 11 0" fill="none" stroke="#9FE0F7" stroke-width="1.6" stroke-linecap="round" opacity=".8"/>
-      <path d="M44.6 38 q1.6 4.4 5.4 5.6" fill="none" stroke="#7CA0C4" stroke-width="1.4" stroke-linecap="round"/>
-    
-      <!-- BRAZO CERCANO con jalador -->
-      <path d="M55 52 L67 58 L76 52" fill="none" stroke="#22355C" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M75.5 52.6 L86 44" fill="none" stroke="#9BB2CA" stroke-width="2.8" stroke-linecap="round"/>
-      <path d="M83 39.5 L92 47.5" fill="none" stroke="#D7E4F1" stroke-width="4.2" stroke-linecap="round"/>
-      <path d="M84.6 38 L93.6 46" fill="none" stroke="#6ECBF0" stroke-width="1.6" stroke-linecap="round" opacity=".7"/>
-    
-      <!-- DESCENSOR sobre la cuerda -->
-      <rect x="38.5" y="44" width="11" height="15" rx="4" fill="#0B1524" stroke="#6ECBF0" stroke-width="1.7"/>
-      <circle cx="44" cy="51.5" r="2.3" fill="#6ECBF0"/>
-      <path d="M44 59 Q46 65 49 68" fill="none" stroke="#8ADCF6" stroke-width="2.2" stroke-linecap="round"/>
+      <!-- tenis -->
+      <path d="M77 264 L95 264 Q97.5 272 95.5 279 Q88 282.5 79 280.5 Q75 274 77 264 Z" fill="#DADCE0"/>
+      <path d="M78 279.5 Q87 282 95 279" fill="none" stroke="#8E9199" stroke-width="2" stroke-linecap="round"/>
+      <path d="M127 262 L143 262 Q146 270 144 277 Q137 280.5 129 278.5 Q125 272 127 262 Z" fill="#D2D4D9"/>
+      <path d="M128 277.5 Q136 280 144 276.5" fill="none" stroke="#8E9199" stroke-width="2" stroke-linecap="round"/>
+
+      <!-- TORSO -->
+      <path d="M76 70 Q92 63 110 64 Q128 63 144 68 Q152 72 153 86 L151 142 Q134 150 111 150 Q88 150 71 143 L71 98 Q71 80 76 70 Z" fill="url(#tcCamisa)"/>
+      <path d="M93 126 Q97 136 95 146 M126 124 Q123 136 126 146" fill="none" stroke="#5E6170" stroke-width="1.1" stroke-linecap="round" opacity=".45"/>
+
+      <!-- logotipo ASAP en la espalda -->
+      <g fill="none" stroke="#5BBCEF" stroke-width="2.1" stroke-linejoin="round" stroke-linecap="round" transform="translate(92.6 75) scale(.52)">
+        <path d="M9 39.5V23l7.2-7.2V39.5"/><path d="M19.4 39.5V9.5l7 4.6V39.5"/><path d="M29 39.5V17.4h9.6V39.5"/>
+      </g>
+      <text x="103" y="112.5" text-anchor="middle" font-family="Outfit, 'Helvetica Neue', Arial, sans-serif" font-size="20.5" font-weight="500" letter-spacing="-.3" fill="#5BBCEF">asap</text>
+      <rect x="89" y="119" width="28" height="1.3" rx=".6" fill="#5BBCEF" opacity=".45"/>
+
+      <!-- brazo derecho, colgando -->
+      <path d="M143 70 Q156 73 159 90 L161 128 Q161 137 155 138 L148 137 Q146 110 143 90 Z" fill="url(#tcManga)"/>
+      <path d="M152 80 Q156 100 157 126" fill="none" stroke="#6A6D7C" stroke-width="1.2" stroke-linecap="round" opacity=".5"/>
+      <ellipse cx="154.5" cy="140.5" rx="4.6" ry="5.4" fill="#6B4736"/>
+
+      <!-- ARNÉS -->
+      <path d="M70 141 Q111 152 152 140 L151 158 Q111 170 71 160 Z" fill="#4B4438"/>
+      <path d="M73 158 Q111 170 150 157 L147 172 Q111 182 76 174 Z" fill="#3E382F"/>
+      <g fill="none" stroke="#CDB44E" stroke-linecap="round">
+        <path d="M76 150 Q84 160 92 152 Q103 166 114 152 Q124 162 134 151 Q142 158 148 150" stroke-width="1.3"/>
+        <path d="M80 168 Q95 176 108 170 Q122 176 144 166" stroke-width="1.1"/>
+      </g>
+      <rect x="100" y="149" width="11" height="13" rx="2.2" fill="#35302A" stroke="#BCC0C6" stroke-width="1.6"/>
+      <rect x="103.2" y="152.5" width="4.6" height="6" rx="1" fill="none" stroke="#8D9198" stroke-width="1"/>
+      <!-- mosquetones del costado -->
+      <g fill="none" stroke="#D3D7DD" stroke-width="1.5">
+        <ellipse cx="145" cy="167" rx="3" ry="7"/>
+        <ellipse cx="150" cy="176" rx="3" ry="7.2"/>
+        <ellipse cx="143" cy="184" rx="2.6" ry="6.4"/>
+      </g>
+      <ellipse cx="72" cy="153.5" rx="2.4" ry="5.4" fill="none" stroke="#D3D7DD" stroke-width="1.4"/>
+
+      <!-- bolsa blanca a la cadera -->
+      <g transform="translate(4 4)">
+        <path d="M40 162 Q43 150 55 149 L69 151 Q74 164 73 180 Q72 196 61 199 L47 199 Q37 195 37 181 Q37 170 40 162 Z" fill="url(#tcBolsa)"/>
+        <g fill="none" stroke-linecap="round">
+          <path d="M48 158 Q52 172 47 190" stroke="#C3C9D1" stroke-width="1.2"/>
+          <path d="M60 154 Q64 170 60 194" stroke="#CDD2D8" stroke-width="1"/>
+          <path d="M40 177 Q50 181 58 177" stroke="#D2D6DC" stroke-width="1"/>
+        </g>
+      </g>
+
+      <!-- CUBETA: cuelga de su cabo y se balancea sola (main.js) -->
+      <path d="M146 190 L155 206" fill="none" stroke="#2D2F35" stroke-width="2" stroke-linecap="round"/>
+      <g class="vertical__cubeta">
+        <g transform="translate(4 3)">
+          <path d="M131 213 Q150 192 176 220" fill="none" stroke="#A9AFB8" stroke-width="1.3"/>
+          <path d="M130 212 L137 258 Q155 268 172 260 L177 220 Z" fill="url(#tcCubeta)"/>
+          <path d="M133 232 Q154 239 175 234 M135 246 Q155 252 173 248" fill="none" stroke="#FFFFFF" stroke-width="1" opacity=".13"/>
+          <ellipse cx="153.5" cy="216" rx="24" ry="6.8" transform="rotate(10 153.5 216)" fill="#2F63B6" stroke="#1D4A92" stroke-width="1.2"/>
+          <ellipse cx="154" cy="216.5" rx="19" ry="4.4" transform="rotate(10 154 216.5)" fill="#1B3357"/>
+          <path d="M136 214 L127 202" stroke="#3274D6" stroke-width="3" stroke-linecap="round"/>
+        </g>
+      </g>
+
+      <!-- brazo izquierdo, en alto, sujetando la cuerda -->
+      <path d="M86 80 L51 94 L70 66" fill="none" stroke="url(#tcManga)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M81 89 L56 99" fill="none" stroke="#6D7080" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+      <ellipse cx="73" cy="58.5" rx="5.4" ry="6.4" transform="rotate(-18 73 58.5)" fill="#6B4736"/>
+      <path d="M69 55.5 Q72.5 53 76.5 55" fill="none" stroke="#8A604B" stroke-width="1.2" stroke-linecap="round"/>
+
+      <!-- CUELLO Y CASCO -->
+      <path d="M97 57 Q111 61 126 57 L125 69 Q111 74 98 69 Z" fill="#3A3C44"/>
+      <path d="M91 58 C90 39 99 23 111 22 C123 22 132 38 131 58 Q111 62 91 58 Z" fill="url(#tcCasco)" stroke="#A7ABB1" stroke-width=".6"/>
+      <path d="M92 55 Q111 59 130 55" fill="none" stroke="#C4C7CC" stroke-width="1.5"/>
+      <path d="M100 30 Q110 25 121 30" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+      <path d="M96 49 l4.2 -3 l1 6.2 z M126 49 l-4.2 -3 l-1 6.2 z" fill="#2B2D31"/>
+      <path d="M90.5 34 l3 -2 l2 6 l-3 1 z" fill="#3A3C42"/>
     </svg>
   </span>
 </div>
@@ -753,6 +829,6 @@
   </div>
 </noscript>
 
-<script type="module" src="assets/js/main.js?v=11"></script>
+<script type="module" src="assets/js/main.js?v=12"></script>
 </body>
 </html>

@@ -482,17 +482,17 @@ body.menu-open .menu__foot { opacity: 1; }
 /* =============================================================================
    TÉCNICO EN DESCENSO
    -----------------------------------------------------------------------------
-   Acompaña el recorrido de la página colgado de su cuerda, en el margen
+   Acompaña el recorrido de la página colgado de sus cuerdas, en el margen
    izquierdo. Vive en una capa fija que no recibe eventos de puntero y que solo
    aparece cuando el margen da holgura suficiente, de modo que nunca tapa ni
-   desplaza el contenido. Todo su movimiento es `transform`, así que lo compone
-   la tarjeta gráfica y no provoca recálculos de maquetación.
+   desplaza el contenido. El personaje se mueve solo con `transform` y las
+   cuerdas son líneas de un SVG propio: ninguna de las dos cosas obliga a
+   recalcular la maquetación del resto de la página.
    ========================================================================== */
 .vertical {
   /* El tamaño acompaña al ancho de la ventana, igual que el margen libre,
      así que la holgura con el contenido se mantiene en todas las pantallas. */
-  --fig-w: clamp(68px, 5vw, 100px);
-  --cuerda-x: calc(var(--fig-w) * .423);   /* la cuerda pasa por este punto del dibujo */
+  --fig-w: clamp(72px, 5.6vw, 112px);
 
   position: fixed;
   top: 0;
@@ -504,43 +504,36 @@ body.menu-open .menu__foot { opacity: 1; }
   opacity: 0;          /* la opacidad la lleva el scroll desde main.js */
 }
 
-/* Línea de vida. No está dibujada de antemano: se suelta desde la azotea al
-   mismo ritmo que el técnico baja, y termina exactamente en su descensor. Se
-   estira con `scaleY` desde el borde superior, así que la compone la tarjeta
-   gráfica y no recalcula maquetación en ningún cuadro.
+/* Las cuatro cuerdas —dos que bajan de la azotea hasta la mano y el casco, y
+   dos que siguen desde la mano y el arnés hacia abajo— son líneas de un SVG
+   que main.js tiende en cada cuadro entre sus puntos de amarre. La lámina se
+   extiende a los lados del personaje para que las cuerdas puedan inclinarse
+   sin recortarse; el desfase lo lee main.js de --cuerdas-pad.
 
-   Va en un tono medio a propósito: el personaje cruza secciones oscuras y
-   claras, y con frecuencia la cuerda ocupa las dos a la vez, así que un solo
-   color tiene que contrastar contra ambas. El extremo de abajo va más marcado
-   para que el encuentro con el descensor se lea limpio. */
-.vertical__cuerda {
+   Cada cuerda son dos trazos: un borde oscuro y un alma clara encima. Sobre
+   el fondo oscuro se ve la cuerda blanca de la foto; donde el fondo se aclara,
+   como en la cinta con degradado, el borde la sigue dibujando. */
+.vertical__cuerdas {
+  --cuerdas-pad: 140px;
   position: absolute; top: 0;
-  left: var(--cuerda-x);
-  width: 2px; margin-left: -1px;
+  left: calc(var(--cuerdas-pad) * -1);
+  width: calc(var(--fig-w) + var(--cuerdas-pad) * 2);
   height: 100vh;
-  transform: scaleY(0);
-  transform-origin: 0 0;
-  will-change: transform;
-  background: linear-gradient(to bottom,
-    rgba(126, 152, 182, .38) 0%,
-    rgba(126, 152, 182, .8)  100%);
+  overflow: visible;
 }
+.vertical__cuerdas line { stroke-linecap: round; }
+.vertical__borde { stroke: rgba(6, 10, 20, .42); stroke-width: 3.4; }
+.vertical__alma  { stroke: rgba(236, 231, 220, .88); stroke-width: 1.7; }
 
 .vertical__fig {
   position: absolute; top: 0; left: 0;
   width: var(--fig-w);
-  transform-origin: var(--cuerda-x) 52px;  /* gira desde el descensor */
-  will-change: transform;
+  will-change: transform;      /* el punto de giro lo fija main.js */
   filter:
-    drop-shadow(0 0 13px rgba(94, 196, 236, .3))
-    drop-shadow(0 9px 20px rgba(4, 8, 16, .6));
+    drop-shadow(0 0 12px rgba(94, 196, 236, .26))
+    drop-shadow(0 10px 20px rgba(4, 8, 16, .55));
 }
-.vertical__fig svg { width: 100%; height: auto; display: block; }
-
-/* Sobre las secciones de fondo claro el halo del personaje se invierte */
-.vertical.is-claro .vertical__fig {
-  filter: drop-shadow(0 10px 22px rgba(19, 31, 53, .28));
-}
+.vertical__fig svg { width: 100%; height: auto; display: block; overflow: visible; }
 
 /* Por debajo de 1440 px el margen ya no alcanza: se retira por completo */
 @media (max-width: 1439px) { .vertical { display: none; } }

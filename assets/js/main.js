@@ -2,9 +2,9 @@
    ASAP 369 — Orquestador de interfaz
    Precarga · cursor · navegación · revelados · parallax · secciones dinámicas
    ========================================================================== */
-import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS } from './data.js?v=11';
-import { initMapa } from './map.js?v=11';
-import { initProyectos } from './projects.js?v=11';
+import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS } from './data.js?v=12';
+import { initMapa } from './map.js?v=12';
+import { initProyectos } from './projects.js?v=12';
 
 const $  = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -275,75 +275,144 @@ function initScrollFX() {
    Desciende por el margen conforme avanza la lectura: entra al terminar la
    portada y llega abajo al final de la página. El balanceo responde a la
    velocidad del scroll con un resorte amortiguado, más una oscilación suave
-   cuando no hay movimiento. Solo se escribe `transform`, nunca medidas.
+   cuando no hay movimiento; la cubeta tiene su propio péndulo.
+
+   Las dos cuerdas bajan de la azotea a la mano y al casco, y siguen desde la
+   mano y el arnés hasta el pie de la ventana. Se tienden en cada cuadro desde
+   la posición real —ya girada— de sus puntos de amarre, así que nunca se
+   despegan del personaje. Al personaje solo se le escribe `transform`.
    -------------------------------------------------------------------------- */
 function initVertical() {
   const caja = $('#vertical');
   if (!caja || REDUCED) return;
 
   const fig = $('.vertical__fig', caja);
-  const cuerda = $('.vertical__cuerda', caja);
+  const lamina = $('.vertical__cuerdas', caja);
+  const cubeta = $('.vertical__cubeta', caja);
+  const colaRect = $('#vertColaRect', caja);
+  const colaDeg = $('#vertColaDegradado', caja);
   const hero = $('#inicio');
-  const claros = $$('.panel-light');
   const mq = matchMedia('(min-width: 1440px)');
 
-  const ENTRADA = 520;      // px de scroll que dura el descenso de entrada
+  const ENTRADA = 560;      // px de scroll que dura el descenso de entrada
   const SUAVE = t => 1 - Math.pow(1 - t, 3);
 
-  let heroFin = 0, finPagina = 1, anclaje = 40;
+  /* Puntos del dibujo, en las unidades de su viewBox (36 18 148 272). */
+  const VB = { x: 36, y: 18, w: 148, h: 272 };
+  const PIVOTE = [100, 60];            // gira desde el pecho, entre las dos cuerdas
+  const MANO = [73, 57];               // la cuerda A pasa por su puño
+  const CASCO = [111, 40];             // la B baja por detrás de la cabeza…
+  const ARNES = [106, 168];            // …y sale por el descensor del arnés
+  const CUBETA = [155, 206];           // de aquí cuelga la cubeta
+
+  /* Cada cuerda: sus dos trazos (borde y alma) */
+  const cuerda = nombre => $$(`[data-cuerda="${nombre}"] line`, lamina);
+  const arribaA = cuerda('arriba-a'), arribaB = cuerda('arriba-b');
+  const colaA = cuerda('cola-a'), colaB = cuerda('cola-b');
+  const tender = (lineas, x1, y1, x2, y2) => {
+    const a = [x1.toFixed(1), y1.toFixed(1), x2.toFixed(1), y2.toFixed(1)];
+    lineas.forEach(l => {
+      l.setAttribute('x1', a[0]); l.setAttribute('y1', a[1]);
+      l.setAttribute('x2', a[2]); l.setAttribute('y2', a[3]);
+    });
+  };
+
+  let heroFin = 0, finPagina = 1, k = 0.5, alto = 140, pad = 140;
+  let O = [0, 0];                      // pivote en px del personaje
+  const local = ([u, v]) => [(u - VB.x) * k, (v - VB.y) * k];
+
   const medir = () => {
     heroFin = hero ? hero.offsetTop + hero.offsetHeight : innerHeight;
     finPagina = Math.max(heroFin + 1, document.documentElement.scrollHeight - innerHeight);
-    // el descensor está a 52 de 136 unidades de alto del dibujo
-    anclaje = fig.getBoundingClientRect().width * (52 / 104);
+    const ancho = fig.getBoundingClientRect().width || 80;
+    k = ancho / VB.w;
+    alto = VB.h * k;
+    pad = parseFloat(getComputedStyle(lamina).getPropertyValue('--cuerdas-pad')) || 140;
+    O = local(PIVOTE);
+    fig.style.transformOrigin = `${O[0].toFixed(1)}px ${O[1].toFixed(1)}px`;
+    // las colas se desvanecen hacia el pie de la ventana
+    colaRect.setAttribute('height', innerHeight);
+    colaDeg.setAttribute('y2', innerHeight);
   };
 
-  let y = -260, destinoY = y;
+  /* Posición en pantalla de un punto del dibujo, ya girado y desplazado */
+  const punto = (p, y, rad) => {
+    const [px, py] = local(p);
+    const dx = px - O[0], dy = py - O[1];
+    const c = Math.cos(rad), s = Math.sin(rad);
+    return [O[0] + dx * c - dy * s + pad, O[1] + dx * s + dy * c + y];
+  };
+
+  let y = -400, destinoY = y, inicioY = y;
   let giro = 0, velGiro = 0;
+  let pendulo = 0, velPendulo = 0;
+  let arrastre = 0;
   let ultimoScroll = scrollY, velScroll = 0;
   let corriendo = false;
 
   const paso = t => {
     if (!corriendo) return;
 
-    // --- posición: entra rápido al pasar la portada, luego baja despacio ---
+    // --- posición: entra al pasar la portada y luego baja despacio ---
     const recorrido = scrollY - heroFin;
     const entrada = clamp(recorrido / ENTRADA);
-    const reposo = 0.18 * innerHeight;
+    const reposo = 0.2 * innerHeight;
+    const fondo = Math.min(0.7 * innerHeight, innerHeight - alto - 70);
     const resto = clamp((recorrido - ENTRADA) / Math.max(1, finPagina - heroFin - ENTRADA));
 
+    inicioY = -alto - 24;              // completamente arriba, fuera de la vista
     destinoY = entrada < 1
-      ? lerp(-anclaje - 18, reposo, SUAVE(entrada))
-      : lerp(reposo, 0.72 * innerHeight, resto);
+      ? lerp(inicioY, reposo, SUAVE(entrada))
+      : lerp(reposo, Math.max(reposo, fondo), resto);
 
-    // --- balanceo: la cuerda se queda atrás del movimiento ---
     const delta = scrollY - ultimoScroll;
     ultimoScroll = scrollY;
     velScroll = lerp(velScroll, delta, 0.18);
 
-    y = lerp(y, destinoY, 0.09);
+    y = lerp(y, destinoY, 0.085);
 
-    const objetivo = clamp(-velScroll * 0.5, -9, 9);
+    // --- balanceo del cuerpo: amortiguado, se queda atrás del movimiento ---
+    const objetivo = clamp(-velScroll * 0.32, -5.5, 5.5);
     velGiro += (objetivo - giro) * 0.014;
     velGiro *= 0.9;
     giro += velGiro;
-    const vaiven = Math.sin(t / 1500) * 1.4;
+    const grados = giro + Math.sin(t / 1700) * 1.1;
+    const rad = grados * Math.PI / 180;
 
-    fig.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0) rotate(${(giro + vaiven).toFixed(2)}deg)`;
+    fig.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0) rotate(${grados.toFixed(2)}deg)`;
 
-    // --- la cuerda se suelta con él: termina justo en el descensor ---
-    const largo = Math.max(0, y + anclaje);
-    cuerda.style.transform = `scaleY(${(largo / innerHeight).toFixed(4)})`;
+    // --- la cubeta es un péndulo propio: responde al cuerpo con retraso ---
+    const empuje = -grados * 0.9 - clamp(velScroll * 0.22, -7, 7);
+    velPendulo += (empuje - pendulo) * 0.02;
+    velPendulo *= 0.93;
+    pendulo += velPendulo;
+    cubeta.setAttribute('transform', `rotate(${pendulo.toFixed(2)} ${CUBETA[0]} ${CUBETA[1]})`);
+
+    // --- cuerdas de arriba: de la azotea a la mano y al casco ---
+    const mano = punto(MANO, y, rad);
+    const casco = punto(CASCO, y, rad);
+    const manoReposo = local(MANO)[0] + pad;
+    const cascoReposo = local(CASCO)[0] + pad;
+    tender(arribaA, manoReposo, -12, mano[0], mano[1]);
+    tender(arribaB, cascoReposo, -12, casco[0], casco[1]);
+
+    // --- cuerdas de abajo: se despliegan con él al entrar y siguen hasta el
+    //     pie de la ventana; al bajar rápido se quedan un poco atrás ---
+    arrastre = lerp(arrastre, clamp(-velScroll * 1.4, -18, 18), 0.06);
+    const despliegue = SUAVE(clamp((y - inicioY) / Math.max(1, reposo - inicioY)));
+    const suelo = innerHeight + 40;
+    const arnes = punto(ARNES, y, rad);
+    const colgar = (lineas, desde, inclina) => {
+      const largo = suelo - desde[1];
+      const hastaX = desde[0] + inclina * largo + arrastre;
+      tender(lineas, desde[0], desde[1],
+        lerp(desde[0], hastaX, despliegue), desde[1] + largo * despliegue);
+    };
+    colgar(colaA, mano, -0.04);
+    colgar(colaB, arnes, -0.025);
 
     // --- aparece al quedar la portada atrás, y se retira igual al subir ---
     caja.style.opacity = clamp(recorrido / 240).toFixed(3);
-
-    // --- ¿está pasando por una sección de fondo claro? ---
-    const centro = y + anclaje;
-    caja.classList.toggle('is-claro', claros.some(sec => {
-      const r = sec.getBoundingClientRect();
-      return centro > r.top && centro < r.bottom;
-    }));
 
     requestAnimationFrame(paso);
   };
@@ -353,7 +422,7 @@ function initVertical() {
     medir();
     corriendo = true;
     ultimoScroll = scrollY;
-    y = destinoY = -anclaje - 18;
+    y = destinoY = -alto - 24;
     requestAnimationFrame(paso);
   };
   const detener = () => {
