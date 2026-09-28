@@ -2,9 +2,9 @@
    ASAP 369 — Orquestador de interfaz
    Precarga · cursor · navegación · revelados · parallax · secciones dinámicas
    ========================================================================== */
-import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS } from './data.js?v=12';
-import { initMapa } from './map.js?v=12';
-import { initProyectos } from './projects.js?v=12';
+import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS } from './data.js?v=13';
+import { initMapa } from './map.js?v=13';
+import { initProyectos } from './projects.js?v=13';
 
 const $  = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];

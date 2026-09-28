@@ -10,7 +10,7 @@
 <meta name="author" content="ASAP Gestión de Proyectos 369">
 <!-- Versión del sitio. Para saber qué versión está publicada, abre el
      código fuente de la página (Ctrl+U) y busca esta línea. -->
-<meta name="asap-version" content="12 — 2026-09-28">
+<meta name="asap-version" content="13 — 2026-09-28">
 <link rel="canonical" href="https://www.asapgp.com.mx/">
 
 <meta property="og:type" content="website">
@@ -27,9 +27,9 @@
 
 <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/base.css?v=12">
-<link rel="stylesheet" href="assets/css/components.css?v=12">
-<link rel="stylesheet" href="assets/css/sections.css?v=12">
+<link rel="stylesheet" href="assets/css/base.css?v=13">
+<link rel="stylesheet" href="assets/css/components.css?v=13">
+<link rel="stylesheet" href="assets/css/sections.css?v=13">
 
 <script type="application/ld+json">
 {
@@ -128,113 +128,212 @@
   <span class="vertical__fig">
     <svg viewBox="36 18 148 272" focusable="false">
       <defs>
-        <linearGradient id="tcCasco" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#ECEDEA"/><stop offset="1" stop-color="#B7BBC1"/>
+        <!-- Luz única, desde arriba a la izquierda. Todos los degradados van en
+             coordenadas del dibujo para que las piezas compartan la misma luz. -->
+        <path id="tcCamisaForma" d="M97 61 Q86 62.5 81 70 L67.9 78 L74.2 67.7 L65.8 62.3 L47.5 88.5 Q42.5 96.5 49 100.5 Q52 101.8 54.5 100.2 L71 92 Q70.5 118 71 143 Q88 150.5 111 150.5 Q134 150.5 147 143.5 L147.5 138.5 Q152.5 139.5 157.5 138.5 Q161.5 137 161.5 131 L160 95 Q159 76 150 71 Q139 64 125 61 Q111 64 97 61 Z"/>
+        <path id="tcPantalonForma" d="M74 163 L146 161 L145.5 206 Q144.5 236 143 264 L126.5 265 Q124 238 119 214 Q113.5 195 106 180 Q102 196 99.5 214 Q97 239 95.5 266 L79 266 Q78 238 77.5 212 Q75.5 188 74 163 Z"/>
+        <path id="tcBolsaForma" d="M66 156.5 Q73 159.5 75.5 170 Q78.5 186 72 198.5 Q65 206.5 52.5 205.5 Q42 204 40 192 Q38.5 177 45.5 166 Q52.5 155.5 66 156.5 Z"/>
+        <clipPath id="tcCamisaClip"><use href="#tcCamisaForma"/></clipPath>
+        <clipPath id="tcPantalonClip"><use href="#tcPantalonForma"/></clipPath>
+        <clipPath id="tcBolsaClip"><use href="#tcBolsaForma"/></clipPath>
+
+        <linearGradient id="tcCamisa" gradientUnits="userSpaceOnUse" x1="55" y1="60" x2="165" y2="150">
+          <stop offset="0" stop-color="#A1A4B3"/><stop offset=".5" stop-color="#8C8F9E"/><stop offset="1" stop-color="#777A89"/>
         </linearGradient>
-        <linearGradient id="tcCamisa" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#9598A7"/><stop offset=".5" stop-color="#888B9A"/><stop offset="1" stop-color="#6A6D7C"/>
+        <linearGradient id="tcLuzHombros" gradientUnits="userSpaceOnUse" x1="0" y1="60" x2="0" y2="86">
+          <stop offset="0" stop-color="#FFFFFF" stop-opacity=".2"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
         </linearGradient>
-        <linearGradient id="tcManga" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#989BAA"/><stop offset="1" stop-color="#777A89"/>
+        <linearGradient id="tcSombraLado" gradientUnits="userSpaceOnUse" x1="116" y1="0" x2="163" y2="0">
+          <stop offset="0" stop-color="#272A3C" stop-opacity="0"/><stop offset="1" stop-color="#272A3C" stop-opacity=".36"/>
         </linearGradient>
-        <linearGradient id="tcPierna" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#50535D"/><stop offset=".6" stop-color="#40434B"/><stop offset="1" stop-color="#2E3036"/>
+        <linearGradient id="tcSombraCintura" gradientUnits="userSpaceOnUse" x1="0" y1="120" x2="0" y2="151">
+          <stop offset="0" stop-color="#272A3C" stop-opacity="0"/><stop offset="1" stop-color="#272A3C" stop-opacity=".26"/>
         </linearGradient>
-        <linearGradient id="tcCubeta" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#7D8DA5"/><stop offset=".55" stop-color="#5E6D86"/><stop offset="1" stop-color="#404C62"/>
+        <linearGradient id="tcPliegue" gradientUnits="userSpaceOnUse" x1="0" y1="86" x2="0" y2="112">
+          <stop offset="0" stop-color="#272A3C" stop-opacity="0"/><stop offset="1" stop-color="#272A3C" stop-opacity=".4"/>
         </linearGradient>
-        <linearGradient id="tcBolsa" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#FFFFFF"/><stop offset=".6" stop-color="#EBEEF2"/><stop offset="1" stop-color="#C5CBD3"/>
+        <!-- se desvanece hacia la axila, donde el brazo se funde con el torso -->
+        <linearGradient id="tcSombraBrazo" gradientUnits="userSpaceOnUse" x1="73" y1="91" x2="60" y2="98">
+          <stop offset="0" stop-color="#2E3144" stop-opacity="0"/><stop offset="1" stop-color="#2E3144" stop-opacity=".2"/>
+        </linearGradient>
+        <radialGradient id="tcAxila" gradientUnits="userSpaceOnUse" cx="73" cy="95" r="17">
+          <stop offset="0" stop-color="#272A3C" stop-opacity=".42"/><stop offset="1" stop-color="#272A3C" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="tcPantalon" gradientUnits="userSpaceOnUse" x1="74" y1="0" x2="146" y2="0">
+          <stop offset="0" stop-color="#555862"/><stop offset=".55" stop-color="#454850"/><stop offset="1" stop-color="#34363D"/>
+        </linearGradient>
+        <linearGradient id="tcSombraPiernas" gradientUnits="userSpaceOnUse" x1="0" y1="163" x2="0" y2="200">
+          <stop offset="0" stop-color="#15171C" stop-opacity=".45"/><stop offset="1" stop-color="#15171C" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="tcCinturon" gradientUnits="userSpaceOnUse" x1="0" y1="140" x2="0" y2="166">
+          <stop offset="0" stop-color="#5A5244"/><stop offset=".55" stop-color="#4A4337"/><stop offset="1" stop-color="#3C362C"/>
+        </linearGradient>
+        <linearGradient id="tcCasco" gradientUnits="userSpaceOnUse" x1="94" y1="24" x2="130" y2="60">
+          <stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#EDEEEB"/><stop offset="1" stop-color="#BCC0C6"/>
+        </linearGradient>
+        <linearGradient id="tcPiel" gradientUnits="userSpaceOnUse" x1="66" y1="50" x2="80" y2="64">
+          <stop offset="0" stop-color="#8A5E47"/><stop offset="1" stop-color="#5E3D2E"/>
+        </linearGradient>
+        <linearGradient id="tcPielDer" gradientUnits="userSpaceOnUse" x1="148" y1="138" x2="158" y2="148">
+          <stop offset="0" stop-color="#7A523E"/><stop offset="1" stop-color="#553628"/>
+        </linearGradient>
+        <linearGradient id="tcBolsa" gradientUnits="userSpaceOnUse" x1="40" y1="160" x2="78" y2="204">
+          <stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#EEF1F4"/><stop offset="1" stop-color="#CBD1D9"/>
+        </linearGradient>
+        <linearGradient id="tcTenis" gradientUnits="userSpaceOnUse" x1="0" y1="262" x2="0" y2="282">
+          <stop offset="0" stop-color="#F2F3F5"/><stop offset="1" stop-color="#C9CCD2"/>
+        </linearGradient>
+        <linearGradient id="tcCubeta" gradientUnits="userSpaceOnUse" x1="134" y1="0" x2="182" y2="0">
+          <stop offset="0" stop-color="#8797AE"/><stop offset=".45" stop-color="#63728B"/><stop offset="1" stop-color="#3D485D"/>
+        </linearGradient>
+        <linearGradient id="tcCubetaInterior" gradientUnits="userSpaceOnUse" x1="0" y1="212" x2="0" y2="226">
+          <stop offset="0" stop-color="#0F1E36"/><stop offset="1" stop-color="#23406B"/>
+        </linearGradient>
+        <linearGradient id="tcMetal" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#F1F3F6"/><stop offset="1" stop-color="#9DA3AC"/>
         </linearGradient>
       </defs>
 
-      <!-- PIERNAS -->
-      <path d="M76 168 L102 170 L100 210 Q97 238 94 266 L79 266 Q78 238 78 210 Z" fill="url(#tcPierna)"/>
-      <path d="M110 170 L141 166 L143 210 Q143 238 142 264 L128 265 Q127 238 121 210 Z" fill="url(#tcPierna)"/>
-      <path d="M84 214 Q88 232 87 258" fill="none" stroke="#63666F" stroke-width="1.4" stroke-linecap="round" opacity=".7"/>
-      <path d="M127 214 Q132 234 133 256" fill="none" stroke="#5C5F69" stroke-width="1.4" stroke-linecap="round" opacity=".6"/>
-      <!-- perneras del arnés -->
-      <g fill="none" stroke-linecap="round">
-        <path d="M77 187 Q89 194 101 188" stroke="#26231E" stroke-width="4.2"/>
-        <path d="M111 187 Q126 194 142 184" stroke="#26231E" stroke-width="4.2"/>
-        <path d="M77 187 Q89 194 101 188" stroke="#CDB44E" stroke-width="1.3"/>
-        <path d="M111 187 Q126 194 142 184" stroke="#CDB44E" stroke-width="1.3"/>
+      <!-- TENIS (debajo del pantalón, que los tapa en el dobladillo) -->
+      <g>
+        <path d="M78.5 263 L96 263 Q98.5 270 97 277.5 Q95.5 282 88 282 Q80 282 78.5 278.5 Q76.5 271 78.5 263 Z" fill="url(#tcTenis)"/>
+        <path d="M78.7 277 Q87.5 281 97 277 L96.7 279.4 Q88 284.2 79 280.3 Z" fill="#8C9098"/>
+        <path d="M84 263 L91 263 L90.4 268.5 L84.6 268.5 Z" fill="#C2C6CC"/>
+        <path d="M127 261 L144 261 Q146.5 268 145 275.5 Q143.5 280 136.5 280 Q128.5 280 127 276.5 Q125 269 127 261 Z" fill="url(#tcTenis)"/>
+        <path d="M127.2 275 Q136 279 145 275 L144.7 277.4 Q136 282.2 127.5 278.3 Z" fill="#8C9098"/>
+        <path d="M132.5 261 L139.5 261 L138.9 266.5 L133.1 266.5 Z" fill="#C2C6CC"/>
       </g>
-      <!-- tenis -->
-      <path d="M77 264 L95 264 Q97.5 272 95.5 279 Q88 282.5 79 280.5 Q75 274 77 264 Z" fill="#DADCE0"/>
-      <path d="M78 279.5 Q87 282 95 279" fill="none" stroke="#8E9199" stroke-width="2" stroke-linecap="round"/>
-      <path d="M127 262 L143 262 Q146 270 144 277 Q137 280.5 129 278.5 Q125 272 127 262 Z" fill="#D2D4D9"/>
-      <path d="M128 277.5 Q136 280 144 276.5" fill="none" stroke="#8E9199" stroke-width="2" stroke-linecap="round"/>
 
-      <!-- TORSO -->
-      <path d="M76 70 Q92 63 110 64 Q128 63 144 68 Q152 72 153 86 L151 142 Q134 150 111 150 Q88 150 71 143 L71 98 Q71 80 76 70 Z" fill="url(#tcCamisa)"/>
-      <path d="M93 126 Q97 136 95 146 M126 124 Q123 136 126 146" fill="none" stroke="#5E6170" stroke-width="1.1" stroke-linecap="round" opacity=".45"/>
+      <!-- PANTALÓN: una sola pieza, con su luz y sus pliegues recortados dentro -->
+      <use href="#tcPantalonForma" fill="url(#tcPantalon)"/>
+      <g clip-path="url(#tcPantalonClip)">
+        <rect x="70" y="160" width="80" height="45" fill="url(#tcSombraPiernas)"/>
+        <path d="M104.5 182 Q99.5 214 97 266 L91.5 266 Q94.5 220 99 190 Z" fill="#15171C" opacity=".32"/>
+        <path d="M146 163 L145.5 206 Q144.5 236 143 264 L135.5 264 Q138 232 137 205 Q137.5 184 135 165 Z" fill="#15171C" opacity=".34"/>
+        <path d="M78 200 Q80 230 81 262" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity=".05"/>
+        <g fill="none" stroke="#15171C" stroke-linecap="round" opacity=".4" stroke-width="1.1">
+          <path d="M80.5 222 Q87.5 226.5 95 221.5"/><path d="M82 229 Q87 231.5 92.5 228.5"/>
+          <path d="M121 221 Q130 226 139.5 220.5"/><path d="M123.5 228 Q130 231 137 227.5"/>
+        </g>
+      </g>
+      <!-- tirantes traseros y perneras del arnés -->
+      <g fill="none" stroke-linecap="round">
+        <path d="M86 171 L87.5 186" stroke="#26231E" stroke-width="2.6"/>
+        <path d="M131 169 L129.5 184" stroke="#26231E" stroke-width="2.6"/>
+        <path d="M76 184.5 Q89 192.5 101.5 187.5" stroke="#26231E" stroke-width="4.6"/>
+        <path d="M110.5 187.5 Q127 193 145 182.5" stroke="#26231E" stroke-width="4.6"/>
+        <path d="M76.3 183.2 Q89 191 101.3 186.2" stroke="#D2B955" stroke-width="1.2"/>
+        <path d="M110.7 186.2 Q127 191.5 144.8 181.2" stroke="#D2B955" stroke-width="1.2"/>
+      </g>
 
-      <!-- logotipo ASAP en la espalda -->
+      <!-- MANO IZQUIERDA, cerrada sobre la cuerda (el puño asoma bajo el puño de la manga) -->
+      <path d="M67.2 64.5 Q64.8 58.5 67.5 53.8 Q70.5 50 74.8 51.2 Q78.6 52.6 78.8 57 Q79 61.5 76.2 65.6 Z" fill="url(#tcPiel)"/>
+      <path d="M68.6 54.4 Q72 51.8 76 53.4" fill="none" stroke="#A47559" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M73.6 55.2 Q76.4 56.6 75.8 60" fill="none" stroke="#4E3226" stroke-width=".9" stroke-linecap="round" opacity=".7"/>
+
+      <!-- CAMISOLA: torso y los dos brazos son una sola prenda -->
+      <use href="#tcCamisaForma" fill="url(#tcCamisa)"/>
+      <!-- logotipo ASAP en la espalda (va debajo de las sombras, como tela impresa) -->
       <g fill="none" stroke="#5BBCEF" stroke-width="2.1" stroke-linejoin="round" stroke-linecap="round" transform="translate(92.6 75) scale(.52)">
         <path d="M9 39.5V23l7.2-7.2V39.5"/><path d="M19.4 39.5V9.5l7 4.6V39.5"/><path d="M29 39.5V17.4h9.6V39.5"/>
       </g>
       <text x="103" y="112.5" text-anchor="middle" font-family="Outfit, 'Helvetica Neue', Arial, sans-serif" font-size="20.5" font-weight="500" letter-spacing="-.3" fill="#5BBCEF">asap</text>
       <rect x="89" y="119" width="28" height="1.3" rx=".6" fill="#5BBCEF" opacity=".45"/>
-
-      <!-- brazo derecho, colgando -->
-      <path d="M143 70 Q156 73 159 90 L161 128 Q161 137 155 138 L148 137 Q146 110 143 90 Z" fill="url(#tcManga)"/>
-      <path d="M152 80 Q156 100 157 126" fill="none" stroke="#6A6D7C" stroke-width="1.2" stroke-linecap="round" opacity=".5"/>
-      <ellipse cx="154.5" cy="140.5" rx="4.6" ry="5.4" fill="#6B4736"/>
-
-      <!-- ARNÉS -->
-      <path d="M70 141 Q111 152 152 140 L151 158 Q111 170 71 160 Z" fill="#4B4438"/>
-      <path d="M73 158 Q111 170 150 157 L147 172 Q111 182 76 174 Z" fill="#3E382F"/>
-      <g fill="none" stroke="#CDB44E" stroke-linecap="round">
-        <path d="M76 150 Q84 160 92 152 Q103 166 114 152 Q124 162 134 151 Q142 158 148 150" stroke-width="1.3"/>
-        <path d="M80 168 Q95 176 108 170 Q122 176 144 166" stroke-width="1.1"/>
-      </g>
-      <rect x="100" y="149" width="11" height="13" rx="2.2" fill="#35302A" stroke="#BCC0C6" stroke-width="1.6"/>
-      <rect x="103.2" y="152.5" width="4.6" height="6" rx="1" fill="none" stroke="#8D9198" stroke-width="1"/>
-      <!-- mosquetones del costado -->
-      <g fill="none" stroke="#D3D7DD" stroke-width="1.5">
-        <ellipse cx="145" cy="167" rx="3" ry="7"/>
-        <ellipse cx="150" cy="176" rx="3" ry="7.2"/>
-        <ellipse cx="143" cy="184" rx="2.6" ry="6.4"/>
-      </g>
-      <ellipse cx="72" cy="153.5" rx="2.4" ry="5.4" fill="none" stroke="#D3D7DD" stroke-width="1.4"/>
-
-      <!-- bolsa blanca a la cadera -->
-      <g transform="translate(4 4)">
-        <path d="M40 162 Q43 150 55 149 L69 151 Q74 164 73 180 Q72 196 61 199 L47 199 Q37 195 37 181 Q37 170 40 162 Z" fill="url(#tcBolsa)"/>
-        <g fill="none" stroke-linecap="round">
-          <path d="M48 158 Q52 172 47 190" stroke="#C3C9D1" stroke-width="1.2"/>
-          <path d="M60 154 Q64 170 60 194" stroke="#CDD2D8" stroke-width="1"/>
-          <path d="M40 177 Q50 181 58 177" stroke="#D2D6DC" stroke-width="1"/>
+      <g clip-path="url(#tcCamisaClip)">
+        <rect x="30" y="56" width="140" height="34" fill="url(#tcLuzHombros)"/>
+        <rect x="112" y="56" width="60" height="100" fill="url(#tcSombraLado)"/>
+        <rect x="30" y="118" width="140" height="36" fill="url(#tcSombraCintura)"/>
+        <!-- volumen del brazo en alto: sombra propia pegada al contorno de
+             abajo, en dos pasadas (ancha y tenue, angosta y marcada) para que
+             el borde de la sombra quede suave -->
+        <g fill="none" stroke="url(#tcSombraBrazo)" stroke-linecap="butt" stroke-linejoin="round">
+          <path d="M74 91.3 L54.5 100.6 Q49 102 45.5 97.5 L44 94" stroke-width="13" opacity=".55"/>
+          <path d="M74 91.3 L54.5 100.6 Q49 102 45.5 97.5 L44 94" stroke-width="6"/>
         </g>
+        <circle cx="73" cy="95" r="17" fill="url(#tcAxila)"/>
+        <!-- pliegue entre el brazo que cuelga y el costado -->
+        <g fill="none" stroke="url(#tcPliegue)" stroke-linecap="round">
+          <path d="M145 90 Q148.6 114 147.6 139" stroke-width="7" opacity=".45"/>
+          <path d="M145.6 90 Q149 114 148 139" stroke-width="2.4"/>
+        </g>
+        <!-- puños -->
+        <path d="M65.8 62.3 L74.2 67.7 L72.7 70.2 L64.3 64.8 Z" fill="#3A3D52" opacity=".4"/>
+        <path d="M147.5 134.8 Q154 136 161.6 134 L161.6 139.5 L147.4 140 Z" fill="#3A3D52" opacity=".35"/>
+        <!-- luz en el borde que mira al cielo -->
+        <path d="M96 62 Q86 63.4 81 70.4" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" opacity=".22"/>
+        <path d="M65.6 63.2 L48 88.6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity=".16"/>
+        <!-- arrugas de la tela -->
+        <g fill="none" stroke="#2E3144" stroke-linecap="round" stroke-width="1.1" opacity=".32">
+          <path d="M86 117 Q92 124 90 133"/><path d="M133 115 Q127.5 124 129.5 133"/>
+          <path d="M84 139 Q91 143.5 98 141"/><path d="M119 141 Q127 143.5 135 138"/>
+          <path d="M58 91 Q62 93 64.5 97"/>
+        </g>
+      </g>
+
+      <!-- CUELLO Y CASCO -->
+      <path d="M97.5 57.5 Q111 61.5 125.5 57.5 L125 70 Q111 75 98 70 Z" fill="#35373E"/>
+      <path d="M98 60.2 Q111 64.6 125 60.2" fill="none" stroke="#1E2024" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M101 67.5 Q108 69.5 114 68.8" fill="none" stroke="#4A4D55" stroke-width=".9" stroke-linecap="round" opacity=".6"/>
+      <path d="M91 58 C90 38 99.5 22.5 111 22 C122.5 22.5 132 38 131 58 Q111 62.5 91 58 Z" fill="url(#tcCasco)"/>
+      <path d="M91.2 54.6 Q111 59.4 130.8 54.6 L131 58 Q111 62.5 91 58 Z" fill="#CDD1D6"/>
+      <g fill="none" stroke="#D2D5DA" stroke-width="1" stroke-linecap="round">
+        <path d="M104.5 24.5 Q101 38 100.4 53.5"/><path d="M117.5 24.5 Q121 38 121.6 53.5"/>
+      </g>
+      <path d="M99.5 32.5 Q108.5 25.8 120 28.2" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" opacity=".95"/>
+      <path d="M96.2 49.8 L100.8 46.4 L101.8 52.6 Z M125.8 49.8 L121.2 46.4 L120.2 52.6 Z" fill="#2B2D31"/>
+      <path d="M90.4 34.4 L93.4 32.4 L95.4 38.4 L92.4 39.4 Z" fill="#3A3C42"/>
+
+      <!-- ARNÉS: cinturón acolchado, anilla trasera y portamateriales -->
+      <path d="M69 140 Q111 151 153 139 L152 160 Q111 172 70 161 Z" fill="url(#tcCinturon)"/>
+      <path d="M73 159.5 Q111 171.5 150 157.5 L146.5 173 Q111 184.5 77 175 Z" fill="#3A342B"/>
+      <g fill="none" stroke-linecap="round">
+        <path d="M69.6 141.3 Q111 152.3 152.4 140.3" stroke="#2A2620" stroke-width="2.4"/>
+        <path d="M70.4 160 Q111 171 151.6 158.6" stroke="#2A2620" stroke-width="2.4"/>
+        <path d="M74 151.5 Q80.0 159.7 86 153.8 Q92.0 161.7 98 155.3 Q104.0 162.6 110 155.8 Q116.0 162.7 122 155.4 Q128.0 161.9 134 154.1 Q140.0 160.1 146 151.9" stroke="#D2B955" stroke-width="1.3"/>
+        <path d="M80 168.5 Q95 176.5 108 171 Q122 176.5 143.5 166.5" stroke="#D2B955" stroke-width="1.1"/>
+      </g>
+      <rect x="101" y="149" width="9.6" height="14" rx="2.6" fill="#2C2722" stroke="url(#tcMetal)" stroke-width="1.6"/>
+      <rect x="103.9" y="152.6" width="3.8" height="6.8" rx="1.1" fill="none" stroke="#7F848C" stroke-width=".9"/>
+      <!-- mosquetones al costado -->
+      <g fill="none" stroke="url(#tcMetal)" stroke-width="1.5" stroke-linecap="round">
+        <path d="M143 161 Q146.5 159.5 147.5 163 L148 171 Q147.5 174.5 144.5 174 Q142 173.5 142 170 Z"/>
+        <path d="M148.5 169 Q152 167.5 153 171 L153.4 179.6 Q153 183 150 182.6 Q147.4 182 147.4 178.6 Z"/>
+        <path d="M141 178 Q144.3 176.8 145.2 180 L145.5 188 Q145 191.2 142.2 190.8 Q139.8 190.4 139.8 187 Z"/>
+      </g>
+
+      <!-- MANO DERECHA, bajo el puño -->
+      <path d="M148.2 139.9 Q152.5 140.8 157.2 139.9 L157.4 142.8 Q156.2 146.6 152.4 146.4 Q148.8 146 148.4 142.6 Z" fill="url(#tcPielDer)"/>
+      <path d="M150 143.6 Q152.6 145 155.6 143.4" fill="none" stroke="#3E271D" stroke-width=".8" stroke-linecap="round" opacity=".7"/>
+
+      <!-- BOLSA blanca colgada de su mosquetón -->
+      <path d="M73.5 151.5 Q76.8 150.8 77.3 154.4 L77.4 160 Q77 163 74.4 162.6 Q72.2 162.2 72.2 159.2 Z" fill="none" stroke="url(#tcMetal)" stroke-width="1.4"/>
+      <use href="#tcBolsaForma" fill="url(#tcBolsa)"/>
+      <g clip-path="url(#tcBolsaClip)">
+        <path d="M60 150 Q76 170 70 210 L90 210 L90 150 Z" fill="#8E97A6" opacity=".2"/>
+        <path d="M49 160 Q54.5 176 49.5 197 L52.8 197.5 Q57.5 176 52 160 Z" fill="#AEB6C2" opacity=".45"/>
+        <path d="M61 159 Q65.5 176 61.5 201 L64 201 Q68 176 63.5 158.5 Z" fill="#AEB6C2" opacity=".35"/>
+        <path d="M41 184 Q51 188.5 61 184.5 L61 186.6 Q51 190.8 41 186.4 Z" fill="#B7BEC9" opacity=".35"/>
+        <path d="M44 170 Q47.5 162 56 159.5" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity=".8"/>
+        <path d="M60 157 Q65 158.5 69 162" fill="none" stroke="#A9B1BD" stroke-width="1.1" stroke-linecap="round"/>
       </g>
 
       <!-- CUBETA: cuelga de su cabo y se balancea sola (main.js) -->
-      <path d="M146 190 L155 206" fill="none" stroke="#2D2F35" stroke-width="2" stroke-linecap="round"/>
+      <path d="M143 190.5 Q149.5 197.5 155 206" fill="none" stroke="#2A2C31" stroke-width="1.9" stroke-linecap="round"/>
       <g class="vertical__cubeta">
-        <g transform="translate(4 3)">
-          <path d="M131 213 Q150 192 176 220" fill="none" stroke="#A9AFB8" stroke-width="1.3"/>
-          <path d="M130 212 L137 258 Q155 268 172 260 L177 220 Z" fill="url(#tcCubeta)"/>
-          <path d="M133 232 Q154 239 175 234 M135 246 Q155 252 173 248" fill="none" stroke="#FFFFFF" stroke-width="1" opacity=".13"/>
-          <ellipse cx="153.5" cy="216" rx="24" ry="6.8" transform="rotate(10 153.5 216)" fill="#2F63B6" stroke="#1D4A92" stroke-width="1.2"/>
-          <ellipse cx="154" cy="216.5" rx="19" ry="4.4" transform="rotate(10 154 216.5)" fill="#1B3357"/>
-          <path d="M136 214 L127 202" stroke="#3274D6" stroke-width="3" stroke-linecap="round"/>
+        <path d="M135 217 Q152 196 181 223" fill="none" stroke="#B3B9C2" stroke-width="1.3"/>
+        <path d="M134 216 L141 261 Q159.5 271 176 263 L181 223.5 Z" fill="url(#tcCubeta)"/>
+        <g fill="none" stroke-linecap="round">
+          <path d="M136.6 233 Q158 240.5 179.2 235.8" stroke="#FFFFFF" stroke-width="1" opacity=".14"/>
+          <path d="M138.6 247 Q159 253.5 177.6 249.6" stroke="#FFFFFF" stroke-width="1" opacity=".12"/>
+          <path d="M139.5 226 Q139 244 143 259" stroke="#FFFFFF" stroke-width="2.2" opacity=".14"/>
         </g>
+        <ellipse cx="157.5" cy="219.5" rx="24.2" ry="6.9" transform="rotate(10 157.5 219.5)" fill="#2F63B6"/>
+        <ellipse cx="157.5" cy="219" rx="24.2" ry="6.9" transform="rotate(10 157.5 219)" fill="none" stroke="#5C8FE0" stroke-width=".9" opacity=".7"/>
+        <ellipse cx="158" cy="220" rx="19.6" ry="4.5" transform="rotate(10 158 220)" fill="url(#tcCubetaInterior)"/>
+        <path d="M140.5 217.5 L131.5 205.2" stroke="#3274D6" stroke-width="3" stroke-linecap="round"/>
+        <path d="M140.5 217.5 L131.5 205.2" stroke="#7FB2FF" stroke-width="1" stroke-linecap="round" opacity=".6"/>
       </g>
 
-      <!-- brazo izquierdo, en alto, sujetando la cuerda -->
-      <path d="M86 80 L51 94 L70 66" fill="none" stroke="url(#tcManga)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M81 89 L56 99" fill="none" stroke="#6D7080" stroke-width="3" stroke-linecap="round" opacity=".5"/>
-      <ellipse cx="73" cy="58.5" rx="5.4" ry="6.4" transform="rotate(-18 73 58.5)" fill="#6B4736"/>
-      <path d="M69 55.5 Q72.5 53 76.5 55" fill="none" stroke="#8A604B" stroke-width="1.2" stroke-linecap="round"/>
-
-      <!-- CUELLO Y CASCO -->
-      <path d="M97 57 Q111 61 126 57 L125 69 Q111 74 98 69 Z" fill="#3A3C44"/>
-      <path d="M91 58 C90 39 99 23 111 22 C123 22 132 38 131 58 Q111 62 91 58 Z" fill="url(#tcCasco)" stroke="#A7ABB1" stroke-width=".6"/>
-      <path d="M92 55 Q111 59 130 55" fill="none" stroke="#C4C7CC" stroke-width="1.5"/>
-      <path d="M100 30 Q110 25 121 30" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity=".9"/>
-      <path d="M96 49 l4.2 -3 l1 6.2 z M126 49 l-4.2 -3 l-1 6.2 z" fill="#2B2D31"/>
-      <path d="M90.5 34 l3 -2 l2 6 l-3 1 z" fill="#3A3C42"/>
     </svg>
   </span>
 </div>
@@ -829,6 +928,6 @@
   </div>
 </noscript>
 
-<script type="module" src="assets/js/main.js?v=12"></script>
+<script type="module" src="assets/js/main.js?v=13"></script>
 </body>
 </html>
