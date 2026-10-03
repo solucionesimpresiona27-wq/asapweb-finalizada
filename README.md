@@ -236,17 +236,25 @@ así que el loop no une el final con el principio —se verían los edificios
 duplicados—: es un vaivén. La toma avanza 8 s, frena con suavidad, regresa
 otros 8 s y vuelve a frenar, siempre con velocidad cero en los extremos, de
 modo que no hay corte ni rebote. Para que el frenado sea fluido se generaron
-cuadros intermedios (72 por segundo de base). Se muestra con su resolución
-original (1280×720), sin ampliarlo más de lo necesario para cubrir la
-portada, y con un ajuste de brillo para que se vea luminoso. Se alinea a su
-lado derecho para que la torre y el técnico asomen junto al recuadro; en
-pantallas de 1700 px o más, donde el video ya ocupa todo el ancho, el
-recuadro se angosta un poco y se pega a la derecha con el mismo fin. En celular se usa un recorte vertical centrado en el técnico.
+cuadros intermedios (72 por segundo de base). La luz va ya en el archivo:
+se aclararon sombras y medios tonos con una curva que no quema las nubes, y
+el velo oscuro solo cubre la columna del texto; termina justo donde acaba el
+párrafo (`--texto-fin`), así que el centro y la derecha quedan luminosos.
+
+Encuadre en escritorio: `initEncuadreFondo()` (en `main.js`) coloca al
+técnico —en la toma está en x 725 · y 340— en el hueco entre el texto y el
+recuadro, sea cual sea el tamaño de la pantalla. Primero solo recorre el
+video (`--fondo-x`); si ni alineado a la derecha alcanza, lo acerca lo
+mínimo necesario (`--fondo-k`, nunca más de 1.3×). En una pantalla de
+1600 px el acercamiento es de apenas 3 %. La imagen fija que se ve mientras
+carga lleva el mismo encuadre. En pantallas de 1700 px o más el recuadro se
+angosta un poco y se pega a la derecha para dejar más hueco. En celular se
+usa un recorte vertical centrado en el técnico.
 
 | Archivo | Para | Peso |
 |---|---|---|
-| `fondo-ancho.mp4` / `.webm` | pantallas horizontales (1280×720) | 3.4 MB / 1.8 MB |
-| `fondo-alto.mp4` / `.webm` | pantallas verticales, el celular (540×960) | 0.8 MB / 0.9 MB |
+| `fondo-ancho.mp4` / `.webm` | pantallas horizontales (1280×720) | 3.5 MB / 2.2 MB |
+| `fondo-alto.mp4` / `.webm` | pantallas verticales, el celular (540×960) | 1.0 MB / 1.0 MB |
 | `fondo-ancho.jpg` / `fondo-alto.jpg` | imagen fija | ~135 KB / ~63 KB |
 
 Si cambias algún video, conserva los nombres y sube el número `?v=` en
@@ -367,7 +375,7 @@ Vercel o Cloudflare Pages viene activado de fábrica.
 Cada publicación lleva un número de versión visible en el código fuente:
 
 ```html
-<meta name="asap-version" content="24 — 2026-10-03">
+<meta name="asap-version" content="25 — 2026-10-03">
 ```
 
 Para saber qué versión está viva en el servidor, abre el sitio, pulsa `Ctrl+U`
@@ -381,7 +389,7 @@ sin pedirle a nadie que limpie su caché. El costo es una petición condicional
 por archivo, que el servidor contesta con un `304 Not Modified` de pocos bytes.
 
 Como segunda red de seguridad, los estilos y los scripts se piden con un sufijo
-de versión (`base.css?v=24`, y lo mismo en los `import` de `assets/js/`). Al
+de versión (`base.css?v=25`, y lo mismo en los `import` de `assets/js/`). Al
 cambiar ese número la URL cambia, así que ninguna copia guardada puede
 reutilizarse. Si subes una versión nueva, actualiza el número en los cuatro
 sitios de `index.html`, en los `import` de `main.js`, `map.js` y `projects.js`,

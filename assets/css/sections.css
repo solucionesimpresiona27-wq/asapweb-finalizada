@@ -64,42 +64,48 @@
 .hero__wrap { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; }
 
 /* Video de fondo. Ocupa exactamente la portada y se muestra con su encuadre
-   original, centrado, sin ampliarlo más de lo necesario para cubrirla.
+   original alineado a la derecha, donde están la torre y el técnico. En
+   escritorio initEncuadreFondo() (main.js) lo recorre (--fondo-x) y, solo si
+   hace falta, lo acerca un poco (--fondo-k) para que el técnico quede en el
+   hueco entre el texto y el recuadro.
    Mientras carga —o para quien pidió movimiento reducido o ahorro de
    datos— se ve su primer cuadro como imagen fija, y el video entra con un
    fundido cuando de verdad está reproduciéndose.
-   El velo deja luminosos el centro y la derecha, donde se ven la torre y el
-   técnico, y solo protege la columna del texto, lo justo para que se lea
-   aun sobre las nubes más claras; las letras llevan además un halo tenue;
-   abajo lo funde con la página el degradado de .hero::after. */
+   La luz viene ya en el archivo: se aclararon sombras y medios tonos sin
+   quemar las nubes. El velo solo protege la columna del texto y se abre
+   justo donde ésta termina (--texto-fin); el resto queda casi limpio. Las
+   letras llevan además un halo tenue; abajo lo funde con la página el
+   degradado de .hero::after. */
 .hero__fondo {
   position: absolute; inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: var(--ink-900) url('../video/fondo-ancho.jpg?v=24') 100% 50% / cover no-repeat;
+  background: var(--ink-900) url('../video/fondo-ancho.jpg?v=25') 100% 50% / cover no-repeat;
 }
 .hero__fondo-video {
   display: block; width: 100%; height: 100%;
   object-fit: cover;
-  /* sin ampliar: solo se elige mostrar la parte derecha de la toma, donde
-     están la torre y el técnico, para que asomen junto al recuadro */
-  object-position: 100% 50%;
-  /* la toma es de atardecer y la torre es oscura: se le da más luz */
-  filter: brightness(1.22) contrast(1.04) saturate(1.06);
+  object-position: var(--fondo-x, 100%) 50%;
+  transform: scale(var(--fondo-k, 1));
+  transform-origin: 100% var(--fondo-oy, 50%);
+  filter: brightness(1.08) saturate(1.04);
   opacity: 0;
   transition: opacity 1.4s var(--ease);
 }
 .hero__fondo.is-on .hero__fondo-video { opacity: 1; }
 .hero__fondo::after {
+  --fin: var(--texto-fin, 44vw);
   content: '';
   position: absolute; inset: 0;
   background:
     linear-gradient(to bottom, rgba(7, 11, 20, .5) 0%, rgba(7, 11, 20, .28) 22%, rgba(7, 11, 20, 0) 32%),
-    linear-gradient(90deg, rgba(7, 11, 20, .82) 0%, rgba(7, 11, 20, .77) 34%, rgba(7, 11, 20, .68) 47%, rgba(7, 11, 20, .06) 65%, rgba(7, 11, 20, .1) 100%),
-    linear-gradient(rgba(20, 97, 143, .06), rgba(20, 97, 143, .06));
+    linear-gradient(90deg, rgba(7, 11, 20, .82) 0, rgba(7, 11, 20, .77) calc(var(--fin) - 6rem), rgba(7, 11, 20, .74) calc(var(--fin) + 1rem), rgba(7, 11, 20, .08) calc(var(--fin) + 6.5rem), rgba(7, 11, 20, .02) 100%),
+    linear-gradient(rgba(20, 97, 143, .05), rgba(20, 97, 143, .05));
 }
+/* con una sola columna el texto ocupa casi todo el ancho: el velo lo sigue cubriendo */
+@media (max-width: 980px) { .hero__fondo::after { --fin: 88vw; } }
 @media (orientation: portrait) {
-  .hero__fondo { background-image: url('../video/fondo-alto.jpg?v=24'); background-position: 50% 50%; }
+  .hero__fondo { background-image: url('../video/fondo-alto.jpg?v=25'); background-position: 50% 50%; }
   .hero__fondo-video { object-position: 50% 50%; }
   .hero__fondo::after {
     background:

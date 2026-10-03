@@ -2,9 +2,9 @@
    ASAP 369 — Orquestador de interfaz
    Precarga · cursor · navegación · revelados · parallax · secciones dinámicas
    ========================================================================== */
-import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS, CINTAS } from './data.js?v=24';
-import { initMapa } from './map.js?v=24';
-import { initProyectos } from './projects.js?v=24';
+import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS, CINTAS } from './data.js?v=25';
+import { initMapa } from './map.js?v=25';
+import { initProyectos } from './projects.js?v=25';
 
 const $  = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -434,6 +434,70 @@ function initVertical() {
   addEventListener('resize', () => { if (corriendo) medir(); });
   document.addEventListener('asap:rendered', () => { if (corriendo) medir(); });
   arrancar();
+}
+
+/* -----------------------------------------------------------------------------
+   Encuadre del video de fondo
+   -----------------------------------------------------------------------------
+   En la toma (1280×720) el técnico cuelga de la arista de la torre, en
+   x 725 · y 340. En escritorio se busca dejarlo en el hueco entre el texto
+   y el recuadro: si el video desborda la portada a lo ancho, solo se
+   recorre (--fondo-x); si ni alineado a la derecha alcanza, se acerca lo
+   mínimo necesario, anclado al borde derecho y a la altura del técnico
+   (--fondo-k). El acercamiento nunca pasa de 1.3×.
+   Lo mismo se aplica a la imagen fija que se ve mientras carga, y el velo
+   oscuro se ajusta a donde termina el texto (--texto-fin).
+   -------------------------------------------------------------------------- */
+function initEncuadreFondo() {
+  const caja = $('.hero__fondo'), copy = $('.hero__copy'), frame = $('.hero__frame');
+  if (!caja || !copy || !frame) return;
+  const ANCHO = 1280, ALTO = 720, TX = 725, TY = 340;
+  const escritorio = window.matchMedia('(orientation: landscape) and (min-width: 981px)');
+
+  const finTexto = () => {
+    let fin = 0;
+    for (const el of $$('h1, .hero__lead', copy)) {
+      const r = document.createRange(); r.selectNodeContents(el);
+      for (const q of r.getClientRects()) if (q.width) fin = Math.max(fin, q.right);
+    }
+    return fin;
+  };
+
+  const encuadrar = () => {
+    const st = caja.style;
+    if (!escritorio.matches) {
+      ['--fondo-x', '--fondo-k', '--fondo-oy', '--texto-fin', 'background-size', 'background-position'].forEach(k => st.removeProperty(k));
+      return;
+    }
+    const c = caja.getBoundingClientRect();
+    const s0 = Math.max(c.width / ANCHO, c.height / ALTO);
+    const oy = (c.height - ALTO * s0) / 2;
+    const ty = oy + TY * s0;                                   // altura del técnico en la portada
+    const texto = finTexto() - c.left, borde = frame.getBoundingClientRect().left - c.left;
+    const ancho = ANCHO * s0;
+    let ox = c.width - ancho, k = 1;                           // alineado a la derecha
+    if (texto > 0 && borde - texto > 60) {
+      const meta = texto + (borde - texto) * .58;              // pasando la mitad del hueco, ya fuera del velo
+      // si el video es más ancho que la portada, primero se recorre sin acercar…
+      ox = clamp(meta - TX * s0, c.width - ancho, 0);
+      // …y solo si aun así el técnico queda tapado se acerca lo necesario
+      if (ox === c.width - ancho) k = clamp((c.width - meta) / ((ANCHO - TX) * s0), 1, 1.3);
+    }
+    st.setProperty('--fondo-x', `${ox.toFixed(1)}px`);
+    st.setProperty('--fondo-k', k.toFixed(4));
+    st.setProperty('--fondo-oy', `${ty.toFixed(1)}px`);
+    if (texto > 0) st.setProperty('--texto-fin', `${Math.round(texto)}px`);
+    // la imagen fija lleva el mismo encuadre que el video (escala k desde el borde derecho)
+    st.backgroundSize = `${(ancho * k).toFixed(1)}px auto`;
+    st.backgroundPosition = `${(c.width - (c.width - ox) * k).toFixed(1)}px ${(ty - TY * s0 * k).toFixed(1)}px`;
+  };
+
+  let pendiente = 0;
+  const programar = () => { cancelAnimationFrame(pendiente); pendiente = requestAnimationFrame(encuadrar); };
+  encuadrar();
+  document.fonts?.ready.then(programar);
+  addEventListener('resize', programar);
+  addEventListener('load', programar);
 }
 
 /* -----------------------------------------------------------------------------
@@ -872,6 +936,7 @@ function boot() {
   initMagnetic();
   initVertical();
   initCintas();
+  initEncuadreFondo();
   initHeroVideo();
   initForm();
 
