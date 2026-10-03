@@ -52,7 +52,7 @@
   isolation: isolate;
 }
 .hero::after {
-  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 32vh;
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 22vh;
   background: linear-gradient(to bottom, transparent, var(--ink-900));
   pointer-events: none; z-index: 1;
 }
@@ -67,14 +67,15 @@
    ver un borde. Mientras carga —o para quien pidió movimiento reducido o
    ahorro de datos— se ve su primer cuadro como imagen fija, y el video entra
    con un fundido cuando de verdad está reproduciéndose.
-   El velo oscurece más del lado del texto y se aclara hacia el centro, donde
-   se ven el técnico en la arista de la torre y el cielo; arriba se oscurece para el menú, y abajo ya lo funde
+   El velo deja luminosos el centro y la derecha, donde se ven la torre y el
+   técnico, y solo protege la columna del texto, lo justo para que se lea
+   aun sobre las nubes más claras; las letras llevan además un halo tenue; arriba se oscurece para el menú, y abajo ya lo funde
    con la página el degradado de .hero::after. */
 .hero__fondo {
   position: absolute; left: 0; right: 0; top: -6%; bottom: -6%;
   z-index: 0;
   pointer-events: none;
-  background: var(--ink-900) url('../video/fondo-ancho.jpg?v=22') 100% 45% / cover no-repeat;
+  background: var(--ink-900) url('../video/fondo-ancho.jpg?v=23') 100% 45% / cover no-repeat;
 }
 .hero__fondo-video {
   display: block; width: 100%; height: 100%;
@@ -82,6 +83,8 @@
   /* se recarga a la derecha: la torre queda detrás del recuadro y el técnico
      de la arista asoma en el hueco entre el texto y el recuadro */
   object-position: 100% 45%;
+  /* la toma es de atardecer y la torre es oscura: se le da más luz */
+  filter: brightness(1.22) contrast(1.04) saturate(1.06);
   opacity: 0;
   transition: opacity 1.4s var(--ease);
 }
@@ -90,17 +93,17 @@
   content: '';
   position: absolute; inset: 0;
   background:
-    linear-gradient(to bottom, rgba(7, 11, 20, .62) 0%, rgba(7, 11, 20, 0) 26%),
-    linear-gradient(90deg, rgba(7, 11, 20, .9) 0%, rgba(7, 11, 20, .76) 32%, rgba(7, 11, 20, .4) 56%, rgba(7, 11, 20, .62) 100%),
-    linear-gradient(rgba(20, 97, 143, .14), rgba(20, 97, 143, .14));
+    linear-gradient(to bottom, rgba(7, 11, 20, .5) 0%, rgba(7, 11, 20, .28) 22%, rgba(7, 11, 20, 0) 32%),
+    linear-gradient(90deg, rgba(7, 11, 20, .82) 0%, rgba(7, 11, 20, .77) 34%, rgba(7, 11, 20, .68) 47%, rgba(7, 11, 20, .06) 65%, rgba(7, 11, 20, .1) 100%),
+    linear-gradient(rgba(20, 97, 143, .06), rgba(20, 97, 143, .06));
 }
 @media (orientation: portrait) {
-  .hero__fondo { background-image: url('../video/fondo-alto.jpg?v=22'); background-position: 50% 50%; }
+  .hero__fondo { background-image: url('../video/fondo-alto.jpg?v=23'); background-position: 50% 50%; }
   .hero__fondo-video { object-position: 50% 50%; }
   .hero__fondo::after {
     background:
-      linear-gradient(to bottom, rgba(7, 11, 20, .6) 0%, rgba(7, 11, 20, .74) 40%, rgba(7, 11, 20, .9) 100%),
-      linear-gradient(rgba(20, 97, 143, .14), rgba(20, 97, 143, .14));
+      linear-gradient(to bottom, rgba(7, 11, 20, .38) 0%, rgba(7, 11, 20, .5) 28%, rgba(7, 11, 20, .78) 50%, rgba(7, 11, 20, .84) 100%),
+      linear-gradient(rgba(20, 97, 143, .08), rgba(20, 97, 143, .08));
   }
 }
 .hero__grid {
@@ -112,13 +115,18 @@
   padding-block: clamp(1.5rem, 4vh, 3.5rem);
 }
 .hero__copy { max-width: 42rem; }
+/* halo tenue para que el texto se lea sobre el video luminoso; con `filter`
+   también abraza las letras con degradado (que son transparentes) */
+.hero__copy > * { filter: drop-shadow(0 1px 14px rgba(7, 11, 20, .55)); }
 .hero h1 { margin-top: 1.5rem; max-width: 16ch; }
 .hero h1 em {
   font-style: normal;
   background: linear-gradient(104deg, var(--steel-soft), var(--brand-lit) 58%, var(--brand));
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
-.hero__lead { margin-top: 1.6rem; max-width: 33rem; }
+.hero__lead { margin-top: 1.6rem; max-width: 33rem; color: rgba(232, 240, 248, .86); }
+.hero .t-kicker { color: var(--steel-soft); }
+.hero .hero__stat span { color: rgba(211, 224, 240, .7); }
 .hero__cta { display: flex; flex-wrap: wrap; gap: .85rem; margin-top: 2.1rem; }
 
 .hero__stats {
