@@ -209,6 +209,27 @@ y a la tarjeta; los que falten simplemente no se muestran.
 
 ## 5. Cómo sustituir imágenes y video
 
+### Video de la portada
+
+La portada ya trae un video real: una toma de dron del Holiday Inn Express con
+la cuadrilla en la fachada. Es un tramo de 8 s (del segundo 8.4 al 16.4 del
+original, a 0.83× de velocidad), recortado al marco vertical 4:5 y con el
+final fundido sobre el principio para que el loop no tenga corte. Está en
+`assets/video/`:
+
+| Archivo | Para | Peso |
+|---|---|---|
+| `hero-720.mp4` / `hero-720.webm` | escritorio (720×900) | 2.2 MB / 1.3 MB |
+| `hero-540.mp4` / `hero-540.webm` | celular (544×680) | 0.7 MB / 0.6 MB |
+| `hero-poster.jpg` | imagen fija mientras carga, y para quien pidió movimiento reducido o ahorro de datos | 66 KB |
+
+El navegador elige solo el archivo adecuado. Se reproduce en silencio y se
+pausa cuando la portada sale de la vista. El original se tomó de la caché de
+la app DJI Fly (720×1280); con el archivo de la memoria del dron se puede
+sacar una versión más nítida con el mismo proceso. Si cambias el video,
+conserva los nombres o actualiza los `<source>` de `index.html`, y sube el
+número `?v=` para que nadie vea el anterior guardado.
+
 Todas las ilustraciones actuales son **material de referencia** generado para
 mostrar el diseño. Se reemplazan conservando el nombre del archivo —o
 actualizando la ruta— sin tocar nada más.
@@ -272,10 +293,10 @@ Ya están cargados los datos reales de contacto, los ocho servicios, la misión,
 la visión, el mensaje del fundador y el portafolio de 12 proyectos.
 **Falta confirmar o completar:**
 
-- [ ] **Obra anunciada en la portada**: la tarjeta dice «Obra en curso · Hotel
-      Westin · Puerto Vallarta». Es un valor de arranque tomado del portafolio;
-      cámbialo por el trabajo que realmente esté en ejecución, o apágalo con
-      `mostrar: false` en `OBRA_ACTIVA` (`data.js`).
+- [ ] **Obra anunciada en la portada**: la tarjeta dice «Obra en curso ·
+      Holiday Inn Express / Select · Puerto Vallarta», para que coincida con
+      el video de la portada. Confirma que esa obra esté en curso y su ciudad
+      (ver el punto siguiente), o cámbiala en `OBRA_ACTIVA` (`data.js`).
 - [ ] **Holiday Inn Express / Select**: en la lista original este proyecto no
       traía ciudad. Quedó provisionalmente en Puerto Vallarta (en `data.js`,
       marcado con un comentario). Corrígelo si corresponde a otra ciudad.
@@ -325,7 +346,7 @@ Vercel o Cloudflare Pages viene activado de fábrica.
 Cada publicación lleva un número de versión visible en el código fuente:
 
 ```html
-<meta name="asap-version" content="15 — 2026-10-03">
+<meta name="asap-version" content="16 — 2026-10-03">
 ```
 
 Para saber qué versión está viva en el servidor, abre el sitio, pulsa `Ctrl+U`
@@ -339,7 +360,7 @@ sin pedirle a nadie que limpie su caché. El costo es una petición condicional
 por archivo, que el servidor contesta con un `304 Not Modified` de pocos bytes.
 
 Como segunda red de seguridad, los estilos y los scripts se piden con un sufijo
-de versión (`base.css?v=15`, y lo mismo en los `import` de `assets/js/`). Al
+de versión (`base.css?v=16`, y lo mismo en los `import` de `assets/js/`). Al
 cambiar ese número la URL cambia, así que ninguna copia guardada puede
 reutilizarse. Si subes una versión nueva, actualiza el número en los cuatro
 sitios de `index.html`, en los `import` de `main.js`, `map.js` y `projects.js`,

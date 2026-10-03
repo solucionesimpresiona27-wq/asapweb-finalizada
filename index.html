@@ -10,7 +10,7 @@
 <meta name="author" content="ASAP Gestión de Proyectos 369">
 <!-- Versión del sitio. Para saber qué versión está publicada, abre el
      código fuente de la página (Ctrl+U) y busca esta línea. -->
-<meta name="asap-version" content="15 — 2026-10-03">
+<meta name="asap-version" content="16 — 2026-10-03">
 <link rel="canonical" href="https://www.asapgp.com.mx/">
 
 <meta property="og:type" content="website">
@@ -27,9 +27,9 @@
 
 <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/base.css?v=15">
-<link rel="stylesheet" href="assets/css/components.css?v=15">
-<link rel="stylesheet" href="assets/css/sections.css?v=15">
+<link rel="stylesheet" href="assets/css/base.css?v=16">
+<link rel="stylesheet" href="assets/css/components.css?v=16">
+<link rel="stylesheet" href="assets/css/sections.css?v=16">
 
 <script type="application/ld+json">
 {
@@ -453,8 +453,22 @@
 
       <div class="hero__visual" data-reveal="zoom" style="--d:180ms">
         <div class="hero__rope" aria-hidden="true"></div>
-        <figure class="hero__frame" data-curtain data-parallax="-.045">
-          <img src="assets/img/hero-fachada.svg" alt="Ilustración de referencia: técnico descendiendo por cuerdas sobre una fachada de muro cortina" width="1600" height="1100" fetchpriority="high">
+        <figure class="hero__frame hero__frame--video" data-curtain data-parallax="-.045">
+          <!-- Toma de dron de una obra real: un tramo de 8 s en loop continuo (el
+               final se funde con el principio). Va en MP4 (todos los
+               navegadores comunes) y en WebM de respaldo, en una versión para
+               escritorio y otra más ligera para celular. Sin `autoplay` a propósito:
+               main.js lo reproduce solo si el visitante no pidió movimiento
+               reducido ni ahorro de datos, y lo pausa cuando la portada sale
+               de la vista. Sin JavaScript se queda la imagen fija del póster. -->
+          <video class="hero__video" muted loop playsinline preload="metadata"
+                 poster="assets/video/hero-poster.jpg?v=16" width="720" height="900"
+                 aria-label="Técnicos de ASAP descendiendo por cuerdas sobre la fachada del Holiday Inn Express, toma de dron">
+            <source src="assets/video/hero-720.mp4?v=16" type="video/mp4" media="(min-width: 701px)">
+            <source src="assets/video/hero-720.webm?v=16" type="video/webm" media="(min-width: 701px)">
+            <source src="assets/video/hero-540.mp4?v=16" type="video/mp4">
+            <source src="assets/video/hero-540.webm?v=16" type="video/webm">
+          </video>
 
           <!-- Obra en curso: la cuadrilla desciende y la fachada va quedando
                limpia detrás. Son capas sobre la imagen, así que el efecto se
@@ -939,6 +953,6 @@
   </div>
 </noscript>
 
-<script type="module" src="assets/js/main.js?v=15"></script>
+<script type="module" src="assets/js/main.js?v=16"></script>
 </body>
 </html>

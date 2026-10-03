@@ -4,7 +4,7 @@
    ficha ampliada. Los campos técnicos son opcionales: la tarjeta y la ficha
    muestran solo los que tienen contenido.
    ========================================================================== */
-import { PROYECTOS, SERVICIOS, ZONAS } from './data.js?v=15';
+import { PROYECTOS, SERVICIOS, ZONAS } from './data.js?v=16';
 
 const $  = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];

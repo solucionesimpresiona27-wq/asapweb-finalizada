@@ -2,9 +2,9 @@
    ASAP 369 — Orquestador de interfaz
    Precarga · cursor · navegación · revelados · parallax · secciones dinámicas
    ========================================================================== */
-import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS, CINTAS } from './data.js?v=15';
-import { initMapa } from './map.js?v=15';
-import { initProyectos } from './projects.js?v=15';
+import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS, CINTAS } from './data.js?v=16';
+import { initMapa } from './map.js?v=16';
+import { initProyectos } from './projects.js?v=16';
 
 const $  = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -437,6 +437,30 @@ function initVertical() {
 }
 
 /* -----------------------------------------------------------------------------
+   Video de la portada
+   -----------------------------------------------------------------------------
+   Se reproduce solo, en silencio y en loop, únicamente si el visitante no
+   pidió movimiento reducido ni ahorro de datos; en esos casos se queda la
+   imagen fija del póster. Se pausa cuando la portada sale de la vista, para
+   no gastar batería ni procesador mientras se lee el resto de la página.
+   -------------------------------------------------------------------------- */
+function initHeroVideo() {
+  const video = $('.hero__video');
+  if (!video) return;
+  const ahorro = navigator.connection?.saveData;
+  if (REDUCED || ahorro) return;
+
+  video.muted = true;                  // los navegadores solo dejan reproducir solo sin sonido
+  video.preload = 'auto';
+  const reproducir = () => video.play().catch(() => {});
+
+  new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) reproducir();
+    else video.pause();
+  }, { threshold: 0.05 }).observe(video);
+}
+
+/* -----------------------------------------------------------------------------
    Cintas: proveedores y con quienes hemos trabajado
    -----------------------------------------------------------------------------
    Cada fila es un grupo de frases repetido hasta cubrir la pantalla, y ese
@@ -844,6 +868,7 @@ function boot() {
   initMagnetic();
   initVertical();
   initCintas();
+  initHeroVideo();
   initForm();
 
   document.dispatchEvent(new CustomEvent('asap:rendered'));

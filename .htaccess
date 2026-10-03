@@ -29,6 +29,8 @@ Options -Indexes
   AddType image/svg+xml               .svg
   AddType application/manifest+json   .webmanifest
   AddType text/javascript             .js
+  AddType video/mp4                   .mp4
+  AddType video/webm                  .webm
   AddCharset UTF-8                    .html .css .js .json .webmanifest .svg
 </IfModule>
 
@@ -59,6 +61,7 @@ Options -Indexes
   ExpiresByType image/jpeg                "access plus 6 months"
   ExpiresByType image/png                 "access plus 6 months"
   ExpiresByType video/mp4                 "access plus 6 months"
+  ExpiresByType video/webm                "access plus 6 months"
 </IfModule>
 
 <IfModule mod_headers.c>
@@ -67,7 +70,7 @@ Options -Indexes
   <FilesMatch "\.(html|css|js)$">
     Header set Cache-Control "no-cache, must-revalidate"
   </FilesMatch>
-  <FilesMatch "\.(woff2|svg|webp|jpg|jpeg|png|mp4)$">
+  <FilesMatch "\.(woff2|svg|webp|jpg|jpeg|png|mp4|webm)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
 </IfModule>
