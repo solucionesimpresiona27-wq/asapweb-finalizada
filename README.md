@@ -226,23 +226,23 @@ recortado al marco 4:5, con el final fundido sobre el principio. La tarjeta
 | `hero-540.mp4` / `.webm` | celular (544×680) | 0.7 MB / 0.6 MB |
 | `hero-poster.jpg` | imagen fija | 67 KB |
 
-**De fondo** (`.hero__fondo`): toma desde abajo de una torre de cristal con un
-técnico descendiendo por la arista. El original (iPhone, 6.4 s) estaba a
-pulso y con zoom, así que se tomaron los dos tramos con el mismo encuadre
-(1.9–3.5 s y 5.35–6.4 s), se fijó cada cuadro contra uno de referencia usando
-la retícula de ventanas del edificio —queda como en tripié: el edificio
-quieto, se mueven las nubes y el técnico—, se unieron con un fundido y se
-bajó la velocidad a 0.45× generando cuadros intermedios. El loop dura 4.7 s
-y no tiene costura. Hay versión horizontal y vertical; el navegador toma la
-de su pantalla, la descarga solo cuando hace falta y la mueve un poco más
-lento que el scroll. Un velo oscuro más cargado del lado del texto mantiene
-la lectura.
+**De fondo** (`.hero__fondo`): una torre de cristal al atardecer con un
+técnico colgado de la arista y nubes en movimiento. Es un video generado con
+IA (Gemini), horizontal, de 10 s. La cámara hace un recorrido lateral lento,
+así que el loop no une el final con el principio —se verían los edificios
+duplicados—: es un vaivén. La toma avanza 8 s, frena con suavidad, regresa
+otros 8 s y vuelve a frenar, siempre con velocidad cero en los extremos, de
+modo que no hay corte ni rebote. Para que el frenado sea fluido se generaron
+cuadros intermedios (72 por segundo de base). En escritorio el encuadre se
+recarga a la derecha, para que la torre quede detrás del recuadro y el
+técnico asome entre el texto y el recuadro; en celular se usa un recorte
+vertical centrado en el técnico.
 
 | Archivo | Para | Peso |
 |---|---|---|
-| `fondo-ancho.mp4` / `.webm` | pantallas horizontales (1152×886) | 1.3 MB / 0.4 MB |
-| `fondo-alto.mp4` / `.webm` | pantallas verticales, el celular (540×960) | 0.7 MB / 0.3 MB |
-| `fondo-ancho.jpg` / `fondo-alto.jpg` | imagen fija | ~40 KB |
+| `fondo-ancho.mp4` / `.webm` | pantallas horizontales (1600×900) | 2.3 MB / 1.8 MB |
+| `fondo-alto.mp4` / `.webm` | pantallas verticales, el celular (540×960) | 0.8 MB / 0.9 MB |
+| `fondo-ancho.jpg` / `fondo-alto.jpg` | imagen fija | ~135 KB / ~63 KB |
 
 Si cambias algún video, conserva los nombres y sube el número `?v=` en
 `index.html` y en `sections.css`, para que nadie vea el anterior guardado.
@@ -363,7 +363,7 @@ Vercel o Cloudflare Pages viene activado de fábrica.
 Cada publicación lleva un número de versión visible en el código fuente:
 
 ```html
-<meta name="asap-version" content="20 — 2026-10-03">
+<meta name="asap-version" content="21 — 2026-10-03">
 ```
 
 Para saber qué versión está viva en el servidor, abre el sitio, pulsa `Ctrl+U`
@@ -377,7 +377,7 @@ sin pedirle a nadie que limpie su caché. El costo es una petición condicional
 por archivo, que el servidor contesta con un `304 Not Modified` de pocos bytes.
 
 Como segunda red de seguridad, los estilos y los scripts se piden con un sufijo
-de versión (`base.css?v=20`, y lo mismo en los `import` de `assets/js/`). Al
+de versión (`base.css?v=21`, y lo mismo en los `import` de `assets/js/`). Al
 cambiar ese número la URL cambia, así que ninguna copia guardada puede
 reutilizarse. Si subes una versión nueva, actualiza el número en los cuatro
 sitios de `index.html`, en los `import` de `main.js`, `map.js` y `projects.js`,

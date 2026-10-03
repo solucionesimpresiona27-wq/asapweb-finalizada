@@ -68,17 +68,20 @@
    ahorro de datos— se ve su primer cuadro como imagen fija, y el video entra
    con un fundido cuando de verdad está reproduciéndose.
    El velo oscurece más del lado del texto y se aclara hacia el centro, donde
-   se ven el técnico en la arista de la torre y las nubes; arriba se oscurece para el menú, y abajo ya lo funde
+   se ven el técnico en la arista de la torre y el cielo; arriba se oscurece para el menú, y abajo ya lo funde
    con la página el degradado de .hero::after. */
 .hero__fondo {
   position: absolute; left: 0; right: 0; top: -6%; bottom: -6%;
   z-index: 0;
   pointer-events: none;
-  background: var(--ink-900) url('../video/fondo-ancho.jpg?v=20') 50% 50% / cover no-repeat;
+  background: var(--ink-900) url('../video/fondo-ancho.jpg?v=21') 100% 45% / cover no-repeat;
 }
 .hero__fondo-video {
   display: block; width: 100%; height: 100%;
   object-fit: cover;
+  /* se recarga a la derecha: la torre queda detrás del recuadro y el técnico
+     de la arista asoma en el hueco entre el texto y el recuadro */
+  object-position: 100% 45%;
   opacity: 0;
   transition: opacity 1.4s var(--ease);
 }
@@ -88,11 +91,12 @@
   position: absolute; inset: 0;
   background:
     linear-gradient(to bottom, rgba(7, 11, 20, .62) 0%, rgba(7, 11, 20, 0) 26%),
-    linear-gradient(90deg, rgba(7, 11, 20, .92) 0%, rgba(7, 11, 20, .8) 32%, rgba(7, 11, 20, .46) 56%, rgba(7, 11, 20, .66) 100%),
+    linear-gradient(90deg, rgba(7, 11, 20, .9) 0%, rgba(7, 11, 20, .76) 32%, rgba(7, 11, 20, .4) 56%, rgba(7, 11, 20, .62) 100%),
     linear-gradient(rgba(20, 97, 143, .14), rgba(20, 97, 143, .14));
 }
 @media (orientation: portrait) {
-  .hero__fondo { background-image: url('../video/fondo-alto.jpg?v=20'); }
+  .hero__fondo { background-image: url('../video/fondo-alto.jpg?v=21'); background-position: 50% 50%; }
+  .hero__fondo-video { object-position: 50% 50%; }
   .hero__fondo::after {
     background:
       linear-gradient(to bottom, rgba(7, 11, 20, .6) 0%, rgba(7, 11, 20, .74) 40%, rgba(7, 11, 20, .9) 100%),
