@@ -63,26 +63,27 @@
 }
 .hero__wrap { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; }
 
-/* Video de fondo. Es más alto que la sección para que el parallax nunca deje
-   ver un borde. Mientras carga —o para quien pidió movimiento reducido o
-   ahorro de datos— se ve su primer cuadro como imagen fija, y el video entra
-   con un fundido cuando de verdad está reproduciéndose.
+/* Video de fondo. Ocupa exactamente la portada y se muestra con su encuadre
+   original, centrado, sin ampliarlo más de lo necesario para cubrirla.
+   Mientras carga —o para quien pidió movimiento reducido o ahorro de
+   datos— se ve su primer cuadro como imagen fija, y el video entra con un
+   fundido cuando de verdad está reproduciéndose.
    El velo deja luminosos el centro y la derecha, donde se ven la torre y el
    técnico, y solo protege la columna del texto, lo justo para que se lea
-   aun sobre las nubes más claras; las letras llevan además un halo tenue; arriba se oscurece para el menú, y abajo ya lo funde
-   con la página el degradado de .hero::after. */
+   aun sobre las nubes más claras; las letras llevan además un halo tenue;
+   abajo lo funde con la página el degradado de .hero::after. */
 .hero__fondo {
-  position: absolute; left: 0; right: 0; top: -6%; bottom: -6%;
+  position: absolute; inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: var(--ink-900) url('../video/fondo-ancho.jpg?v=23') 100% 45% / cover no-repeat;
+  background: var(--ink-900) url('../video/fondo-ancho.jpg?v=24') 100% 50% / cover no-repeat;
 }
 .hero__fondo-video {
   display: block; width: 100%; height: 100%;
   object-fit: cover;
-  /* se recarga a la derecha: la torre queda detrás del recuadro y el técnico
-     de la arista asoma en el hueco entre el texto y el recuadro */
-  object-position: 100% 45%;
+  /* sin ampliar: solo se elige mostrar la parte derecha de la toma, donde
+     están la torre y el técnico, para que asomen junto al recuadro */
+  object-position: 100% 50%;
   /* la toma es de atardecer y la torre es oscura: se le da más luz */
   filter: brightness(1.22) contrast(1.04) saturate(1.06);
   opacity: 0;
@@ -98,7 +99,7 @@
     linear-gradient(rgba(20, 97, 143, .06), rgba(20, 97, 143, .06));
 }
 @media (orientation: portrait) {
-  .hero__fondo { background-image: url('../video/fondo-alto.jpg?v=23'); background-position: 50% 50%; }
+  .hero__fondo { background-image: url('../video/fondo-alto.jpg?v=24'); background-position: 50% 50%; }
   .hero__fondo-video { object-position: 50% 50%; }
   .hero__fondo::after {
     background:
@@ -165,6 +166,13 @@
 /* el póster es el primer cuadro del loop, así que el paso de la imagen fija
    al video en movimiento no se nota; el fondo cubre el instante de carga */
 .hero__video { background: var(--ink-800); }
+
+/* En pantallas muy anchas el video de fondo ya ocupa todo el ancho y no se
+   puede recorrer sin ampliarlo: el recuadro se angosta un poco y se pega a
+   la derecha, para que la torre y el técnico del fondo asomen junto a él. */
+@media (min-width: 1700px) {
+  .hero__visual { justify-self: end; width: min(100%, 27rem); }
+}
 
 /* =============================================================================
    OBRA EN CURSO
@@ -255,7 +263,7 @@
   background: linear-gradient(to top, rgba(7, 11, 20, .72), transparent 52%);
 }
 .hero__badge {
-  position: absolute; left: clamp(-1rem, -2vw, -2.6rem); bottom: 8%;
+  position: absolute; right: clamp(-1rem, -2vw, -2.6rem); bottom: 8%;
   z-index: 3;
   padding: 1.15rem 1.35rem;
   display: grid; gap: .55rem;
