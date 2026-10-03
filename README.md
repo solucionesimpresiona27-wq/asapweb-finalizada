@@ -121,16 +121,17 @@ Los textos fijos (titulares de sección, portada y pie) están directamente en
 
 ### Cambiar el proyecto que anuncia la portada
 
-La tarjeta sobre la imagen principal dice «Proyecto en curso», con la ciudad y
-el estado del proyecto y una barra de avance animada. Se controla desde
-`OBRA_ACTIVA` en `data.js`:
+La tarjeta sobre el video del recuadro dice «Proyecto en curso», con la ciudad
+y el estado, el servicio que se está ejecutando y una barra de avance animada.
+Se controla desde `OBRA_ACTIVA` en `data.js`:
 
 ```js
 export const OBRA_ACTIVA = {
   mostrar: true,
-  proyecto: 'holiday-inn',     // id de PROYECTOS: toma sola la ubicación
-  ciudad: null,                // o escríbela a mano dejando `proyecto: null`
-  estado: null
+  proyecto: null,              // o el id de un proyecto para tomar su ubicación
+  ciudad: 'Guadalajara',
+  estado: 'Jalisco',
+  servicio: 'Pintura de fachadas'   // null para ocultar esa línea
 };
 ```
 
@@ -216,15 +217,17 @@ página. Se reproducen únicamente si el visitante no pidió movimiento reducido
 ni ahorro de datos; en esos casos se ve su primer cuadro como imagen fija.
 
 **En el recuadro**: toma de dron del Holiday Inn Express con la cuadrilla en
-la fachada. Tramo de 8 s (segundos 8.4–16.4 del original, a 0.83×),
-recortado al marco 4:5, con el final fundido sobre el principio. La tarjeta
-«Proyecto en curso» muestra la ciudad de esa obra para que coincida.
+la fachada. Recorre los primeros 20 s del original —la fachada de ladrillo
+con los técnicos, el giro hacia la esquina del letrero y el costado del
+edificio— a 0.85× de velocidad, recortado al marco 4:5. El último segundo y
+medio se funde sobre el principio, así que el loop de 22 s no tiene corte.
+La tarjeta «Proyecto en curso» va encima.
 
 | Archivo | Para | Peso |
 |---|---|---|
-| `hero-720.mp4` / `.webm` | escritorio (720×900) | 2.2 MB / 1.3 MB |
-| `hero-540.mp4` / `.webm` | celular (544×680) | 0.7 MB / 0.6 MB |
-| `hero-poster.jpg` | imagen fija | 67 KB |
+| `hero-720.mp4` / `.webm` | escritorio (720×900) | 3.8 MB / 3.2 MB |
+| `hero-540.mp4` / `.webm` | celular (544×680) | 1.5 MB / 1.5 MB |
+| `hero-poster.jpg` | imagen fija | 63 KB |
 
 **De fondo** (`.hero__fondo`): una torre de cristal al atardecer con un
 técnico colgado de la arista y nubes en movimiento. Es un video generado con
@@ -311,9 +314,8 @@ la visión, el mensaje del fundador y el portafolio de 12 proyectos.
 **Falta confirmar o completar:**
 
 - [ ] **Proyecto anunciado en la portada**: la tarjeta dice «Proyecto en
-      curso · Puerto Vallarta, Jalisco», tomado del Holiday Inn Express que
-      aparece en el video del recuadro. Confirma que esté en curso y su ciudad
-      (ver el punto siguiente), o cámbialo en `OBRA_ACTIVA` (`data.js`).
+      curso · Guadalajara, Jalisco · Pintura de fachadas». Mantenlo al día en
+      `OBRA_ACTIVA` (`data.js`).
 - [ ] **Holiday Inn Express / Select**: en la lista original este proyecto no
       traía ciudad. Quedó provisionalmente en Puerto Vallarta (en `data.js`,
       marcado con un comentario). Corrígelo si corresponde a otra ciudad.
@@ -363,7 +365,7 @@ Vercel o Cloudflare Pages viene activado de fábrica.
 Cada publicación lleva un número de versión visible en el código fuente:
 
 ```html
-<meta name="asap-version" content="21 — 2026-10-03">
+<meta name="asap-version" content="22 — 2026-10-03">
 ```
 
 Para saber qué versión está viva en el servidor, abre el sitio, pulsa `Ctrl+U`
@@ -377,7 +379,7 @@ sin pedirle a nadie que limpie su caché. El costo es una petición condicional
 por archivo, que el servidor contesta con un `304 Not Modified` de pocos bytes.
 
 Como segunda red de seguridad, los estilos y los scripts se piden con un sufijo
-de versión (`base.css?v=21`, y lo mismo en los `import` de `assets/js/`). Al
+de versión (`base.css?v=22`, y lo mismo en los `import` de `assets/js/`). Al
 cambiar ese número la URL cambia, así que ninguna copia guardada puede
 reutilizarse. Si subes una versión nueva, actualiza el número en los cuatro
 sitios de `index.html`, en los `import` de `main.js`, `map.js` y `projects.js`,

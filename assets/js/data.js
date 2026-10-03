@@ -198,21 +198,22 @@ export const PROYECTOS = [
 /* -----------------------------------------------------------------------------
    4b. Proyecto en curso — tarjeta de la portada
    -----------------------------------------------------------------------------
-   Es lo que aparece sobre la imagen principal: «Proyecto en curso», la ciudad
-   y el estado, y la barra de avance animada.
+   Es lo que aparece sobre el video del recuadro: «Proyecto en curso», la
+   ciudad y el estado, el servicio que se está ejecutando y la barra de
+   avance animada.
 
-   · Para anunciar otro proyecto, cambia `proyecto` por el `id` de cualquier
-     proyecto de la lista de arriba y se toma sola su ubicación.
-   · Si el proyecto todavía no está en el portafolio, deja `proyecto: null` y
-     escribe `ciudad` y `estado` a mano.
+   · `ciudad` y `estado` se escriben a mano. Si prefieres tomarlos de un
+     proyecto del portafolio, pon su `id` en `proyecto` y deja esos dos en null.
+   · `servicio` es el texto de la segunda línea; déjalo en null para ocultarla.
    · Si en algún momento no quieres anunciar ninguno, pon `mostrar: false`:
      la tarjeta vuelve al texto genérico de trabajos verticales.
    -------------------------------------------------------------------------- */
 export const OBRA_ACTIVA = {
   mostrar: true,
-  proyecto: 'holiday-inn',     // id de PROYECTOS (coincide con el video del recuadro), o null
-  ciudad: null,                // se usan solo si `proyecto` es null
-  estado: null
+  proyecto: null,              // id de PROYECTOS, o null para usar ciudad y estado
+  ciudad: 'Guadalajara',
+  estado: 'Jalisco',
+  servicio: 'Pintura de fachadas'
 };
 
 /* -----------------------------------------------------------------------------

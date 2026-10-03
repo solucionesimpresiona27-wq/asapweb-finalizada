@@ -74,7 +74,7 @@
   position: absolute; left: 0; right: 0; top: -6%; bottom: -6%;
   z-index: 0;
   pointer-events: none;
-  background: var(--ink-900) url('../video/fondo-ancho.jpg?v=21') 100% 45% / cover no-repeat;
+  background: var(--ink-900) url('../video/fondo-ancho.jpg?v=22') 100% 45% / cover no-repeat;
 }
 .hero__fondo-video {
   display: block; width: 100%; height: 100%;
@@ -95,7 +95,7 @@
     linear-gradient(rgba(20, 97, 143, .14), rgba(20, 97, 143, .14));
 }
 @media (orientation: portrait) {
-  .hero__fondo { background-image: url('../video/fondo-alto.jpg?v=21'); background-position: 50% 50%; }
+  .hero__fondo { background-image: url('../video/fondo-alto.jpg?v=22'); background-position: 50% 50%; }
   .hero__fondo-video { object-position: 50% 50%; }
   .hero__fondo::after {
     background:

@@ -2,9 +2,9 @@
    ASAP 369 — Orquestador de interfaz
    Precarga · cursor · navegación · revelados · parallax · secciones dinámicas
    ========================================================================== */
-import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS, CINTAS } from './data.js?v=21';
-import { initMapa } from './map.js?v=21';
-import { initProyectos } from './projects.js?v=21';
+import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS, CINTAS } from './data.js?v=22';
+import { initMapa } from './map.js?v=22';
+import { initProyectos } from './projects.js?v=22';
 
 const $  = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -644,8 +644,9 @@ function renderMarquee() {
   track.after(clone);
 }
 
-/* Tarjeta de proyecto en curso sobre la imagen de portada: solo la ubicación
-   y la barra de avance */
+/* Tarjeta de proyecto en curso sobre la imagen de portada: la ubicación, el
+   servicio y la barra de avance */
+const ICON_RODILLO = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="14" height="5.5" rx="1.6"/><path d="M18 6.2h1.6a1 1 0 0 1 1 1v3.3a1 1 0 0 1-1 1H12v3"/><rect x="10.6" y="14.5" width="2.8" height="6.5" rx="1"/></svg>';
 function renderObraActiva() {
   const caja = $('#heroObra');
   if (!caja) return;
@@ -669,6 +670,7 @@ function renderObraActiva() {
   caja.innerHTML = `
     <span class="pill pill--live"><i class="pill__dot"></i> Proyecto en curso</span>
     <span class="hero__badge-lugar">${ICON_PIN}${lugar}</span>
+    ${o.servicio ? `<span class="hero__badge-lugar">${ICON_RODILLO}${o.servicio}</span>` : ''}
     ${barra}`;
 }
 
