@@ -291,13 +291,22 @@ El contenedor ya recorta, redondea y aplica el degradado sobre el video.
 
 ### Logotipo
 
-El isotipo que se usa hoy en navegación, precarga, pie y favicon es una
-**reconstrucción vectorial** del logo de la empresa, dibujada para no depender
-de un archivo externo. Para usar el original:
+El sitio usa el **logotipo oficial** de la empresa, tomado en vectores de
+`ASAP_2.pdf` (primera página), sin fondo:
 
-- Sustituye `assets/img/favicon.svg`.
-- Reemplaza el bloque `<svg class="logo__mark">` en `index.html` (aparece tres
-  veces: navegación, pie y precarga) por el SVG oficial.
+| Dónde | Qué versión | Archivo |
+|---|---|---|
+| Navegación | corta: edificios y «asap» (el texto chico no se leería a esa altura) | SVG dentro de `index.html` (`<svg class="logo__img">`) |
+| Pie de página y precarga | completa, con «Gestión de Proyectos 369» | `assets/img/logo-asap.svg` |
+| Pestaña del navegador | solo los edificios, con línea más gruesa, sobre cuadro oscuro | `assets/img/favicon.svg` |
+| Espalda del técnico ilustrado | corta, en un solo color, como estampado | dentro de `index.html` |
+
+Colores: «asap» en el azul del PDF (`#0095DA`); los edificios con el
+degradado del logo (azul → azul pálido → gris → azul marino). Como el sitio
+es oscuro, el gris del texto se aclaró (`#C3C8CE`) y el extremo azul marino
+del degradado subió un tono (`#3D6C97`) para que no se pierdan sobre el
+fondo. Si algún día se necesita la versión para fondo claro, basta con
+regresar el texto a `#6C6E70` y el extremo del degradado a `#2C5B85`.
 
 ---
 
@@ -375,7 +384,7 @@ Vercel o Cloudflare Pages viene activado de fábrica.
 Cada publicación lleva un número de versión visible en el código fuente:
 
 ```html
-<meta name="asap-version" content="25 — 2026-10-03">
+<meta name="asap-version" content="26 — 2026-10-03">
 ```
 
 Para saber qué versión está viva en el servidor, abre el sitio, pulsa `Ctrl+U`
@@ -389,7 +398,7 @@ sin pedirle a nadie que limpie su caché. El costo es una petición condicional
 por archivo, que el servidor contesta con un `304 Not Modified` de pocos bytes.
 
 Como segunda red de seguridad, los estilos y los scripts se piden con un sufijo
-de versión (`base.css?v=25`, y lo mismo en los `import` de `assets/js/`). Al
+de versión (`base.css?v=26`, y lo mismo en los `import` de `assets/js/`). Al
 cambiar ese número la URL cambia, así que ninguna copia guardada puede
 reutilizarse. Si subes una versión nueva, actualiza el número en los cuatro
 sitios de `index.html`, en los `import` de `main.js`, `map.js` y `projects.js`,

@@ -80,7 +80,7 @@
   position: absolute; inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: var(--ink-900) url('../video/fondo-ancho.jpg?v=25') 100% 50% / cover no-repeat;
+  background: var(--ink-900) url('../video/fondo-ancho.jpg?v=26') 100% 50% / cover no-repeat;
 }
 .hero__fondo-video {
   display: block; width: 100%; height: 100%;
@@ -105,7 +105,7 @@
 /* con una sola columna el texto ocupa casi todo el ancho: el velo lo sigue cubriendo */
 @media (max-width: 980px) { .hero__fondo::after { --fin: 88vw; } }
 @media (orientation: portrait) {
-  .hero__fondo { background-image: url('../video/fondo-alto.jpg?v=25'); background-position: 50% 50%; }
+  .hero__fondo { background-image: url('../video/fondo-alto.jpg?v=26'); background-position: 50% 50%; }
   .hero__fondo-video { object-position: 50% 50%; }
   .hero__fondo::after {
     background:

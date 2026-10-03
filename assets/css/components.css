@@ -34,16 +34,15 @@
   transition: opacity .7s var(--ease), visibility 0s linear .7s;
 }
 .preload__inner { display: grid; justify-items: center; gap: 2.2rem; width: min(360px, 74vw); }
-.preload__mark { width: 116px; opacity: .96; }
-.preload__mark .pl-stroke {
-  stroke-dasharray: 260;
-  stroke-dashoffset: 260;
-  animation: pl-draw 1.5s var(--ease-io) forwards;
+/* el logotipo oficial aparece de abajo hacia arriba, como si se levantara */
+.preload__logo {
+  display: block; width: 158px; height: auto;
+  animation: pl-logo 1.5s var(--ease-io) both;
 }
-.preload__mark .pl-stroke:nth-child(2) { animation-delay: .12s; }
-.preload__mark .pl-stroke:nth-child(3) { animation-delay: .24s; }
-.preload__mark .pl-stroke:nth-child(4) { animation-delay: .36s; }
-@keyframes pl-draw { to { stroke-dashoffset: 0; } }
+@keyframes pl-logo {
+  from { clip-path: inset(100% 0 0 0); transform: translateY(10px); opacity: .3; }
+  to   { clip-path: inset(0 0 0 0);    transform: none;              opacity: 1; }
+}
 
 .preload__bar { width: 100%; height: 1px; background: var(--line); position: relative; overflow: hidden; }
 .preload__bar i {
@@ -107,27 +106,21 @@ body.cur-hidden .cursor, body.cur-hidden .cursor-ring { opacity: 0; }
 }
 
 /* --- Logotipo ------------------------------------------------------------- */
-.logo { display: inline-flex; align-items: center; gap: .78rem; }
-.logo__mark { width: 44px; height: 44px; flex: none; }
-.logo__type { display: grid; gap: .1rem; line-height: 1; }
-.logo__word {
-  font-family: 'Outfit', sans-serif;
-  font-size: 1.44rem;
-  font-weight: 500;
-  letter-spacing: -.04em;
-  color: var(--tx-hi);
+/* Logotipo oficial de ASAP (ASAP_2.pdf), sin fondo. En el menú va la versión
+   corta —edificios y «asap»— porque «Gestión de Proyectos 369» no se
+   alcanzaría a leer a esa altura; el pie de página y la precarga llevan el
+   logotipo completo (assets/img/logo-asap.svg). Sobre el fondo oscuro, el
+   gris del texto se aclaró y el extremo azul marino del degradado se subió
+   un tono para que no se pierdan. */
+.logo { display: inline-flex; align-items: center; flex: none; }
+.logo__img {
+  display: block;
+  height: 68px; width: auto;
+  aspect-ratio: 102.1 / 91;
+  transition: height .45s var(--ease);
 }
-.logo__word i { font-style: normal; color: var(--brand); }
-.logo__sub {
-  font-family: 'Outfit', sans-serif;
-  font-size: .52rem;
-  letter-spacing: .21em;
-  text-transform: uppercase;
-  color: var(--tx-low);
-  white-space: nowrap;
-}
-.panel-light .logo__word { color: var(--tx-ink); }
-.panel-light .logo__sub { color: rgba(19, 31, 53, .5); }
+.nav.is-stuck .logo__img { height: 56px; }
+.logo--completo .logo__img { height: auto; width: clamp(150px, 13vw, 190px); aspect-ratio: 1013 / 912; }
 
 /* --- Navegación ----------------------------------------------------------- */
 .nav {
@@ -202,12 +195,7 @@ body.menu-open .nav__burger i:nth-child(2) { transform: translateY(-3px) rotate(
 @media (max-width: 680px) {
   .nav__in { gap: 1rem; }
   .nav__side > .btn { display: none; }
-  .logo__mark { width: 36px; height: 36px; }
-  .logo__word { font-size: 1.24rem; }
-  .logo__sub { font-size: .46rem; letter-spacing: .15em; }
-}
-@media (max-width: 380px) {
-  .logo__sub { display: none; }
+  .logo__img, .nav.is-stuck .logo__img { height: 50px; }
 }
 
 /* --- Menú móvil ----------------------------------------------------------- */
