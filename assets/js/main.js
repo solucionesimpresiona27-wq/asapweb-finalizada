@@ -2,9 +2,9 @@
    ASAP 369 — Orquestador de interfaz
    Precarga · cursor · navegación · revelados · parallax · secciones dinámicas
    ========================================================================== */
-import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS, CINTAS } from './data.js?v=26';
-import { initMapa } from './map.js?v=26';
-import { initProyectos } from './projects.js?v=26';
+import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, CINTAS, ENTIDADES, UBICACIONES, ubicacionesDe } from './data.js?v=27';
+import { initMapa } from './map.js?v=27';
+import { initProyectos } from './projects.js?v=27';
 
 const $  = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -716,10 +716,7 @@ function renderObraActiva() {
   if (!caja) return;
 
   const o = OBRA_ACTIVA;
-  const p = o.proyecto ? PROYECTOS.find(x => x.id === o.proyecto) : null;
-  const ciudad = o.ciudad || p?.ciudad;
-  const estado = o.estado || p?.estado;
-  const lugar = [ciudad, estado && estado !== ciudad ? estado : null].filter(Boolean).join(', ');
+  const lugar = [o.ciudad, o.estado && o.estado !== o.ciudad ? o.estado : null].filter(Boolean).join(', ');
   const barra = '<span class="hero__prog" aria-hidden="true"><i></i></span>';
 
   if (!o.mostrar || !lugar) {
@@ -865,6 +862,32 @@ function renderMetricas() {
 }
 
 /* -----------------------------------------------------------------------------
+   Cobertura fuera del mapa: los indicadores de la portada, la lista de
+   estados del menú y del contacto, el pie de página y el selector de ciudad
+   del formulario salen de ENTIDADES y UBICACIONES, igual que el mapa.
+   -------------------------------------------------------------------------- */
+function renderCobertura() {
+  const datos = { especialidades: SERVICIOS.length, ubicaciones: UBICACIONES.length, estados: ENTIDADES.length };
+  $$('[data-dato]').forEach(el => { el.textContent = datos[el.dataset.dato] ?? el.textContent; });
+  $$('[data-cobertura]').forEach(el => { el.textContent = ENTIDADES.map(e => e.nombre).join(' · '); });
+
+  const pie = $('#footCobertura');
+  if (pie) {
+    pie.innerHTML = ENTIDADES
+      .map(e => `<li><a href="#cobertura" data-ver-estado="${e.id}">${e.nombre}</a></li>`).join('');
+  }
+
+  // en el formulario, agrupadas por estado
+  const campo = $('#f-ciudad');
+  if (campo) {
+    campo.innerHTML = '<option value="">Selecciona una ciudad</option>'
+      + ENTIDADES.map(e => `<optgroup label="${e.nombre}">${
+          ubicacionesDe(e.id).map(u => `<option>${u.nombre}</option>`).join('')}</optgroup>`).join('')
+      + '<option>Otra</option>';
+  }
+}
+
+/* -----------------------------------------------------------------------------
    Formulario (maqueta — sin backend)
    -------------------------------------------------------------------------- */
 function renderContacto() {
@@ -924,6 +947,7 @@ function boot() {
   renderVerticales();
   renderProceso();
   renderMetricas();
+  renderCobertura();
   renderContacto();
   initProyectos();
   initMapa();

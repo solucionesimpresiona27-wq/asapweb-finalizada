@@ -1,8 +1,8 @@
 # ASAP Gestión de Proyectos 369 — Sitio web
 
 Sitio institucional de una sola página para **ASAP Gestión de Proyectos 369**:
-mantenimiento de fachadas y trabajos verticales en Querétaro, Guadalajara,
-Puerto Vallarta y Morelia.
+mantenimiento de fachadas y trabajos verticales, con base en Guadalajara y obra
+en 18 ciudades y destinos de nueve estados, del Pacífico al Caribe.
 
 Construido sin dependencias, sin proceso de compilación y sin servicios de
 terceros: HTML, CSS y JavaScript nativo (módulos ES). Se publica copiando la
@@ -21,43 +21,48 @@ carpeta a cualquier hosting estático.
 | 4 | Mensaje del fundador | — | Carta firmada con retrato |
 | 5 | Servicios principales | `#servicios` | Los 8 servicios, cada uno desplegable con su alcance |
 | 6 | Trabajos verticales | `#verticales` | Ventajas del método, técnica, equipo y protocolo de seguridad |
-| 7 | Cobertura | `#cobertura` | **Mapa 2D interactivo de México** con acercamiento por ciudad y pines de proyecto |
-| 8 | Portafolio | `#proyectos` | 12 proyectos filtrables por ciudad, con ficha ampliada |
+| 7 | Cobertura | `#cobertura` | **Mapa 2D interactivo de México**: 18 ubicaciones en 9 estados, con acercamiento por estado |
+| 8 | Proyectos | `#proyectos` | Una tarjeta por ubicación, filtrable por estado y sincronizada con el mapa |
 | 9 | Proceso | `#proceso` | Cinco pasos con desplazamiento horizontal fijado al scroll |
 | 10 | En números | — | Contadores animados, calculados desde el propio contenido |
 | 11 | Cinta de cierre | — | Llamado a la acción |
 | 12 | Contacto | `#contacto` | Datos de contacto y formulario |
 | 13 | Pie | — | Navegación secundaria, avisos y créditos |
 
-### El mapa interactivo
+### El mapa interactivo y la sección de proyectos
 
-Render vectorial de las 32 entidades federativas. Al elegir una ciudad
-—con los botones o haciendo clic sobre el estado— el mapa **se acerca con
-animación** a esa zona, resalta la entidad y **señala cada proyecto** del
-portafolio ejecutado ahí; el panel lateral lista los mismos proyectos.
+Render vectorial de las 32 entidades federativas con un punto por cada una de
+las 18 ubicaciones de `UBICACIONES`, siempre **dentro de su propio estado**.
 
-Los marcadores salen directo de `PROYECTOS`: agregar un proyecto a esa lista
-basta para que aparezca en el mapa, sin tocar código. Los que comparten ciudad
-—o están a tiro de piedra, como Puerto Vallarta y Nuevo Vallarta— se agrupan en
-un solo anclaje geográfico del que cuelga una columna con un renglón por obra.
-Al hacer clic en cualquiera se abre su ficha.
+- **Elegir un estado** —con los botones, tocándolo en el mapa, en el panel, con
+  el filtro de la sección de proyectos o desde el pie de página— acerca el mapa
+  con animación, **ilumina ese estado** y escribe el nombre de sus ubicaciones.
+- **Elegir una ubicación** —su punto o su nombre en el mapa, el panel o una
+  tarjeta de proyectos— ilumina **el estado al que pertenece** (Bucerías y
+  Nuevo Vallarta encienden Nayarit; Puerto Vallarta y Melaque, Jalisco) y la
+  señala con un pulso. El panel muestra la ubicación, las demás del estado y
+  un botón para cotizar que deja la ciudad elegida en el formulario.
+- **Todo está sincronizado**: mapa, botones, panel, filtro y tarjetas pasan por
+  la misma selección, así que siempre dicen lo mismo. Tocar una tarjeta lleva
+  al mapa con su ubicación señalada.
 
 Detalles de implementación relevantes:
 
-- Los pines están **geolocalizados**: sus coordenadas provienen de latitud y
-  longitud reales proyectadas al sistema del mapa (error medio ≈ 1 %).
-- Una ciudad puede abarcar varias entidades: la zona de Puerto Vallarta resalta
-  Jalisco y Nayarit, porque Nuevo Vallarta pertenece a Nayarit.
-- La columna de proyectos se dibuja a la derecha del anclaje y salta a la
-  izquierda si no cabe; si dos columnas se encimaran, se separan solas.
+- Las posiciones vienen de latitud y longitud reales proyectadas al sistema
+  del mapa. Donde el contorno simplificado del mapa no coincide con la costa
+  —la bahía de Banderas, Manzanillo, Melaque, Mazatlán, Cancún— se corrigieron
+  a mano para que el punto caiga en su estado, del lado correcto del límite.
+- Las ubicaciones que en pantalla quedan muy juntas (las cinco de la bahía de
+  Banderas) se listan en una columna; las demás llevan su nombre al lado. Cada
+  etiqueta elige el lado con lugar —en la costa, el del mar— sin salirse del
+  mapa, sin tapar otra etiqueta ni la leyenda.
 - Los marcadores miden lo mismo en pantalla a cualquier zoom y en cualquier
   ancho de lienzo, del monitor al celular.
-- Los marcadores mantienen su tamaño en pantalla sin importar el acercamiento.
-- Las etiquetas se acomodan solas: si dos se encimarían, una se desplaza y se
-  dibuja una línea guía hasta su pin; si una se sale del lienzo, salta al otro
-  lado del marcador.
 - El encuadre se adapta a la proporción real de la tarjeta, así que el mapa
   llena el espacio tanto en escritorio como en celular.
+- Las tarjetas de la sección de proyectos dibujan la silueta de cada estado
+  con el mismo mapa, con el punto de la ubicación y, más tenues, las demás del
+  estado.
 
 ---
 
@@ -79,7 +84,7 @@ Detalles de implementación relevantes:
     │   ├── data.js             ► TODO EL CONTENIDO EDITABLE ◄
     │   ├── map.js              Mapa interactivo
     │   ├── map-paths.js        Geometría de los 32 estados (generado, no editar a mano)
-    │   └── projects.js         Catálogo, filtros y ficha de proyecto
+    │   └── projects.js         Tarjetas de ubicaciones y filtro por estado
     ├── fonts/                  Outfit e Inter autoalojadas (woff2 variable)
     ├── img/                    Ilustraciones de referencia (reemplazables)
     └── data/                   Licencia del mapa base
@@ -108,9 +113,8 @@ reconstruye sola: no hay que tocar el HTML.
 |---|---|
 | Servicios (nombre, descripción, puntos, indicador) | `SERVICIOS` |
 | Ventajas, técnicas y puntos de seguridad | `VERTICALES` |
-| Coordenadas de cada ciudad en el mapa | `CIUDADES` |
-| Zonas del selector y textos de cobertura | `ZONAS` |
-| Portafolio y sus fichas | `PROYECTOS` |
+| Estados (orden de botones y filtros) | `ENTIDADES` |
+| Ciudades y destinos del mapa y de la sección de proyectos | `UBICACIONES` |
 | Obra anunciada en la portada | `OBRA_ACTIVA` |
 | Pasos del proceso | `PROCESO` |
 | Cifras de la sección "En números" | `METRICAS` (se calculan solas) |
@@ -128,7 +132,6 @@ Se controla desde `OBRA_ACTIVA` en `data.js`:
 ```js
 export const OBRA_ACTIVA = {
   mostrar: true,
-  proyecto: null,              // o el id de un proyecto para tomar su ubicación
   ciudad: 'Guadalajara',
   estado: 'Jalisco',
   servicio: 'Pintura de fachadas'   // null para ocultar esa línea
@@ -141,7 +144,7 @@ hay un trabajo ejecutándose en este momento en esa ciudad.
 
 ### Cintas de proveedores y clientes
 
-Las dos cintas animadas que siguen al portafolio salen de `CINTAS` en
+Las dos cintas animadas que siguen a la sección de proyectos salen de `CINTAS` en
 `data.js`. **Los nombres que traen hoy son ficticios**, puestos solo para
 mostrar el diseño: hay que sustituirlos por los proveedores y clientes reales
 antes de publicar. Cada cinta tiene:
@@ -160,16 +163,13 @@ La cinta se repite sola hasta cubrir el ancho de la pantalla, sin importar
 cuántos nombres tenga. Los lectores de pantalla reciben cada lista una sola
 vez, con su título.
 
-### Agregar un proyecto
+### Agregar o quitar una ubicación
 
-Basta con sumarlo a `PROYECTOS` indicando una `ciudad` que ya exista en
-`CIUDADES`. Aparece solo en el portafolio, en el panel del mapa y como marcador
-sobre el mapa.
+Todo sale de `UBICACIONES` en `data.js`: el mapa, las tarjetas de proyectos,
+el selector de ciudad del formulario, los indicadores y la lista de estados del
+menú, del contacto y del pie. Para sumar una:
 
-### Agregar una ciudad nueva
-
-1. Calcula sus coordenadas a partir de latitud y longitud, y añádela a
-   `CIUDADES`:
+1. Escribe su latitud y longitud y calcula su lugar en el mapa:
 
    ```
    x =  25.289593 · longitud −  0.456255 · latitud + 2998.2434
@@ -177,33 +177,20 @@ sobre el mapa.
    ```
 
    (Ejemplo: Monterrey, 25.6866 N / −100.3161 O → `x ≈ 449.6`, `y ≈ 198.9`.)
-2. Si además es una zona nueva del selector, añádela a `ZONAS` con su arreglo
-   `estados` (claves de tres letras: `jal`, `mic`, `que`, `nay`, `nle`, `cmx`…;
-   la lista completa está en `map-paths.js`) y su `centro`, que es la ciudad
-   que la representa en la vista nacional. Si la zona abarca dos entidades,
-   inclúyelas todas en `estados`.
-3. Agrega sus proyectos a `PROYECTOS` con `zona` igual al `id` de la zona.
+2. Añádela con su `estado` (clave de tres letras: `jal`, `nay`, `col`, `sin`,
+   `mic`, `que`, `cmx`, `nle`, `roo`…; la lista completa está en
+   `map-paths.js`):
 
-### Enriquecer una ficha del portafolio
+   ```js
+   { id: 'zihuatanejo', nombre: 'Zihuatanejo', estado: 'gro', lat: 17.6416, lon: -101.5520, xy: [422.0, 426.0] }
+   ```
+3. Revisa que el punto caiga dentro de su estado. En la costa el mapa está
+   simplificado y a veces el punto queda en el mar o del otro lado de un
+   límite; en ese caso muévelo a mano un par de unidades tierra adentro.
+4. Si es de un estado nuevo, agrégalo también a `ENTIDADES`.
 
-Cada proyecto necesita solo `id`, `nombre`, `zona`, `ciudad` y `estado`. Todos
-los demás campos son **opcionales** y la interfaz se adapta a los que existan:
-
-```js
-{
-  id: 'westin', nombre: 'Hotel Westin',
-  zona: 'vallarta', ciudad: 'Puerto Vallarta', estado: 'Jalisco',
-  sector: 'Hotelería',
-  servicios: ['cristales', 'sellado'],   // activa el filtro por servicio
-  anio: '2024', altura: '52 m', niveles: '14 niveles',
-  superficie: '13,700 m²', duracion: '31 días',
-  reto: '…', solucion: '…', resultado: '…'
-}
-```
-
-En cuanto **algún** proyecto declare `servicios`, aparece solo el filtro por
-servicio en el portafolio. Los campos que se llenen se suman a la ficha técnica
-y a la tarjeta; los que falten simplemente no se muestran.
+Opcionales: `tipo: 'Región'` o `'Municipio'` cuando no es una ciudad, y
+`base: true` para la base de operaciones.
 
 ---
 
@@ -270,7 +257,6 @@ actualizando la ruta— sin tocar nada más.
 | `assets/img/nosotros.svg` | Sobre nosotros | Foto vertical 5:6 de cuadrilla en obra |
 | `assets/img/fundador.svg` | Mensaje del fundador | Retrato 4:5, mínimo 900 × 1100 px |
 | `assets/img/verticales.svg` | Trabajos verticales | Foto vertical 3:4 de descenso por cuerdas |
-| `assets/img/proyecto-01…16.svg` | Portafolio y fichas | Foto 4:3 por proyecto, mínimo 1200 × 900 px |
 
 Recomendaciones: exportar en **WebP** (calidad 80) o JPG, con peso objetivo
 menor a 300 KB por imagen. Al cambiar de extensión, actualiza la ruta en
@@ -329,15 +315,15 @@ esfuerzo:
 ## 7. Datos a confirmar antes de publicar
 
 Ya están cargados los datos reales de contacto, los ocho servicios, la misión,
-la visión, el mensaje del fundador y el portafolio de 12 proyectos.
+la visión, el mensaje del fundador y las 18 ubicaciones donde han trabajado.
 **Falta confirmar o completar:**
 
 - [ ] **Proyecto anunciado en la portada**: la tarjeta dice «Proyecto en
       curso · Guadalajara, Jalisco · Pintura de fachadas». Mantenlo al día en
       `OBRA_ACTIVA` (`data.js`).
-- [ ] **Holiday Inn Express / Select**: en la lista original este proyecto no
-      traía ciudad. Quedó provisionalmente en Puerto Vallarta (en `data.js`,
-      marcado con un comentario). Corrígelo si corresponde a otra ciudad.
+- [ ] **Playa del Carmen**: en la lista llegó como «Plaza del Carmen» y se
+      tomó como Playa del Carmen, Quintana Roo. Si era Ciudad del Carmen
+      (Campeche), cámbialo en `UBICACIONES`.
 - [ ] **Dominio del sitio**: se usa `www.asapgp.com.mx`, deducido del correo.
       Si el dominio es otro, actualízalo en `<link rel="canonical">`, en las
       etiquetas Open Graph, en los datos estructurados del `<head>`, en
@@ -345,9 +331,6 @@ la visión, el mensaje del fundador y el portafolio de 12 proyectos.
 - [ ] **Formato de los teléfonos**: se normalizaron a
       `33 1323 0878` (Guadalajara) y `322 383 5244` (Puerto Vallarta).
 - [ ] **Nombre del fundador**: hoy la firma muestra solo el cargo.
-- [ ] **Ficha técnica de cada proyecto** (año, superficie, altura, servicios,
-      reto, solución y resultado): opcional, pero es lo que convierte el
-      portafolio en un catálogo consultable. Ver "Enriquecer una ficha".
 - [ ] **Sección de seguridad**: la mención a la **NOM-009-STPS-2011** y las
       afirmaciones sobre capacitación, análisis de riesgos y bitácoras de
       equipo deben corresponder con lo que la empresa efectivamente acredita.
@@ -358,9 +341,8 @@ la visión, el mensaje del fundador y el portafolio de 12 proyectos.
       reales en `CINTAS` (`data.js`) antes de publicar.
 
 Los indicadores de "En números" y las cifras de la portada se calculan solos a
-partir de `data.js` (especialidades, proyectos, ciudades). Si prefieres mostrar
-los totales históricos de la empresa en vez de lo publicado en el portafolio,
-edita `METRICAS` con los valores reales.
+partir de `data.js` (especialidades, ubicaciones, estados). «Litorales» (2: el
+Pacífico y el Caribe) es el único valor escrito a mano en `METRICAS`.
 
 ---
 
@@ -384,7 +366,7 @@ Vercel o Cloudflare Pages viene activado de fábrica.
 Cada publicación lleva un número de versión visible en el código fuente:
 
 ```html
-<meta name="asap-version" content="26 — 2026-10-03">
+<meta name="asap-version" content="27 — 2026-10-03">
 ```
 
 Para saber qué versión está viva en el servidor, abre el sitio, pulsa `Ctrl+U`
@@ -398,7 +380,7 @@ sin pedirle a nadie que limpie su caché. El costo es una petición condicional
 por archivo, que el servidor contesta con un `304 Not Modified` de pocos bytes.
 
 Como segunda red de seguridad, los estilos y los scripts se piden con un sufijo
-de versión (`base.css?v=26`, y lo mismo en los `import` de `assets/js/`). Al
+de versión (`base.css?v=27`, y lo mismo en los `import` de `assets/js/`). Al
 cambiar ese número la URL cambia, así que ninguna copia guardada puede
 reutilizarse. Si subes una versión nueva, actualiza el número en los cuatro
 sitios de `index.html`, en los `import` de `main.js`, `map.js` y `projects.js`,
@@ -447,7 +429,7 @@ ventana en la misma proporción que el margen, de modo que la separación con el
 texto se mantiene.
 
 **Accesibilidad.** Navegación por teclado en el menú, el acordeón de servicios,
-el mapa y la ficha de proyecto (con foco atrapado y cierre con `Esc`); enlace
+el mapa (estados, etiquetas y panel) y las tarjetas de ubicaciones; enlace
 de salto al contenido; textos alternativos; contraste alto sobre fondo oscuro.
 
 **Compatibilidad.** Chrome, Edge, Firefox y Safari en versiones recientes

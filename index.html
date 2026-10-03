@@ -5,12 +5,12 @@
 <script>document.documentElement.classList.add('js');</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ASAP Gestión de Proyectos 369 — Trabajos verticales y mantenimiento de fachadas</title>
-<meta name="description" content="Trabajos verticales y de difícil acceso: pintura de fachadas, lavado de cristales, membrana arquitectónica, impermeabilización, empastado de muros, restauración de estructuras y fachadas, y sellado. Guadalajara, Puerto Vallarta, Morelia y Querétaro.">
+<meta name="description" content="Trabajos verticales y de difícil acceso: pintura de fachadas, lavado de cristales, membrana arquitectónica, impermeabilización, empastado de muros, restauración de estructuras y fachadas, y sellado. Base en Guadalajara; obra en Jalisco, Nayarit, Colima, Sinaloa, Michoacán, Querétaro, Ciudad de México, Nuevo León y Quintana Roo.">
 <meta name="theme-color" content="#070B14">
 <meta name="author" content="ASAP Gestión de Proyectos 369">
 <!-- Versión del sitio. Para saber qué versión está publicada, abre el
      código fuente de la página (Ctrl+U) y busca esta línea. -->
-<meta name="asap-version" content="26 — 2026-10-03">
+<meta name="asap-version" content="27 — 2026-10-03">
 <link rel="canonical" href="https://www.asapgp.com.mx/">
 
 <meta property="og:type" content="website">
@@ -21,15 +21,15 @@
 <meta property="og:image" content="https://www.asapgp.com.mx/assets/img/hero-fachada.svg">
 <meta name="twitter:card" content="summary_large_image">
 
-<link rel="icon" href="assets/img/favicon.svg?v=26" type="image/svg+xml">
-<link rel="apple-touch-icon" href="assets/img/favicon.svg?v=26">
+<link rel="icon" href="assets/img/favicon.svg?v=27" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/favicon.svg?v=27">
 <link rel="manifest" href="site.webmanifest">
 
 <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/base.css?v=26">
-<link rel="stylesheet" href="assets/css/components.css?v=26">
-<link rel="stylesheet" href="assets/css/sections.css?v=26">
+<link rel="stylesheet" href="assets/css/base.css?v=27">
+<link rel="stylesheet" href="assets/css/components.css?v=27">
+<link rel="stylesheet" href="assets/css/sections.css?v=27">
 
 <script type="application/ld+json">
 {
@@ -43,10 +43,24 @@
   "image": "https://www.asapgp.com.mx/assets/img/hero-fachada.svg",
   "address": { "@type": "PostalAddress", "addressLocality": "Guadalajara", "addressRegion": "Jalisco", "addressCountry": "MX" },
   "areaServed": [
-    { "@type": "City", "name": "Guadalajara" },
-    { "@type": "City", "name": "Puerto Vallarta" },
-    { "@type": "City", "name": "Morelia" },
-    { "@type": "City", "name": "Querétaro" }
+    { "@type": "Place", "name": "Guadalajara" },
+    { "@type": "Place", "name": "Puerto Vallarta" },
+    { "@type": "Place", "name": "Melaque" },
+    { "@type": "Place", "name": "Nuevo Vallarta" },
+    { "@type": "Place", "name": "Bucerías" },
+    { "@type": "Place", "name": "Cruz de Huanacaxtle" },
+    { "@type": "Place", "name": "Bahía de Banderas" },
+    { "@type": "Place", "name": "Riviera Nayarit" },
+    { "@type": "Place", "name": "Tepic" },
+    { "@type": "Place", "name": "Manzanillo" },
+    { "@type": "Place", "name": "Colima" },
+    { "@type": "Place", "name": "Mazatlán" },
+    { "@type": "Place", "name": "Morelia" },
+    { "@type": "Place", "name": "Querétaro" },
+    { "@type": "Place", "name": "Ciudad de México" },
+    { "@type": "Place", "name": "Monterrey" },
+    { "@type": "Place", "name": "Cancún" },
+    { "@type": "Place", "name": "Playa del Carmen" }
   ],
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
@@ -72,7 +86,7 @@
 <!-- ============================ PRECARGA ============================== -->
 <div class="preload" id="preload" aria-hidden="true">
   <div class="preload__inner">
-    <img class="preload__logo" src="assets/img/logo-asap.svg?v=26" width="1013" height="912" alt="">
+    <img class="preload__logo" src="assets/img/logo-asap.svg?v=27" width="1013" height="912" alt="">
     <div class="preload__bar"><i id="preloadBar"></i></div>
     <div class="preload__meta t-mono">
       <span>Cargando</span>
@@ -384,7 +398,7 @@
   <div class="menu__foot">
     <a href="tel:+523313230878" class="t-h4" data-tel-principal>33 1323 0878</a>
     <a href="mailto:aserrano@asapgp.com.mx" data-email>aserrano@asapgp.com.mx</a>
-    <p class="t-mono u-mt-2" style="color:var(--tx-low)">Guadalajara · Puerto Vallarta · Morelia · Querétaro</p>
+    <p class="t-mono u-mt-2" style="color:var(--tx-low)" data-cobertura>Jalisco · Nayarit · Colima · Sinaloa · Michoacán · Querétaro · Ciudad de México · Nuevo León · Quintana Roo</p>
   </div>
 </div>
 
@@ -402,10 +416,10 @@
        pausa fuera de la vista. Mientras tanto se ve su primer cuadro fijo. -->
   <div class="hero__fondo" aria-hidden="true">
     <video class="hero__fondo-video" muted loop playsinline preload="none">
-      <source src="assets/video/fondo-ancho.mp4?v=26" type="video/mp4" media="(orientation: landscape)">
-      <source src="assets/video/fondo-ancho.webm?v=26" type="video/webm" media="(orientation: landscape)">
-      <source src="assets/video/fondo-alto.mp4?v=26" type="video/mp4">
-      <source src="assets/video/fondo-alto.webm?v=26" type="video/webm">
+      <source src="assets/video/fondo-ancho.mp4?v=27" type="video/mp4" media="(orientation: landscape)">
+      <source src="assets/video/fondo-ancho.webm?v=27" type="video/webm" media="(orientation: landscape)">
+      <source src="assets/video/fondo-alto.mp4?v=27" type="video/mp4">
+      <source src="assets/video/fondo-alto.webm?v=27" type="video/webm">
     </video>
   </div>
   <div class="ambient" aria-hidden="true">
@@ -440,9 +454,9 @@
         </div>
 
         <ul class="hero__stats" data-reveal style="--d:420ms">
-          <li class="hero__stat"><b>8</b><span>Especialidades</span></li>
-          <li class="hero__stat"><b>12</b><span>Proyectos</span></li>
-          <li class="hero__stat"><b>4</b><span>Ciudades</span></li>
+          <li class="hero__stat"><b data-dato="especialidades">8</b><span>Especialidades</span></li>
+          <li class="hero__stat"><b data-dato="ubicaciones">18</b><span>Ubicaciones</span></li>
+          <li class="hero__stat"><b data-dato="estados">9</b><span>Estados</span></li>
         </ul>
       </div>
 
@@ -457,12 +471,12 @@
                reducido ni ahorro de datos, y lo pausa cuando la portada sale
                de la vista. Sin JavaScript se queda la imagen fija del póster. -->
           <video class="hero__video" muted loop playsinline preload="metadata"
-                 poster="assets/video/hero-poster.jpg?v=26" width="720" height="900"
+                 poster="assets/video/hero-poster.jpg?v=27" width="720" height="900"
                  aria-label="Técnicos de ASAP descendiendo por cuerdas sobre la fachada del Holiday Inn Express, toma de dron">
-            <source src="assets/video/hero-720.mp4?v=26" type="video/mp4" media="(min-width: 701px)">
-            <source src="assets/video/hero-720.webm?v=26" type="video/webm" media="(min-width: 701px)">
-            <source src="assets/video/hero-540.mp4?v=26" type="video/mp4">
-            <source src="assets/video/hero-540.webm?v=26" type="video/webm">
+            <source src="assets/video/hero-720.mp4?v=27" type="video/mp4" media="(min-width: 701px)">
+            <source src="assets/video/hero-720.webm?v=27" type="video/webm" media="(min-width: 701px)">
+            <source src="assets/video/hero-540.mp4?v=27" type="video/mp4">
+            <source src="assets/video/hero-540.webm?v=27" type="video/webm">
           </video>
 
           <!-- Obra en curso: la cuadrilla desciende y la fachada va quedando
@@ -489,8 +503,10 @@
       <ul class="hero__cities">
         <li>Guadalajara</li>
         <li>Puerto Vallarta</li>
-        <li>Morelia</li>
-        <li>Querétaro</li>
+        <li>Riviera Nayarit</li>
+        <li>Ciudad de México</li>
+        <li>Monterrey</li>
+        <li>Cancún</li>
       </ul>
       <span class="scroll-cue">Desliza para explorar <i></i></span>
     </div>
@@ -658,15 +674,15 @@
     <div class="sec-split">
       <div class="section-head">
         <span class="t-kicker" data-reveal="fade">Dónde hemos trabajado</span>
-        <h2 class="t-display u-mt-3" data-split>Cuatro ciudades, un mismo estándar</h2>
+        <h2 class="t-display u-mt-3" data-split>Nueve estados,<br> un mismo estándar</h2>
       </div>
       <p class="t-lead" data-reveal style="--d:160ms">
-        Selecciona una ciudad para ubicarla en el mapa y ver la obra ejecutada en ese estado.
-        Guadalajara es nuestra base de operaciones.
+        Del Pacífico al Caribe. Elige un estado o una ciudad y el mapa te lleva ahí, con
+        su estado señalado. Guadalajara es nuestra base de operaciones.
       </p>
     </div>
 
-    <div class="ciudades" id="ciudadesBtns" role="tablist" aria-label="Ciudades con cobertura"></div>
+    <div class="ciudades" id="ciudadesBtns" role="tablist" aria-label="Estados donde hemos trabajado"></div>
 
     <div class="cobertura__grid">
       <div class="mapa" id="mapa">
@@ -675,8 +691,8 @@
         <div class="mapa__hud">
           <span class="pill" id="mapaEstado">Vista nacional</span>
           <div class="mapa__legend">
-            <span><b></b> Ciudad</span>
-            <span><b class="obra"></b> Proyecto</span>
+            <span><b></b> Ubicación</span>
+            <span><b class="base"></b> Base operativa</span>
           </div>
         </div>
         <div class="mapa__tip" id="mapaTip"></div>
@@ -692,29 +708,25 @@
   <div class="wrap">
     <div class="sec-split">
       <div class="section-head">
-        <span class="t-kicker" data-reveal="fade">Nuestro portafolio</span>
-        <h2 class="t-display u-mt-3" data-split>Obra entregada en cuatro ciudades</h2>
+        <span class="t-kicker" data-reveal="fade">Nuestros proyectos</span>
+        <h2 class="t-display u-mt-3" data-split>Obra entregada del Pacífico al Caribe</h2>
       </div>
       <p class="t-lead" data-reveal style="--d:160ms">
-        Hotelería, salud, comercial, residencial y corporativo. Filtra por ciudad
-        y abre cualquier proyecto para verlo en grande.
+        Estas son las ciudades y destinos donde hemos trabajado. Filtra por estado y toca
+        cualquiera para verla señalada en el mapa.
       </p>
     </div>
 
     <div class="filtros">
       <div class="filtro-grupo">
-        <b>Servicio</b>
-        <div class="filtro-chips" id="filtroServicios"></div>
-      </div>
-      <div class="filtro-grupo">
-        <b>Ciudad</b>
+        <b>Estado</b>
         <div class="filtro-chips" id="filtroCiudades"></div>
       </div>
-      <span class="filtro-count"><b id="proyCount">0</b> proyectos</span>
+      <span class="filtro-count"><b id="proyCount">0</b> <span id="proyCountTxt">ubicaciones</span></span>
     </div>
 
-    <div class="proy-grid" id="proyGrid"></div>
-    <p class="proy-empty u-hide" id="proyEmpty">No hay proyectos con ese filtro.</p>
+    <div class="lugar-grid" id="proyGrid"></div>
+    <p class="proy-empty u-hide" id="proyEmpty">No hay ubicaciones con ese filtro.</p>
   </div>
 </section>
 
@@ -805,7 +817,7 @@
           </div>
           <div class="dato">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M3.6 9.5h16.8M3.6 14.5h16.8"/><path d="M12 3.5c4.2 4.7 4.2 12.3 0 17M12 3.5c-4.2 4.7-4.2 12.3 0 17"/></svg>
-            <div><b>Cobertura</b><span>Guadalajara · Puerto Vallarta · Morelia · Querétaro</span></div>
+            <div><b>Cobertura</b><span data-cobertura>Jalisco · Nayarit · Colima · Sinaloa · Michoacán · Querétaro · Ciudad de México · Nuevo León · Quintana Roo</span></div>
           </div>
         </div>
       </div>
@@ -836,10 +848,6 @@
             <label for="f-ciudad">Ciudad</label>
             <select id="f-ciudad" name="ciudad">
               <option value="">Selecciona una ciudad</option>
-              <option>Guadalajara</option>
-              <option>Puerto Vallarta</option>
-              <option>Morelia</option>
-              <option>Querétaro</option>
               <option>Otra</option>
             </select>
           </div>
@@ -877,11 +885,11 @@
     <div class="footer__top">
       <div class="footer__brand">
         <a href="#inicio" class="logo logo--completo" aria-label="ASAP Gestión de Proyectos 369 — Inicio">
-          <img class="logo__img" src="assets/img/logo-asap.svg?v=26" width="1013" height="912" alt="ASAP Gestión de Proyectos 369" loading="lazy" decoding="async">
+          <img class="logo__img" src="assets/img/logo-asap.svg?v=27" width="1013" height="912" alt="ASAP Gestión de Proyectos 369" loading="lazy" decoding="async">
         </a>
         <p style="font-size:.92rem">
           Trabajos verticales y de difícil acceso: fachada, cristal, membrana arquitectónica
-          y estructura. Base en Guadalajara, con operación en Puerto Vallarta, Morelia y Querétaro.
+          y estructura. Base en Guadalajara, con obra del Pacífico al Caribe.
         </p>
         <a class="link-arrow" href="#contacto">
           Solicitar cotización
@@ -896,11 +904,16 @@
 
       <div class="footer__col">
         <b>Cobertura</b>
-        <ul>
-          <li><a href="#cobertura">Guadalajara</a></li>
-          <li><a href="#cobertura">Puerto Vallarta</a></li>
-          <li><a href="#cobertura">Morelia</a></li>
-          <li><a href="#cobertura">Querétaro</a></li>
+        <ul id="footCobertura">
+          <li><a href="#cobertura" data-ver-estado="jal">Jalisco</a></li>
+          <li><a href="#cobertura" data-ver-estado="nay">Nayarit</a></li>
+          <li><a href="#cobertura" data-ver-estado="col">Colima</a></li>
+          <li><a href="#cobertura" data-ver-estado="sin">Sinaloa</a></li>
+          <li><a href="#cobertura" data-ver-estado="mic">Michoacán</a></li>
+          <li><a href="#cobertura" data-ver-estado="que">Querétaro</a></li>
+          <li><a href="#cobertura" data-ver-estado="cmx">Ciudad de México</a></li>
+          <li><a href="#cobertura" data-ver-estado="nle">Nuevo León</a></li>
+          <li><a href="#cobertura" data-ver-estado="roo">Quintana Roo</a></li>
         </ul>
       </div>
 
@@ -920,24 +933,13 @@
   </div>
 </footer>
 
-<!-- ======================= MODAL DE PROYECTO ========================= -->
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="fichaTitle" aria-hidden="true">
-  <div class="modal__veil" data-close></div>
-  <div class="modal__box" id="modalBox">
-    <button class="modal__close" data-close aria-label="Cerrar ficha">
-      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
-    </button>
-    <div id="modalContent"></div>
-  </div>
-</div>
-
 <noscript>
   <div style="padding:2rem;text-align:center;color:#93AAC4">
-    Esta página usa JavaScript para el mapa interactivo y el catálogo de proyectos.
+    Esta página usa JavaScript para el mapa interactivo y la sección de proyectos.
     Escríbenos a <a href="mailto:aserrano@asapgp.com.mx" style="color:#5EC4EC">aserrano@asapgp.com.mx</a>.
   </div>
 </noscript>
 
-<script type="module" src="assets/js/main.js?v=26"></script>
+<script type="module" src="assets/js/main.js?v=27"></script>
 </body>
 </html>

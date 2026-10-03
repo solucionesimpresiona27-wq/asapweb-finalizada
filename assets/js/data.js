@@ -2,8 +2,9 @@
    ASAP Gestión de Proyectos 369 — Capa de contenido
    -----------------------------------------------------------------------------
    Todo el contenido editorial del sitio vive en este archivo. Para actualizar
-   servicios, ciudades, pines del mapa o el portafolio basta con modificar los
-   objetos de abajo: la interfaz se reconstruye sola.
+   servicios, ubicaciones del mapa y de la sección de proyectos, indicadores
+   o textos basta con modificar los objetos de abajo: la interfaz se
+   reconstruye sola.
    ========================================================================== */
 
 /* -----------------------------------------------------------------------------
@@ -110,107 +111,78 @@ export const VERTICALES = {
 };
 
 /* -----------------------------------------------------------------------------
-   3. Cobertura
+   3. Dónde hemos trabajado — mapa y sección de proyectos
    -----------------------------------------------------------------------------
-   CIUDADES guarda la posición de cada localidad en el sistema del viewBox del
-   mapa (0 0 793 498), proyectada desde su latitud y longitud reales. Los
-   marcadores del mapa se arman con esto: cada proyecto se coloca en la ciudad
-   que trae en `PROYECTOS`, así que basta agregarlo ahí para que aparezca.
+   ENTIDADES son los estados, en el orden de los botones del mapa y de los
+   filtros. Su `id` es la clave del estado en el mapa (assets/js/map-paths.js).
 
-   Para sumar una ciudad nueva, calcula sus coordenadas con:
-     x =  25.289593 · longitud −  0.456255 · latitud + 2998.2434
-     y =  −1.361053 · longitud − 28.023522 · latitud +  782.1887
+   UBICACIONES alimenta el mapa, la sección de proyectos, el selector de
+   ciudad del formulario, el pie de página y los indicadores. Cada una lleva:
+     · estado — id de ENTIDADES. Es el estado que se ilumina al elegirla.
+     · lat, lon — coordenadas reales, como referencia.
+     · xy — su lugar en el mapa (viewBox 0 0 793 498). Se proyecta con
+         x =  25.289593 · lon −  0.456255 · lat + 2998.2434
+         y =  −1.361053 · lon − 28.023522 · lat +  782.1887
+       y se corrige a mano cuando el contorno simplificado del mapa no
+       coincide con la costa real: el punto siempre debe quedar dentro de
+       su propio estado. En la bahía de Banderas el mapa dibuja la costa
+       unos 30 km al norte, por eso Bucerías, Nuevo Vallarta y los demás
+       puntos de Nayarit se movieron hasta su lado del límite con Jalisco.
+     · tipo — opcional, cuando no es una ciudad: 'Región' o 'Municipio'.
+     · base — la base de operaciones.
    -------------------------------------------------------------------------- */
-export const CIUDADES = {
-  'Guadalajara':     [375.1, 343.9],
-  'Puerto Vallarta': [327.7, 346.6],
-  'Nuevo Vallarta':  [326.1, 345.6],
-  'Morelia':         [430.3, 367.8],
-  'Juriquilla':      [448.5, 338.7]
-};
-
-/* `estados` acepta varias entidades: la zona de Vallarta abarca Jalisco
-   (Puerto Vallarta) y Nayarit (Nuevo Vallarta). `centro` es la ciudad que
-   representa a la zona en la vista nacional. */
-export const ZONAS = [
-  {
-    id: 'guadalajara',
-    ciudad: 'Guadalajara',
-    estado: 'Jalisco',
-    estados: ['jal'],
-    centro: 'Guadalajara',
-    base: true,
-    resumen: 'Nuestra base de operaciones. Desde aquí coordinamos el equipo, el material y los programas de trabajo de las cuatro ciudades.',
-    destacados: ['Base operativa', 'Coordinación de obra', 'Atención comercial']
-  },
-  {
-    id: 'vallarta',
-    ciudad: 'Puerto Vallarta',
-    estado: 'Jalisco y Nayarit',
-    estados: ['jal', 'nay'],
-    centro: 'Puerto Vallarta',
-    resumen: 'Costa del Pacífico y la mayor concentración de nuestro portafolio: hotelería, condominios verticales y plazas frente al mar.',
-    destacados: ['Hotelería', 'Condominios verticales', 'Plazas comerciales']
-  },
-  {
-    id: 'morelia',
-    ciudad: 'Morelia',
-    estado: 'Michoacán',
-    estados: ['mic'],
-    centro: 'Morelia',
-    resumen: 'Centro del país. Hospital, plaza comercial y centro corporativo atendidos con acceso por cuerdas.',
-    destacados: ['Salud', 'Retail', 'Corporativo']
-  },
-  {
-    id: 'queretaro',
-    ciudad: 'Querétaro',
-    estado: 'Querétaro',
-    estados: ['que'],
-    centro: 'Juriquilla',
-    resumen: 'Corredor corporativo del Bajío, en la zona de Juriquilla.',
-    destacados: ['Corporativo', 'Usos mixtos']
-  }
+export const ENTIDADES = [
+  { id: 'jal', nombre: 'Jalisco' },
+  { id: 'nay', nombre: 'Nayarit' },
+  { id: 'col', nombre: 'Colima' },
+  { id: 'sin', nombre: 'Sinaloa' },
+  { id: 'mic', nombre: 'Michoacán' },
+  { id: 'que', nombre: 'Querétaro' },
+  { id: 'cmx', nombre: 'Ciudad de México' },
+  { id: 'nle', nombre: 'Nuevo León' },
+  { id: 'roo', nombre: 'Quintana Roo' }
 ];
 
-/* -----------------------------------------------------------------------------
-   4. Portafolio
-   Los campos técnicos (anio, superficie, altura, servicios, reto, solucion,
-   resultado) son opcionales: la tarjeta y la ficha muestran únicamente los que
-   tengan contenido. Al llenarlos, la interfaz se enriquece sola y se activa el
-   filtro por servicio.
-   -------------------------------------------------------------------------- */
-export const PROYECTOS = [
-  { id: 'hospiten',        nombre: 'Hospiten',                    zona: 'vallarta',  ciudad: 'Puerto Vallarta', estado: 'Jalisco',    sector: 'Salud',       servicios: [] },
-  { id: 'vista-del-sol',   nombre: 'Condominio Vista del Sol',    zona: 'vallarta',  ciudad: 'Puerto Vallarta', estado: 'Jalisco',    sector: 'Residencial', servicios: [] },
-  { id: 'westin',          nombre: 'Hotel Westin',                zona: 'vallarta',  ciudad: 'Puerto Vallarta', estado: 'Jalisco',    sector: 'Hotelería',   servicios: [] },
-  { id: 'plaza-marina',    nombre: 'Plaza Marina',                zona: 'vallarta',  ciudad: 'Puerto Vallarta', estado: 'Jalisco',    sector: 'Comercial',   servicios: [] },
-  { id: 'kristal-grand',   nombre: 'Kristal Grand',               zona: 'vallarta',  ciudad: 'Puerto Vallarta', estado: 'Jalisco',    sector: 'Hotelería',   servicios: [] },
-  { id: 'condominio-icon', nombre: 'Condominio Icon',             zona: 'vallarta',  ciudad: 'Puerto Vallarta', estado: 'Jalisco',    sector: 'Residencial', servicios: [] },
-  // Ciudad por confirmar: en la lista original este proyecto no traía ubicación.
-  { id: 'holiday-inn',     nombre: 'Holiday Inn Express / Select', zona: 'vallarta', ciudad: 'Puerto Vallarta', estado: 'Jalisco',    sector: 'Hotelería',   servicios: [] },
-  { id: 'hampton',         nombre: 'Hotel Hampton',               zona: 'vallarta',  ciudad: 'Nuevo Vallarta',  estado: 'Nayarit',    sector: 'Hotelería',   servicios: [] },
-  { id: 'centro-capital-mor', nombre: 'Centro Capital',           zona: 'morelia',   ciudad: 'Morelia',         estado: 'Michoacán',  sector: 'Corporativo', servicios: [] },
-  { id: 'hospital-victoria',  nombre: 'Hospital Victoria',        zona: 'morelia',   ciudad: 'Morelia',         estado: 'Michoacán',  sector: 'Salud',       servicios: [] },
-  { id: 'plaza-las-americas', nombre: 'Plaza Las Américas',       zona: 'morelia',   ciudad: 'Morelia',         estado: 'Michoacán',  sector: 'Comercial',   servicios: [] },
-  { id: 'centro-capital-qro', nombre: 'Centro Capital',           zona: 'queretaro', ciudad: 'Juriquilla',      estado: 'Querétaro',  sector: 'Corporativo', servicios: [] }
+export const UBICACIONES = [
+  { id: 'manzanillo',          nombre: 'Manzanillo',          estado: 'col', lat: 19.0522, lon: -104.3158, xy: [354.1, 380.3] },
+  { id: 'colima',              nombre: 'Colima',              estado: 'col', lat: 19.2452, lon: -103.7241, xy: [366.3, 384.0] },
+  { id: 'bahia-de-banderas',   nombre: 'Bahía de Banderas',   estado: 'nay', lat: 20.8019, lon: -105.2470, xy: [328.1, 333.2], tipo: 'Municipio' },
+  { id: 'melaque',             nombre: 'Melaque',             estado: 'jal', lat: 19.2228, lon: -104.7027, xy: [343.6, 374.7] },
+  { id: 'monterrey',           nombre: 'Monterrey',           estado: 'nle', lat: 25.6866, lon: -100.3161, xy: [449.6, 198.9] },
+  { id: 'puerto-vallarta',     nombre: 'Puerto Vallarta',     estado: 'jal', lat: 20.6534, lon: -105.2253, xy: [330.2, 339.0] },
+  { id: 'guadalajara',         nombre: 'Guadalajara',         estado: 'jal', lat: 20.6597, lon: -103.3496, xy: [375.1, 343.9], base: true },
+  { id: 'queretaro',           nombre: 'Querétaro',           estado: 'que', lat: 20.5888, lon: -100.3899, xy: [450.0, 341.9] },
+  { id: 'morelia',             nombre: 'Morelia',             estado: 'mic', lat: 19.7060, lon: -101.1950, xy: [430.1, 367.7] },
+  { id: 'cancun',              nombre: 'Cancún',              estado: 'roo', lat: 21.1619, lon:  -86.8515, xy: [785.5, 315.3] },
+  { id: 'cdmx',                nombre: 'Ciudad de México',    estado: 'cmx', lat: 19.4326, lon:  -99.1332, xy: [482.3, 372.5] },
+  { id: 'mazatlan',            nombre: 'Mazatlán',            estado: 'sin', lat: 23.2494, lon: -106.4111, xy: [302.7, 270.3] },
+  { id: 'riviera-nayarit',     nombre: 'Riviera Nayarit',     estado: 'nay', lat: 20.8689, lon: -105.4407, xy: [324.7, 331.9], tipo: 'Región' },
+  { id: 'tepic',               nombre: 'Tepic',               estado: 'nay', lat: 21.5045, lon: -104.8946, xy: [335.7, 322.3] },
+  { id: 'cruz-de-huanacaxtle', nombre: 'Cruz de Huanacaxtle', estado: 'nay', lat: 20.7517, lon: -105.3800, xy: [323.7, 333.4] },
+  // en la lista llegó como «Plaza del Carmen»; se tomó como Playa del Carmen
+  { id: 'playa-del-carmen',    nombre: 'Playa del Carmen',    estado: 'roo', lat: 20.6296, lon:  -87.0739, xy: [786.8, 322.6] },
+  { id: 'nuevo-vallarta',      nombre: 'Nuevo Vallarta',      estado: 'nay', lat: 20.6986, lon: -105.2981, xy: [326.6, 333.8] },
+  { id: 'bucerias',            nombre: 'Bucerías',            estado: 'nay', lat: 20.7560, lon: -105.3340, xy: [324.7, 334.0] }
 ];
 
+/* Ayudas para leer las listas de arriba */
+export const entidad = id => ENTIDADES.find(e => e.id === id);
+export const ubicacionesDe = estadoId => UBICACIONES.filter(u => u.estado === estadoId);
+
 /* -----------------------------------------------------------------------------
-   4b. Proyecto en curso — tarjeta de la portada
+   4. Proyecto en curso — tarjeta de la portada
    -----------------------------------------------------------------------------
    Es lo que aparece sobre el video del recuadro: «Proyecto en curso», la
    ciudad y el estado, el servicio que se está ejecutando y la barra de
    avance animada.
 
-   · `ciudad` y `estado` se escriben a mano. Si prefieres tomarlos de un
-     proyecto del portafolio, pon su `id` en `proyecto` y deja esos dos en null.
+   · `ciudad` y `estado` se escriben a mano.
    · `servicio` es el texto de la segunda línea; déjalo en null para ocultarla.
    · Si en algún momento no quieres anunciar ninguno, pon `mostrar: false`:
      la tarjeta vuelve al texto genérico de trabajos verticales.
    -------------------------------------------------------------------------- */
 export const OBRA_ACTIVA = {
   mostrar: true,
-  proyecto: null,              // id de PROYECTOS, o null para usar ciudad y estado
   ciudad: 'Guadalajara',
   estado: 'Jalisco',
   servicio: 'Pintura de fachadas'
@@ -232,11 +204,13 @@ export const PROCESO = [
    Se calculan a partir del contenido de este archivo: no hay cifras sueltas
    que actualizar por separado.
    -------------------------------------------------------------------------- */
+const enLista = l => l.length > 1 ? `${l.slice(0, -1).join(', ')} y ${l[l.length - 1]}` : l.join('');
+
 export const METRICAS = [
   { v: SERVICIOS.length, suf: '', t: 'Especialidades', d: 'Fachada, cristal, membrana y estructura bajo un mismo responsable de obra.' },
-  { v: PROYECTOS.length, suf: '', t: 'Proyectos en portafolio', d: 'Hotelería, salud, comercial, residencial y corporativo.' },
-  { v: ZONAS.length, suf: '', t: 'Ciudades atendidas', d: 'Guadalajara, Puerto Vallarta, Morelia y Querétaro.' },
-  { v: 4, suf: '', t: 'Estados', d: 'Jalisco, Nayarit, Michoacán y Querétaro.' }
+  { v: UBICACIONES.length, suf: '', t: 'Ubicaciones', d: 'Ciudades y destinos donde hemos ejecutado trabajos verticales.' },
+  { v: ENTIDADES.length, suf: '', t: 'Estados', d: `${enLista(ENTIDADES.map(e => e.nombre))}.` },
+  { v: 2, suf: '', t: 'Litorales', d: 'Del Pacífico, de Mazatlán a Manzanillo, al Caribe de Cancún y Playa del Carmen.' }
 ];
 
 /* -----------------------------------------------------------------------------
