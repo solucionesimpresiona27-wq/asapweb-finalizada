@@ -209,26 +209,30 @@ y a la tarjeta; los que falten simplemente no se muestran.
 
 ## 5. Cómo sustituir imágenes y video
 
-### Video de la portada
+### Video de fondo de la portada
 
-La portada ya trae un video real: una toma de dron del Holiday Inn Express con
-la cuadrilla en la fachada. Es un tramo de 8 s (del segundo 8.4 al 16.4 del
-original, a 0.83× de velocidad), recortado al marco vertical 4:5 y con el
-final fundido sobre el principio para que el loop no tenga corte. Está en
-`assets/video/`:
+El fondo de la portada es un video real: una toma de dron del Holiday Inn
+Express con la cuadrilla en la fachada. Es un tramo de 8 s (del segundo 8.4 al
+16.4 del original, a 0.83× de velocidad) con el final fundido sobre el
+principio, para que el loop no tenga corte. Vive dentro de la sección de la
+portada (`.hero__fondo`), así que se va con ella al bajar y no aparece en
+ninguna otra parte. El recuadro de la ilustración y la tarjeta «Obra en curso»
+siguen encima, igual que antes. Está en `assets/video/`:
 
 | Archivo | Para | Peso |
 |---|---|---|
-| `hero-720.mp4` / `hero-720.webm` | escritorio (720×900) | 2.2 MB / 1.3 MB |
-| `hero-540.mp4` / `hero-540.webm` | celular (544×680) | 0.7 MB / 0.6 MB |
-| `hero-poster.jpg` | imagen fija mientras carga, y para quien pidió movimiento reducido o ahorro de datos | 66 KB |
+| `fondo-ancho.mp4` / `.webm` | pantallas horizontales (1280×888) | 1.7 MB / 1.2 MB |
+| `fondo-alto.mp4` / `.webm` | pantallas verticales, el celular (540×960) | 1.2 MB / 1.1 MB |
+| `fondo-ancho.jpg` / `fondo-alto.jpg` | imagen fija mientras carga, y para quien pidió movimiento reducido o ahorro de datos | ~65 KB |
 
-El navegador elige solo el archivo adecuado. Se reproduce en silencio y se
-pausa cuando la portada sale de la vista. El original se tomó de la caché de
-la app DJI Fly (720×1280); con el archivo de la memoria del dron se puede
-sacar una versión más nítida con el mismo proceso. Si cambias el video,
-conserva los nombres o actualiza los `<source>` de `index.html`, y sube el
-número `?v=` para que nadie vea el anterior guardado.
+El navegador toma solo la versión de su pantalla, y no la descarga hasta que
+hace falta. Se reproduce en silencio, entra con un fundido, se pausa cuando la
+portada sale de la vista y se mueve un poco más lento que el scroll. Un velo
+oscuro más cargado del lado del texto mantiene la lectura. El original se tomó
+de la caché de la app DJI Fly (720×1280); con el archivo de la memoria del dron
+se puede sacar una versión más nítida con el mismo proceso. Si cambias el
+video, conserva los nombres y sube el número `?v=` en `index.html` y en
+`sections.css`.
 
 Todas las ilustraciones actuales son **material de referencia** generado para
 mostrar el diseño. Se reemplazan conservando el nombre del archivo —o
@@ -346,7 +350,7 @@ Vercel o Cloudflare Pages viene activado de fábrica.
 Cada publicación lleva un número de versión visible en el código fuente:
 
 ```html
-<meta name="asap-version" content="16 — 2026-10-03">
+<meta name="asap-version" content="17 — 2026-10-03">
 ```
 
 Para saber qué versión está viva en el servidor, abre el sitio, pulsa `Ctrl+U`
@@ -360,7 +364,7 @@ sin pedirle a nadie que limpie su caché. El costo es una petición condicional
 por archivo, que el servidor contesta con un `304 Not Modified` de pocos bytes.
 
 Como segunda red de seguridad, los estilos y los scripts se piden con un sufijo
-de versión (`base.css?v=16`, y lo mismo en los `import` de `assets/js/`). Al
+de versión (`base.css?v=17`, y lo mismo en los `import` de `assets/js/`). Al
 cambiar ese número la URL cambia, así que ninguna copia guardada puede
 reutilizarse. Si subes una versión nueva, actualiza el número en los cuatro
 sitios de `index.html`, en los `import` de `main.js`, `map.js` y `projects.js`,

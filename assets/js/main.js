@@ -2,9 +2,9 @@
    ASAP 369 — Orquestador de interfaz
    Precarga · cursor · navegación · revelados · parallax · secciones dinámicas
    ========================================================================== */
-import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS, CINTAS } from './data.js?v=16';
-import { initMapa } from './map.js?v=16';
-import { initProyectos } from './projects.js?v=16';
+import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS, CINTAS } from './data.js?v=17';
+import { initMapa } from './map.js?v=17';
+import { initProyectos } from './projects.js?v=17';
 
 const $  = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -437,27 +437,32 @@ function initVertical() {
 }
 
 /* -----------------------------------------------------------------------------
-   Video de la portada
+   Video de fondo de la portada
    -----------------------------------------------------------------------------
    Se reproduce solo, en silencio y en loop, únicamente si el visitante no
    pidió movimiento reducido ni ahorro de datos; en esos casos se queda la
-   imagen fija del póster. Se pausa cuando la portada sale de la vista, para
-   no gastar batería ni procesador mientras se lee el resto de la página.
+   imagen fija. No se descarga hasta que hace falta, entra con un fundido al
+   empezar a reproducirse y se pausa cuando la portada sale de la vista, para
+   no gastar batería ni datos mientras se lee el resto de la página.
    -------------------------------------------------------------------------- */
 function initHeroVideo() {
-  const video = $('.hero__video');
-  if (!video) return;
-  const ahorro = navigator.connection?.saveData;
-  if (REDUCED || ahorro) return;
+  const caja = $('.hero__fondo');
+  const video = $('.hero__fondo-video');
+  if (!caja || !video) return;
+  if (REDUCED || navigator.connection?.saveData) return;
 
   video.muted = true;                  // los navegadores solo dejan reproducir solo sin sonido
-  video.preload = 'auto';
-  const reproducir = () => video.play().catch(() => {});
+  video.addEventListener('playing', () => caja.classList.add('is-on'), { once: true });
+  let cargado = false;
 
   new IntersectionObserver(([e]) => {
-    if (e.isIntersecting) reproducir();
-    else video.pause();
-  }, { threshold: 0.05 }).observe(video);
+    if (e.isIntersecting) {
+      if (!cargado) { cargado = true; video.preload = 'auto'; video.load(); }
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }, { threshold: 0.02 }).observe(caja);
 }
 
 /* -----------------------------------------------------------------------------
