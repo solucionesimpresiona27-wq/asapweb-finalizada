@@ -14,7 +14,7 @@ carpeta a cualquier hosting estático.
 
 | # | Sección | Ancla | Qué incluye |
 |---|---------|-------|-------------|
-| 1 | Portada | `#inicio` | Titular animado, indicadores y tarjeta de obra en curso |
+| 1 | Portada | `#inicio` | Titular animado, indicadores y tarjeta de proyecto en curso |
 | 2 | Marquesina | — | Listado de servicios en movimiento continuo |
 | — | Técnico en descenso | — | Técnico de la cuadrilla, colgado de dos cuerdas, que baja por el margen izquierdo durante todo el recorrido |
 | 3 | Sobre nosotros | `#nosotros` | Historia, **misión**, **visión** y valores |
@@ -119,25 +119,24 @@ reconstruye sola: no hay que tocar el HTML.
 Los textos fijos (titulares de sección, portada y pie) están directamente en
 `index.html`, identificados con comentarios por sección.
 
-### Cambiar la obra que anuncia la portada
+### Cambiar el proyecto que anuncia la portada
 
-La tarjeta sobre la imagen principal dice «Obra en curso» y muestra el nombre
-y la ubicación de un proyecto. Se controla desde `OBRA_ACTIVA` en `data.js`:
+La tarjeta sobre la imagen principal dice «Proyecto en curso», con la ciudad y
+el estado del proyecto y una barra de avance animada. Se controla desde
+`OBRA_ACTIVA` en `data.js`:
 
 ```js
 export const OBRA_ACTIVA = {
   mostrar: true,
-  proyecto: 'westin',          // id de PROYECTOS: toma solo nombre y ubicación
-  titulo: null,                // o escríbelo a mano dejando `proyecto: null`
-  ciudad: null,
-  estado: null,
-  servicio: 'Lavado de fachada'
+  proyecto: 'holiday-inn',     // id de PROYECTOS: toma sola la ubicación
+  ciudad: null,                // o escríbela a mano dejando `proyecto: null`
+  estado: null
 };
 ```
 
 Con `mostrar: false` la tarjeta vuelve al texto genérico de trabajos verticales
-y deja de anunciar una obra activa. **Mantén este dato al día**: dice que ese
-trabajo se está ejecutando en este momento.
+y deja de anunciar un proyecto activo. **Mantén este dato al día**: dice que
+hay un trabajo ejecutándose en este momento en esa ciudad.
 
 ### Cintas de proveedores y clientes
 
@@ -219,7 +218,7 @@ ni ahorro de datos; en esos casos se ve su primer cuadro como imagen fija.
 **En el recuadro**: toma de dron del Holiday Inn Express con la cuadrilla en
 la fachada. Tramo de 8 s (segundos 8.4–16.4 del original, a 0.83×),
 recortado al marco 4:5, con el final fundido sobre el principio. La tarjeta
-«Obra en curso» anuncia esa obra para que coincida.
+«Proyecto en curso» muestra la ciudad de esa obra para que coincida.
 
 | Archivo | Para | Peso |
 |---|---|---|
@@ -311,10 +310,10 @@ Ya están cargados los datos reales de contacto, los ocho servicios, la misión,
 la visión, el mensaje del fundador y el portafolio de 12 proyectos.
 **Falta confirmar o completar:**
 
-- [ ] **Obra anunciada en la portada**: la tarjeta dice «Obra en curso ·
-      Holiday Inn Express / Select · Puerto Vallarta», para que coincida con
-      el video de la portada. Confirma que esa obra esté en curso y su ciudad
-      (ver el punto siguiente), o cámbiala en `OBRA_ACTIVA` (`data.js`).
+- [ ] **Proyecto anunciado en la portada**: la tarjeta dice «Proyecto en
+      curso · Puerto Vallarta, Jalisco», tomado del Holiday Inn Express que
+      aparece en el video del recuadro. Confirma que esté en curso y su ciudad
+      (ver el punto siguiente), o cámbialo en `OBRA_ACTIVA` (`data.js`).
 - [ ] **Holiday Inn Express / Select**: en la lista original este proyecto no
       traía ciudad. Quedó provisionalmente en Puerto Vallarta (en `data.js`,
       marcado con un comentario). Corrígelo si corresponde a otra ciudad.
@@ -364,7 +363,7 @@ Vercel o Cloudflare Pages viene activado de fábrica.
 Cada publicación lleva un número de versión visible en el código fuente:
 
 ```html
-<meta name="asap-version" content="19 — 2026-10-03">
+<meta name="asap-version" content="20 — 2026-10-03">
 ```
 
 Para saber qué versión está viva en el servidor, abre el sitio, pulsa `Ctrl+U`
@@ -378,7 +377,7 @@ sin pedirle a nadie que limpie su caché. El costo es una petición condicional
 por archivo, que el servidor contesta con un `304 Not Modified` de pocos bytes.
 
 Como segunda red de seguridad, los estilos y los scripts se piden con un sufijo
-de versión (`base.css?v=19`, y lo mismo en los `import` de `assets/js/`). Al
+de versión (`base.css?v=20`, y lo mismo en los `import` de `assets/js/`). Al
 cambiar ese número la URL cambia, así que ninguna copia guardada puede
 reutilizarse. Si subes una versión nueva, actualiza el número en los cuatro
 sitios de `index.html`, en los `import` de `main.js`, `map.js` y `projects.js`,

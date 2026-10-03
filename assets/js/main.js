@@ -2,9 +2,9 @@
    ASAP 369 — Orquestador de interfaz
    Precarga · cursor · navegación · revelados · parallax · secciones dinámicas
    ========================================================================== */
-import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS, CINTAS } from './data.js?v=19';
-import { initMapa } from './map.js?v=19';
-import { initProyectos } from './projects.js?v=19';
+import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS, CINTAS } from './data.js?v=20';
+import { initMapa } from './map.js?v=20';
+import { initProyectos } from './projects.js?v=20';
 
 const $  = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -644,19 +644,20 @@ function renderMarquee() {
   track.after(clone);
 }
 
-/* Tarjeta de obra en curso sobre la imagen de portada */
+/* Tarjeta de proyecto en curso sobre la imagen de portada: solo la ubicación
+   y la barra de avance */
 function renderObraActiva() {
   const caja = $('#heroObra');
   if (!caja) return;
 
   const o = OBRA_ACTIVA;
   const p = o.proyecto ? PROYECTOS.find(x => x.id === o.proyecto) : null;
-  const titulo = o.titulo || p?.nombre;
   const ciudad = o.ciudad || p?.ciudad;
   const estado = o.estado || p?.estado;
+  const lugar = [ciudad, estado && estado !== ciudad ? estado : null].filter(Boolean).join(', ');
   const barra = '<span class="hero__prog" aria-hidden="true"><i></i></span>';
 
-  if (!o.mostrar || !titulo) {
+  if (!o.mostrar || !lugar) {
     caja.innerHTML = `
       <span class="pill pill--live"><i class="pill__dot"></i> Trabajos verticales</span>
       <b>Alturas y difícil acceso</b>
@@ -665,16 +666,10 @@ function renderObraActiva() {
     return;
   }
 
-  const lugar = [ciudad, estado && estado !== ciudad ? estado : null].filter(Boolean).join(', ');
   caja.innerHTML = `
-    <span class="pill pill--live"><i class="pill__dot"></i> Obra en curso</span>
-    <b>${titulo}</b>
-    ${lugar ? `<span class="hero__badge-lugar">${ICON_PIN}${lugar}</span>` : ''}
-    ${barra}
-    <div class="hero__badge-row">
-      <span>${o.servicio || 'Trabajos verticales'}</span>
-      <span>Acceso por cuerdas</span>
-    </div>`;
+    <span class="pill pill--live"><i class="pill__dot"></i> Proyecto en curso</span>
+    <span class="hero__badge-lugar">${ICON_PIN}${lugar}</span>
+    ${barra}`;
 }
 
 function renderNosotros() {

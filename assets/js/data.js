@@ -196,25 +196,23 @@ export const PROYECTOS = [
 ];
 
 /* -----------------------------------------------------------------------------
-   4b. Obra en curso — tarjeta de la portada
+   4b. Proyecto en curso — tarjeta de la portada
    -----------------------------------------------------------------------------
-   Es lo que aparece sobre la imagen principal, con la animación de avance.
+   Es lo que aparece sobre la imagen principal: «Proyecto en curso», la ciudad
+   y el estado, y la barra de avance animada.
 
-   · Para anunciar otra obra, cambia `proyecto` por el `id` de cualquier
-     proyecto de la lista de arriba y se toman solos su nombre y su ubicación.
-   · Si la obra todavía no está en el portafolio, deja `proyecto: null` y
-     escribe `titulo`, `ciudad` y `estado` a mano.
-   · Si en algún momento no quieres anunciar ninguna obra, pon
-     `mostrar: false`: la tarjeta vuelve al texto genérico de trabajos
-     verticales y deja de decir «Obra en curso».
+   · Para anunciar otro proyecto, cambia `proyecto` por el `id` de cualquier
+     proyecto de la lista de arriba y se toma sola su ubicación.
+   · Si el proyecto todavía no está en el portafolio, deja `proyecto: null` y
+     escribe `ciudad` y `estado` a mano.
+   · Si en algún momento no quieres anunciar ninguno, pon `mostrar: false`:
+     la tarjeta vuelve al texto genérico de trabajos verticales.
    -------------------------------------------------------------------------- */
 export const OBRA_ACTIVA = {
   mostrar: true,
-  proyecto: 'holiday-inn',     // id de PROYECTOS, o null para escribirlo abajo (coincide con el video del recuadro)
-  titulo: null,                // se usa solo si `proyecto` es null
-  ciudad: null,
-  estado: null,
-  servicio: 'Lavado de fachada'
+  proyecto: 'holiday-inn',     // id de PROYECTOS (coincide con el video del recuadro), o null
+  ciudad: null,                // se usan solo si `proyecto` es null
+  estado: null
 };
 
 /* -----------------------------------------------------------------------------
