@@ -269,3 +269,16 @@ export const EMPRESA = {
     mensaje: 'En ASAP entendemos que cada proyecto es único, por lo que trabajamos de la mano con nuestros clientes para ofrecer soluciones personalizadas que superen sus expectativas. ¡Déjanos ayudarte a alcanzar nuevas alturas!'
   }
 };
+
+/* -----------------------------------------------------------------------------
+   8. Cintas animadas
+   Cada cinta repite sus frases de corrido. Para que en lugar del título
+   aparezcan nombres, basta con agregarlos a la lista, por ejemplo:
+   frases: ['Proveedores', 'Comex', 'Sika', 'Hilti']
+   sentido: -1 corre hacia la izquierda, 1 hacia la derecha.
+   estilo: 'llena' (letra sólida) o 'hueca' (solo el contorno).
+   -------------------------------------------------------------------------- */
+export const CINTAS = [
+  { frases: ['Proveedores'], sentido: -1, estilo: 'llena' },
+  { frases: ['Con quienes hemos trabajado'], sentido: 1, estilo: 'hueca' }
+];

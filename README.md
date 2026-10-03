@@ -139,6 +139,20 @@ Con `mostrar: false` la tarjeta vuelve al texto genérico de trabajos verticales
 y deja de anunciar una obra activa. **Mantén este dato al día**: dice que ese
 trabajo se está ejecutando en este momento.
 
+### Cintas de proveedores y clientes
+
+Las dos cintas animadas que siguen al portafolio salen de `CINTAS` en
+`data.js`. Hoy repiten «Proveedores» y «Con quienes hemos trabajado»; para que
+muestren nombres basta con agregarlos a la lista de frases de cada una:
+
+```js
+{ frases: ['Proveedores', 'Comex', 'Sika'], sentido: -1, estilo: 'llena' }
+```
+
+`sentido` es -1 hacia la izquierda y 1 hacia la derecha; `estilo` es `'llena'`
+(letra sólida con destello) o `'hueca'` (solo contorno). La cinta se rellena
+sola hasta cubrir el ancho de la pantalla, sin importar cuántas frases tenga.
+
 ### Agregar un proyecto
 
 Basta con sumarlo a `PROYECTOS` indicando una `ciudad` que ya exista en
@@ -301,7 +315,7 @@ Vercel o Cloudflare Pages viene activado de fábrica.
 Cada publicación lleva un número de versión visible en el código fuente:
 
 ```html
-<meta name="asap-version" content="13 — 2026-09-28">
+<meta name="asap-version" content="14 — 2026-10-03">
 ```
 
 Para saber qué versión está viva en el servidor, abre el sitio, pulsa `Ctrl+U`
@@ -315,7 +329,7 @@ sin pedirle a nadie que limpie su caché. El costo es una petición condicional
 por archivo, que el servidor contesta con un `304 Not Modified` de pocos bytes.
 
 Como segunda red de seguridad, los estilos y los scripts se piden con un sufijo
-de versión (`base.css?v=13`, y lo mismo en los `import` de `assets/js/`). Al
+de versión (`base.css?v=14`, y lo mismo en los `import` de `assets/js/`). Al
 cambiar ese número la URL cambia, así que ninguna copia guardada puede
 reutilizarse. Si subes una versión nueva, actualiza el número en los cuatro
 sitios de `index.html`, en los `import` de `main.js`, `map.js` y `projects.js`,
@@ -354,10 +368,10 @@ subir, porque depende de la posición del scroll y no de un estado guardado.
 El balanceo responde a la velocidad del scroll con un resorte amortiguado, y
 la cubeta tiene su propio péndulo.
 
-No tapa nada: vive fuera del ancho del contenido, y la única sección cuyo
+No tapa nada: vive fuera del ancho del contenido, y las dos secciones cuyo
 contenido invade los márgenes —«Cómo trabajamos», con sus tarjetas que se
-deslizan de borde a borde— va por delante de la capa (`z-index: 41`), así que
-ahí el técnico pasa por detrás del panel. Aparece a partir de **1440 px de
+deslizan de borde a borde, y las cintas de proveedores— van por delante de la
+capa (`z-index: 41`), así que ahí el técnico pasa por detrás. Aparece a partir de **1440 px de
 ancho**, que es donde el margen libre da holgura suficiente; por debajo se
 retira por completo, igual que con movimiento reducido. Su tamaño crece con la
 ventana en la misma proporción que el margen, de modo que la separación con el

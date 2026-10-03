@@ -2,9 +2,9 @@
    ASAP 369 — Orquestador de interfaz
    Precarga · cursor · navegación · revelados · parallax · secciones dinámicas
    ========================================================================== */
-import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS } from './data.js?v=13';
-import { initMapa } from './map.js?v=13';
-import { initProyectos } from './projects.js?v=13';
+import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS, CINTAS } from './data.js?v=14';
+import { initMapa } from './map.js?v=14';
+import { initProyectos } from './projects.js?v=14';
 
 const $  = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -437,6 +437,129 @@ function initVertical() {
 }
 
 /* -----------------------------------------------------------------------------
+   Cintas: proveedores y con quienes hemos trabajado
+   -----------------------------------------------------------------------------
+   Cada fila es un grupo de frases repetido hasta cubrir la pantalla, y ese
+   grupo va dos veces seguido: al recorrer el ancho de uno, el otro ocupa su
+   lugar y el bucle no tiene costura. Solo se anima mientras la sección está a
+   la vista, y solo se escribe `transform` y una variable de luz por palabra;
+   las posiciones se miden una vez, no en cada cuadro.
+   -------------------------------------------------------------------------- */
+function initCintas() {
+  const caja = $('#cintas');
+  const filasBox = $('#cintasFilas');
+  if (!caja || !filasBox || !CINTAS?.length) return;
+
+  const BASE = [58, 46];                 // px/s de cada fila en reposo
+  let filas = [];
+
+  const itemHTML = (frase, i) => `
+    <span class="cintas__item" style="--i:${i}">
+      <span class="cintas__txt">${frase}</span><i class="cintas__sep"></i>
+    </span>`;
+
+  const construir = () => {
+    filasBox.innerHTML = CINTAS.map(c =>
+      `<div class="cintas__fila cintas__fila--${c.estilo === 'hueca' ? 'hueca' : 'llena'}"><div class="cintas__pista"></div></div>`
+    ).join('');
+
+    filas = $$('.cintas__fila', filasBox).map((fila, n) => {
+      const cfg = CINTAS[n];
+      const pista = $('.cintas__pista', fila);
+      const frases = cfg.frases?.length ? cfg.frases : [''];
+
+      // un grupo que por sí solo ya cubra la pantalla
+      let grupo = '', i = 0;
+      pista.innerHTML = frases.map(f => itemHTML(f, i++)).join('');
+      const unidad = pista.scrollWidth || 1;
+      const veces = Math.max(1, Math.ceil((innerWidth * 1.15) / unidad));
+      for (let k = 0; k < veces; k++) grupo += frases.map(f => itemHTML(f, i++)).join('');
+      pista.innerHTML = grupo + grupo;
+
+      const items = $$('.cintas__item', pista);
+      return {
+        pista, items,
+        sentido: cfg.sentido === 1 ? 1 : -1,
+        base: BASE[n] ?? BASE[BASE.length - 1],
+        ancho: pista.scrollWidth / 2,
+        centros: items.map(el => el.offsetLeft + el.offsetWidth / 2),
+        izq: fila.getBoundingClientRect().left,
+        avance: Math.random() * 400       // que no arranquen alineadas
+      };
+    });
+  };
+
+  const encender = (f, desplazo) => {
+    const mitad = innerWidth / 2, alcance = innerWidth * 0.36;
+    f.items.forEach((el, k) => {
+      const d = Math.abs(f.izq + desplazo + f.centros[k] - mitad) / alcance;
+      const luz = 1 - Math.min(1, d);
+      el.style.setProperty('--luz', (luz * luz * (3 - 2 * luz)).toFixed(3));
+    });
+  };
+
+  const colocar = (f, inclinacion = 0) => {
+    const t = ((f.avance % f.ancho) + f.ancho) % f.ancho;
+    const desplazo = t - f.ancho;
+    f.pista.style.transform = `translate3d(${desplazo.toFixed(2)}px, 0, 0) skewX(${inclinacion.toFixed(2)}deg)`;
+    encender(f, desplazo);
+  };
+
+  const listo = () => {
+    construir();
+    filas.forEach(f => colocar(f));
+  };
+
+  // la entrada de las filas y los filos
+  new IntersectionObserver(([e], obs) => {
+    if (e.isIntersecting) { caja.classList.add('is-in'); obs.disconnect(); }
+  }, { threshold: 0.25 }).observe(caja);
+
+  (document.fonts?.ready ?? Promise.resolve()).then(listo);
+  let ancho = innerWidth;
+  addEventListener('resize', () => {
+    if (Math.abs(innerWidth - ancho) < 2) return;
+    ancho = innerWidth; listo();
+  });
+
+  if (REDUCED) return;                    // quietas, pero completas y legibles
+
+  let visible = false, corriendo = false, previo = 0;
+  let ultimoScroll = scrollY, velScroll = 0, inclinacion = 0;
+  let freno = 1, frenoDestino = 1;
+
+  caja.addEventListener('pointerenter', () => { frenoDestino = 0.22; });
+  caja.addEventListener('pointerleave', () => { frenoDestino = 1; });
+
+  const paso = t => {
+    if (!visible) { corriendo = false; return; }
+    const dt = Math.min(0.05, (t - (previo || t)) / 1000);
+    previo = t;
+
+    velScroll = lerp(velScroll, scrollY - ultimoScroll, 0.12);
+    ultimoScroll = scrollY;
+    freno = lerp(freno, frenoDestino, 0.06);
+    inclinacion = lerp(inclinacion, clamp(velScroll * 0.22, -7, 7), 0.1);
+
+    // al bajar aceleran en su sentido; al subir, se invierten
+    const empuje = clamp(velScroll * 11, -420, 420);
+    filas.forEach(f => {
+      f.avance += f.sentido * (f.base * freno + empuje) * dt;
+      colocar(f, inclinacion * -f.sentido);      // se inclinan hacia donde corren
+    });
+    requestAnimationFrame(paso);
+  };
+
+  new IntersectionObserver(([e]) => {
+    visible = e.isIntersecting;
+    if (visible && !corriendo) {
+      corriendo = true; previo = 0; ultimoScroll = scrollY;
+      requestAnimationFrame(paso);
+    }
+  }).observe(caja);
+}
+
+/* -----------------------------------------------------------------------------
    Contadores
    -------------------------------------------------------------------------- */
 function initCounters() {
@@ -706,6 +829,7 @@ function boot() {
   initCursor();
   initMagnetic();
   initVertical();
+  initCintas();
   initForm();
 
   document.dispatchEvent(new CustomEvent('asap:rendered'));
