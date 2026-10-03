@@ -209,30 +209,44 @@ y a la tarjeta; los que falten simplemente no se muestran.
 
 ## 5. Cómo sustituir imágenes y video
 
-### Video de fondo de la portada
+### Videos de la portada
 
-El fondo de la portada es un video real: una toma de dron del Holiday Inn
-Express con la cuadrilla en la fachada. Es un tramo de 8 s (del segundo 8.4 al
-16.4 del original, a 0.83× de velocidad) con el final fundido sobre el
-principio, para que el loop no tenga corte. Vive dentro de la sección de la
-portada (`.hero__fondo`), así que se va con ella al bajar y no aparece en
-ninguna otra parte. El recuadro de la ilustración y la tarjeta «Obra en curso»
-siguen encima, igual que antes. Está en `assets/video/`:
+La portada lleva dos videos reales, los dos en loop continuo, en silencio y
+solo mientras la portada está a la vista. Ninguno aparece en otra parte de la
+página. Se reproducen únicamente si el visitante no pidió movimiento reducido
+ni ahorro de datos; en esos casos se ve su primer cuadro como imagen fija.
+
+**En el recuadro**: toma de dron del Holiday Inn Express con la cuadrilla en
+la fachada. Tramo de 8 s (segundos 8.4–16.4 del original, a 0.83×),
+recortado al marco 4:5, con el final fundido sobre el principio. La tarjeta
+«Obra en curso» anuncia esa obra para que coincida.
 
 | Archivo | Para | Peso |
 |---|---|---|
-| `fondo-ancho.mp4` / `.webm` | pantallas horizontales (1280×888) | 1.7 MB / 1.2 MB |
-| `fondo-alto.mp4` / `.webm` | pantallas verticales, el celular (540×960) | 1.2 MB / 1.1 MB |
-| `fondo-ancho.jpg` / `fondo-alto.jpg` | imagen fija mientras carga, y para quien pidió movimiento reducido o ahorro de datos | ~65 KB |
+| `hero-720.mp4` / `.webm` | escritorio (720×900) | 2.2 MB / 1.3 MB |
+| `hero-540.mp4` / `.webm` | celular (544×680) | 0.7 MB / 0.6 MB |
+| `hero-poster.jpg` | imagen fija | 67 KB |
 
-El navegador toma solo la versión de su pantalla, y no la descarga hasta que
-hace falta. Se reproduce en silencio, entra con un fundido, se pausa cuando la
-portada sale de la vista y se mueve un poco más lento que el scroll. Un velo
-oscuro más cargado del lado del texto mantiene la lectura. El original se tomó
-de la caché de la app DJI Fly (720×1280); con el archivo de la memoria del dron
-se puede sacar una versión más nítida con el mismo proceso. Si cambias el
-video, conserva los nombres y sube el número `?v=` en `index.html` y en
-`sections.css`.
+**De fondo** (`.hero__fondo`): toma desde abajo de una torre de cristal con un
+técnico descendiendo por la arista. El original (iPhone, 6.4 s) estaba a
+pulso y con zoom, así que se tomaron los dos tramos con el mismo encuadre
+(1.9–3.5 s y 5.35–6.4 s), se fijó cada cuadro contra uno de referencia usando
+la retícula de ventanas del edificio —queda como en tripié: el edificio
+quieto, se mueven las nubes y el técnico—, se unieron con un fundido y se
+bajó la velocidad a 0.45× generando cuadros intermedios. El loop dura 4.7 s
+y no tiene costura. Hay versión horizontal y vertical; el navegador toma la
+de su pantalla, la descarga solo cuando hace falta y la mueve un poco más
+lento que el scroll. Un velo oscuro más cargado del lado del texto mantiene
+la lectura.
+
+| Archivo | Para | Peso |
+|---|---|---|
+| `fondo-ancho.mp4` / `.webm` | pantallas horizontales (1152×886) | 1.3 MB / 0.4 MB |
+| `fondo-alto.mp4` / `.webm` | pantallas verticales, el celular (540×960) | 0.7 MB / 0.3 MB |
+| `fondo-ancho.jpg` / `fondo-alto.jpg` | imagen fija | ~40 KB |
+
+Si cambias algún video, conserva los nombres y sube el número `?v=` en
+`index.html` y en `sections.css`, para que nadie vea el anterior guardado.
 
 Todas las ilustraciones actuales son **material de referencia** generado para
 mostrar el diseño. Se reemplazan conservando el nombre del archivo —o
@@ -350,7 +364,7 @@ Vercel o Cloudflare Pages viene activado de fábrica.
 Cada publicación lleva un número de versión visible en el código fuente:
 
 ```html
-<meta name="asap-version" content="18 — 2026-10-03">
+<meta name="asap-version" content="19 — 2026-10-03">
 ```
 
 Para saber qué versión está viva en el servidor, abre el sitio, pulsa `Ctrl+U`
@@ -364,7 +378,7 @@ sin pedirle a nadie que limpie su caché. El costo es una petición condicional
 por archivo, que el servidor contesta con un `304 Not Modified` de pocos bytes.
 
 Como segunda red de seguridad, los estilos y los scripts se piden con un sufijo
-de versión (`base.css?v=18`, y lo mismo en los `import` de `assets/js/`). Al
+de versión (`base.css?v=19`, y lo mismo en los `import` de `assets/js/`). Al
 cambiar ese número la URL cambia, así que ninguna copia guardada puede
 reutilizarse. Si subes una versión nueva, actualiza el número en los cuatro
 sitios de `index.html`, en los `import` de `main.js`, `map.js` y `projects.js`,
