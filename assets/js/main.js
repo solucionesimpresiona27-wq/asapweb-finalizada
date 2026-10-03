@@ -2,9 +2,9 @@
    ASAP 369 — Orquestador de interfaz
    Precarga · cursor · navegación · revelados · parallax · secciones dinámicas
    ========================================================================== */
-import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS, CINTAS } from './data.js?v=14';
-import { initMapa } from './map.js?v=14';
-import { initProyectos } from './projects.js?v=14';
+import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS, CINTAS } from './data.js?v=15';
+import { initMapa } from './map.js?v=15';
+import { initProyectos } from './projects.js?v=15';
 
 const $  = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -458,15 +458,29 @@ function initCintas() {
       <span class="cintas__txt">${frase}</span><i class="cintas__sep"></i>
     </span>`;
 
+  const rotuloHTML = c => `
+    <div class="cintas__rotulo cintas__rotulo--${c.posicion === 'abajo' ? 'abajo' : 'arriba'}">
+      <span class="cintas__rotulo-filo"></span>
+      <span class="cintas__rotulo-txt">${c.rotulo}</span>
+      <span class="cintas__rotulo-filo"></span>
+    </div>`;
+
+  // para lectores de pantalla: cada rótulo con su lista, una sola vez
+  const lector = $('#cintasLector');
+  if (lector) lector.innerHTML = CINTAS.map(c =>
+    `<p>${c.rotulo}: ${(c.nombres ?? []).join(', ')}.</p>`).join('');
+
   const construir = () => {
-    filasBox.innerHTML = CINTAS.map(c =>
-      `<div class="cintas__fila cintas__fila--${c.estilo === 'hueca' ? 'hueca' : 'llena'}"><div class="cintas__pista"></div></div>`
-    ).join('');
+    filasBox.innerHTML = CINTAS.map(c => {
+      const fila = `<div class="cintas__fila cintas__fila--${c.estilo === 'hueca' ? 'hueca' : 'llena'}"><div class="cintas__pista"></div></div>`;
+      const rotulo = c.rotulo ? rotuloHTML(c) : '';
+      return c.posicion === 'abajo' ? fila + rotulo : rotulo + fila;
+    }).join('');
 
     filas = $$('.cintas__fila', filasBox).map((fila, n) => {
       const cfg = CINTAS[n];
       const pista = $('.cintas__pista', fila);
-      const frases = cfg.frases?.length ? cfg.frases : [''];
+      const frases = cfg.nombres?.length ? cfg.nombres : [cfg.rotulo ?? ''];
 
       // un grupo que por sí solo ya cubra la pantalla
       let grupo = '', i = 0;

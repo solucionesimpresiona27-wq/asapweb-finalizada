@@ -272,13 +272,35 @@ export const EMPRESA = {
 
 /* -----------------------------------------------------------------------------
    8. Cintas animadas
-   Cada cinta repite sus frases de corrido. Para que en lugar del título
-   aparezcan nombres, basta con agregarlos a la lista, por ejemplo:
-   frases: ['Proveedores', 'Comex', 'Sika', 'Hilti']
-   sentido: -1 corre hacia la izquierda, 1 hacia la derecha.
-   estilo: 'llena' (letra sólida) o 'hueca' (solo el contorno).
+   ⚠ TODOS LOS NOMBRES DE ESTAS LISTAS SON FICTICIOS: están solo para mostrar
+   el diseño. Sustitúyelos por los proveedores y clientes reales antes de
+   publicar el sitio, o quedará dicho que se trabajó con empresas inventadas.
+
+   rotulo:   el título que acompaña a la cinta.
+   posicion: 'arriba' o 'abajo' — dónde va el título respecto a la cinta.
+   nombres:  lo que corre en la cinta; se repite solo hasta llenar la pantalla.
+   sentido:  -1 corre hacia la izquierda, 1 hacia la derecha.
+   estilo:   'llena' (letra sólida) o 'hueca' (solo el contorno).
    -------------------------------------------------------------------------- */
 export const CINTAS = [
-  { frases: ['Proveedores'], sentido: -1, estilo: 'llena' },
-  { frases: ['Con quienes hemos trabajado'], sentido: 1, estilo: 'hueca' }
+  {
+    rotulo: 'Proveedores',
+    posicion: 'arriba',
+    nombres: [
+      'Andesita Recubrimientos', 'Cordal Equipos de Altura', 'Prisma Impermeables',
+      'Tensa Membranas', 'Lumbre Pinturas', 'Alcor Anclajes'
+    ],
+    sentido: -1,
+    estilo: 'llena'
+  },
+  {
+    rotulo: 'Con quienes hemos trabajado',
+    posicion: 'abajo',
+    nombres: [
+      'Hotel Bahía Serena', 'Torre Alcázar', 'Plaza Cantera',
+      'Clínica Santa Brisa', 'Residencial Los Agaves', 'Desarrollos Cumbre Alta'
+    ],
+    sentido: 1,
+    estilo: 'hueca'
+  }
 ];

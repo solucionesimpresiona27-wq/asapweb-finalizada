@@ -142,16 +142,23 @@ trabajo se está ejecutando en este momento.
 ### Cintas de proveedores y clientes
 
 Las dos cintas animadas que siguen al portafolio salen de `CINTAS` en
-`data.js`. Hoy repiten «Proveedores» y «Con quienes hemos trabajado»; para que
-muestren nombres basta con agregarlos a la lista de frases de cada una:
+`data.js`. **Los nombres que traen hoy son ficticios**, puestos solo para
+mostrar el diseño: hay que sustituirlos por los proveedores y clientes reales
+antes de publicar. Cada cinta tiene:
 
 ```js
-{ frases: ['Proveedores', 'Comex', 'Sika'], sentido: -1, estilo: 'llena' }
+{
+  rotulo: 'Proveedores',          // el título que la acompaña
+  posicion: 'arriba',             // el título va arriba o abajo de la cinta
+  nombres: ['Nombre 1', 'Nombre 2'],
+  sentido: -1,                    // -1 hacia la izquierda, 1 hacia la derecha
+  estilo: 'llena'                 // 'llena' (sólida) o 'hueca' (contorno)
+}
 ```
 
-`sentido` es -1 hacia la izquierda y 1 hacia la derecha; `estilo` es `'llena'`
-(letra sólida con destello) o `'hueca'` (solo contorno). La cinta se rellena
-sola hasta cubrir el ancho de la pantalla, sin importar cuántas frases tenga.
+La cinta se repite sola hasta cubrir el ancho de la pantalla, sin importar
+cuántos nombres tenga. Los lectores de pantalla reciben cada lista una sola
+vez, con su título.
 
 ### Agregar un proyecto
 
@@ -287,6 +294,9 @@ la visión, el mensaje del fundador y el portafolio de 12 proyectos.
       equipo deben corresponder con lo que la empresa efectivamente acredita.
 - [ ] **Aviso de privacidad**: falta la página; el formulario ya lo menciona de
       forma genérica.
+- [ ] **Nombres de las cintas de proveedores y clientes**: todos son
+      ficticios, puestos solo para mostrar el diseño. Sustitúyelos por los
+      reales en `CINTAS` (`data.js`) antes de publicar.
 
 Los indicadores de "En números" y las cifras de la portada se calculan solos a
 partir de `data.js` (especialidades, proyectos, ciudades). Si prefieres mostrar
@@ -315,7 +325,7 @@ Vercel o Cloudflare Pages viene activado de fábrica.
 Cada publicación lleva un número de versión visible en el código fuente:
 
 ```html
-<meta name="asap-version" content="14 — 2026-10-03">
+<meta name="asap-version" content="15 — 2026-10-03">
 ```
 
 Para saber qué versión está viva en el servidor, abre el sitio, pulsa `Ctrl+U`
@@ -329,7 +339,7 @@ sin pedirle a nadie que limpie su caché. El costo es una petición condicional
 por archivo, que el servidor contesta con un `304 Not Modified` de pocos bytes.
 
 Como segunda red de seguridad, los estilos y los scripts se piden con un sufijo
-de versión (`base.css?v=14`, y lo mismo en los `import` de `assets/js/`). Al
+de versión (`base.css?v=15`, y lo mismo en los `import` de `assets/js/`). Al
 cambiar ese número la URL cambia, así que ninguna copia guardada puede
 reutilizarse. Si subes una versión nueva, actualiza el número en los cuatro
 sitios de `index.html`, en los `import` de `main.js`, `map.js` y `projects.js`,

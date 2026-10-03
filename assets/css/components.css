@@ -407,7 +407,7 @@ body.menu-open .menu__foot { opacity: 1; }
    Va por delante de la capa del técnico en descenso (z-index 40), igual que
    «Cómo trabajamos»: ocupa de borde a borde y él pasa por detrás.        */
 .cintas {
-  --cinta-tam: clamp(2rem, 1rem + 3.6vw, 4.8rem);
+  --cinta-tam: clamp(1.8rem, .9rem + 3.1vw, 4.3rem);
   --cinta-hueco: clamp(1.6rem, 3.4vw, 3.4rem);
   position: relative;
   z-index: 41;
@@ -516,6 +516,48 @@ body.menu-open .menu__foot { opacity: 1; }
   paint-order: stroke fill;
 }
 
+/* rótulos: «Proveedores» encima de su cinta y «Con quienes hemos trabajado»
+   debajo de la suya. Los filos se abren desde el texto al entrar. */
+.cintas__rotulo {
+  display: flex; align-items: center; justify-content: center;
+  gap: clamp(.9rem, 2vw, 1.6rem);
+  padding-inline: var(--pad-x);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 1s var(--ease) .25s, transform 1.2s var(--ease) .25s;
+}
+.cintas__rotulo--arriba { margin-bottom: clamp(.9rem, 1.8vw, 1.5rem); }
+.cintas__rotulo--abajo  { margin-top: clamp(.9rem, 1.8vw, 1.5rem); }
+.cintas__rotulo-txt {
+  font-size: clamp(.7rem, .64rem + .25vw, .84rem);
+  font-weight: 500;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--steel-soft);
+  white-space: nowrap;
+}
+.cintas__rotulo-filo {
+  flex: 0 1 clamp(2.5rem, 9vw, 8rem);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(94, 196, 236, .65));
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 1.4s var(--ease) .45s;
+}
+.cintas__rotulo-filo:last-child {
+  background: linear-gradient(90deg, rgba(94, 196, 236, .65), transparent);
+  transform-origin: left center;
+}
+.cintas.is-in .cintas__rotulo { opacity: 1; transform: none; }
+.cintas.is-in .cintas__rotulo-filo { transform: scaleX(1); }
+.cintas.is-in .cintas__rotulo--abajo { transition-delay: .5s; }
+.cintas.is-in .cintas__rotulo--abajo .cintas__rotulo-filo { transition-delay: .7s; }
+
+@media (max-width: 520px) {
+  .cintas__rotulo-txt { letter-spacing: .2em; }
+  .cintas__rotulo-filo { flex-basis: 2rem; min-width: 1.4rem; }
+}
+
 /* separador: rombo con el degradado del logotipo */
 .cintas__sep {
   flex: none;
@@ -529,7 +571,7 @@ body.menu-open .menu__foot { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   .cintas::before, .cintas__linea::after, .cintas__fila--llena .cintas__txt { animation: none; }
-  .cintas__linea, .cintas__fila { transform: none; opacity: 1; transition: none; }
+  .cintas__linea, .cintas__fila, .cintas__rotulo, .cintas__rotulo-filo { transform: none; opacity: 1; transition: none; }
   .cintas__item { --luz: 1; }
 }
 
