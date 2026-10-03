@@ -350,7 +350,7 @@ Vercel o Cloudflare Pages viene activado de fábrica.
 Cada publicación lleva un número de versión visible en el código fuente:
 
 ```html
-<meta name="asap-version" content="17 — 2026-10-03">
+<meta name="asap-version" content="18 — 2026-10-03">
 ```
 
 Para saber qué versión está viva en el servidor, abre el sitio, pulsa `Ctrl+U`
@@ -364,7 +364,7 @@ sin pedirle a nadie que limpie su caché. El costo es una petición condicional
 por archivo, que el servidor contesta con un `304 Not Modified` de pocos bytes.
 
 Como segunda red de seguridad, los estilos y los scripts se piden con un sufijo
-de versión (`base.css?v=17`, y lo mismo en los `import` de `assets/js/`). Al
+de versión (`base.css?v=18`, y lo mismo en los `import` de `assets/js/`). Al
 cambiar ese número la URL cambia, así que ninguna copia guardada puede
 reutilizarse. Si subes una versión nueva, actualiza el número en los cuatro
 sitios de `index.html`, en los `import` de `main.js`, `map.js` y `projects.js`,

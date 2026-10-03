@@ -2,9 +2,9 @@
    ASAP 369 — Orquestador de interfaz
    Precarga · cursor · navegación · revelados · parallax · secciones dinámicas
    ========================================================================== */
-import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS, CINTAS } from './data.js?v=17';
-import { initMapa } from './map.js?v=17';
-import { initProyectos } from './projects.js?v=17';
+import { SERVICIOS, VERTICALES, PROCESO, METRICAS, EMPRESA, OBRA_ACTIVA, PROYECTOS, CINTAS } from './data.js?v=18';
+import { initMapa } from './map.js?v=18';
+import { initProyectos } from './projects.js?v=18';
 
 const $  = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -437,32 +437,34 @@ function initVertical() {
 }
 
 /* -----------------------------------------------------------------------------
-   Video de fondo de la portada
+   Videos de la portada: el del recuadro y el del fondo
    -----------------------------------------------------------------------------
-   Se reproduce solo, en silencio y en loop, únicamente si el visitante no
-   pidió movimiento reducido ni ahorro de datos; en esos casos se queda la
-   imagen fija. No se descarga hasta que hace falta, entra con un fundido al
-   empezar a reproducirse y se pausa cuando la portada sale de la vista, para
-   no gastar batería ni datos mientras se lee el resto de la página.
+   Se reproducen solos, en silencio y en loop, únicamente si el visitante no
+   pidió movimiento reducido ni ahorro de datos; en esos casos se quedan como
+   imagen fija. No se descargan completos hasta que hacen falta y se pausan
+   cuando la portada sale de la vista, para no gastar batería ni datos
+   mientras se lee el resto de la página. El del fondo entra con un fundido.
    -------------------------------------------------------------------------- */
 function initHeroVideo() {
-  const caja = $('.hero__fondo');
-  const video = $('.hero__fondo-video');
-  if (!caja || !video) return;
   if (REDUCED || navigator.connection?.saveData) return;
 
-  video.muted = true;                  // los navegadores solo dejan reproducir solo sin sonido
-  video.addEventListener('playing', () => caja.classList.add('is-on'), { once: true });
-  let cargado = false;
+  const activar = (video, caja = video) => {
+    if (!video) return;
+    video.muted = true;                // los navegadores solo dejan reproducir solo sin sonido
+    video.addEventListener('playing', () => caja.classList.add('is-on'), { once: true });
+    let cargado = false;
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        if (!cargado) { cargado = true; video.preload = 'auto'; video.load(); }
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    }, { threshold: 0.02 }).observe(caja);
+  };
 
-  new IntersectionObserver(([e]) => {
-    if (e.isIntersecting) {
-      if (!cargado) { cargado = true; video.preload = 'auto'; video.load(); }
-      video.play().catch(() => {});
-    } else {
-      video.pause();
-    }
-  }, { threshold: 0.02 }).observe(caja);
+  activar($('.hero__video'));
+  activar($('.hero__fondo-video'), $('.hero__fondo'));
 }
 
 /* -----------------------------------------------------------------------------

@@ -74,7 +74,7 @@
   position: absolute; left: 0; right: 0; top: -6%; bottom: -6%;
   z-index: 0;
   pointer-events: none;
-  background: var(--ink-900) url('../video/fondo-ancho.jpg?v=17') 50% 50% / cover no-repeat;
+  background: var(--ink-900) url('../video/fondo-ancho.jpg?v=18') 50% 50% / cover no-repeat;
 }
 .hero__fondo-video {
   display: block; width: 100%; height: 100%;
@@ -92,7 +92,7 @@
     linear-gradient(rgba(20, 97, 143, .14), rgba(20, 97, 143, .14));
 }
 @media (orientation: portrait) {
-  .hero__fondo { background-image: url('../video/fondo-alto.jpg?v=17'); }
+  .hero__fondo { background-image: url('../video/fondo-alto.jpg?v=18'); }
   .hero__fondo::after {
     background:
       linear-gradient(to bottom, rgba(7, 11, 20, .6) 0%, rgba(7, 11, 20, .74) 40%, rgba(7, 11, 20, .9) 100%),
@@ -148,7 +148,11 @@
   border: 1px solid var(--line-strong);
   box-shadow: 0 60px 120px -50px rgba(0, 0, 0, .9);
 }
-.hero__frame img { width: 100%; height: 100%; object-fit: cover; }
+.hero__frame img,
+.hero__video { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* el póster es el primer cuadro del loop, así que el paso de la imagen fija
+   al video en movimiento no se nota; el fondo cubre el instante de carga */
+.hero__video { background: var(--ink-800); }
 
 /* =============================================================================
    OBRA EN CURSO
@@ -207,6 +211,30 @@
   7%   { opacity: 1; }
   86%  { opacity: 1; }
   100% { transform: translateY(0);    opacity: 0; }
+}
+
+/* Con el video de la obra real, la animación se vuelve un pase de luz: ya no
+   oscurece la mitad de abajo ni deja una franja blanca que tape a la
+   cuadrilla o el letrero. El riel queda como una guía tenue, porque las
+   cuerdas reales se mueven con el dron. Un viñeteado suave funde los bordes
+   del video con el fondo de la página. */
+.hero__frame--video .obra__riel { opacity: .4; }
+.hero__frame--video .obra__barrido {
+  mix-blend-mode: screen;
+  background: linear-gradient(to bottom,
+    rgba(180, 222, 245, 0)    0%,
+    rgba(180, 222, 245, 0)    46%,
+    rgba(180, 222, 245, .07)  49.2%,
+    rgba(210, 238, 252, .36)  50%,
+    rgba(94, 196, 236, .1)    50.8%,
+    rgba(94, 196, 236, 0)     53%,
+    rgba(94, 196, 236, 0)     100%);
+}
+.hero__frame--video .obra__barrido::after { width: 9px; height: 9px; box-shadow: 0 0 18px 5px rgba(94, 196, 236, .45); }
+.hero__frame--video .obra::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(120% 90% at 55% 40%, transparent 55%, rgba(7, 11, 20, .42) 100%);
 }
 
 /* Degradado inferior, para que el texto de la tarjeta se lea sobre la imagen */
@@ -317,7 +345,13 @@
   .hero__grid { grid-template-columns: 1fr; gap: 2.6rem; }
   .hero__visual { order: -1; max-width: 30rem; }
   .hero__frame { aspect-ratio: 16 / 12; }
+  /* con video el marco se vuelve cuadrado y la tarjeta baja un poco, para que
+     no tape la toma; el encuadre conserva el letrero y al técnico */
+  .hero__frame--video { aspect-ratio: 1; }
+  .hero__video { object-position: 50% 18%; }
   .hero__badge { left: 1rem; right: 1rem; bottom: -1.4rem; min-width: 0; }
+  .hero__visual:has(.hero__frame--video) .hero__badge { bottom: -2.6rem; }
+  .hero__visual:has(.hero__frame--video) { margin-bottom: 1.2rem; }
   .hero__foot { flex-direction: column; align-items: flex-start; gap: 1.1rem; }
 }
 

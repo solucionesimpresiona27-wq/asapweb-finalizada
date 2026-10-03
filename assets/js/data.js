@@ -210,7 +210,7 @@ export const PROYECTOS = [
    -------------------------------------------------------------------------- */
 export const OBRA_ACTIVA = {
   mostrar: true,
-  proyecto: 'westin',          // id de PROYECTOS, o null para escribirlo abajo
+  proyecto: 'holiday-inn',     // id de PROYECTOS, o null para escribirlo abajo (coincide con el video del recuadro)
   titulo: null,                // se usa solo si `proyecto` es null
   ciudad: null,
   estado: null,

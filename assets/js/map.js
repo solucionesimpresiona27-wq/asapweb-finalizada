@@ -3,9 +3,9 @@
    Render 2D de la República Mexicana con acercamiento animado por ciudad
    y marcadores geolocalizados de los proyectos ejecutados.
    ========================================================================== */
-import { ESTADOS, MAP_VIEWBOX } from './map-paths.js?v=17';
-import { ZONAS, PROYECTOS, CIUDADES } from './data.js?v=17';
-import { abrirProyecto, filtrarPorZona } from './projects.js?v=17';
+import { ESTADOS, MAP_VIEWBOX } from './map-paths.js?v=18';
+import { ZONAS, PROYECTOS, CIUDADES } from './data.js?v=18';
+import { abrirProyecto, filtrarPorZona } from './projects.js?v=18';
 
 const $  = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
