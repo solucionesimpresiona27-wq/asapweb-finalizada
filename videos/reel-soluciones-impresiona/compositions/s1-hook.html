@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Escena 1 — Gancho: la búsqueda vacía</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #f4f6fb;
+          font-family: "Montserrat", sans-serif;
+        }
+        #s1-stage {
+          position: absolute;
+          inset: 0;
+          transform-origin: 540px 960px;
+        }
+        /* Barra de búsqueda */
+        #s1-bar {
+          position: absolute;
+          left: 80px;
+          top: 700px;
+          width: 920px;
+          height: 136px;
+          border-radius: 68px;
+          background: rgba(214, 226, 255, 0.07);
+          border: 3px solid rgba(214, 226, 255, 0.2);
+          box-shadow:
+            0 30px 80px rgba(0, 0, 0, 0.45),
+            0 0 0 10px rgba(61, 107, 255, 0.06);
+          opacity: 0;
+        }
+        #s1-icon {
+          position: absolute;
+          left: 40px;
+          top: 36px;
+          width: 64px;
+          height: 64px;
+        }
+        #s1-icon svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        #s1-query {
+          position: absolute;
+          left: 128px;
+          top: 34px;
+          height: 68px;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 54px;
+          line-height: 68px;
+          letter-spacing: 0;
+          white-space: pre;
+          color: #f4f6fb;
+        }
+        #s1-query span {
+          opacity: 0;
+        }
+        #s1-caret {
+          position: absolute;
+          left: 128px;
+          top: 36px;
+          width: 6px;
+          height: 64px;
+          border-radius: 3px;
+          background: #fcc204;
+        }
+        #s1-go {
+          position: absolute;
+          right: 22px;
+          top: 22px;
+          width: 92px;
+          height: 92px;
+          border-radius: 50%;
+          background: #fcc204;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        #s1-go svg {
+          width: 44px;
+          height: 44px;
+          display: block;
+        }
+        /* Resultado vacío con glitch */
+        #s1-result {
+          position: absolute;
+          left: 128px;
+          top: 890px;
+          width: 800px;
+          height: 60px;
+          opacity: 0;
+        }
+        .s1-res {
+          position: absolute;
+          left: 0;
+          top: 0;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 42px;
+          line-height: 60px;
+          white-space: nowrap;
+          color: #c3cde6;
+        }
+        .s1-res b {
+          color: #fcc204;
+        }
+        #s1-res-a {
+          color: #fcc204;
+          opacity: 0;
+        }
+        #s1-res-b {
+          color: #3d6bff;
+          opacity: 0;
+        }
+        /* Titular */
+        #s1-head {
+          position: absolute;
+          left: 80px;
+          top: 1110px;
+          width: 920px;
+        }
+        #s1-line-a {
+          display: block;
+          font-weight: 700;
+          font-size: 76px;
+          line-height: 1.08;
+          letter-spacing: -0.02em;
+          color: #f4f6fb;
+          opacity: 0;
+        }
+        #s1-line-b {
+          display: block;
+          margin-top: 6px;
+          font-weight: 900;
+          font-size: 120px;
+          line-height: 1.02;
+          letter-spacing: -0.04em;
+          color: #fcc204;
+          opacity: 0;
+          transform-origin: 0% 60%;
+          text-shadow: 0 0 60px rgba(252, 194, 4, 0.35);
+        }
+        #s1-rule {
+          display: block;
+          margin-top: 26px;
+          width: 220px;
+          height: 10px;
+          border-radius: 5px;
+          background: #f4f6fb;
+          transform-origin: 0% 50%;
+        }
+      </style>
+
+      <div id="root" data-composition-id="s1-hook" data-width="1080" data-height="1920">
+        <div id="s1-stage">
+          <div id="s1-bar">
+            <div id="s1-icon">
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <circle cx="27" cy="27" r="17" fill="none" stroke="#fcc204" stroke-width="6" />
+                <path d="M40 40 L54 54" stroke="#fcc204" stroke-width="7" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div id="s1-query"><span>t</span><span>u</span><span> </span><span>n</span><span>e</span><span>g</span><span>o</span><span>c</span><span>i</span><span>o</span></div>
+            <div id="s1-caret"></div>
+            <div id="s1-go">
+              <svg viewBox="0 0 44 44" aria-hidden="true">
+                <path d="M10 22 H32 M23 12 L33 22 L23 32" fill="none" stroke="#060c1c" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+          </div>
+
+          <div id="s1-result" data-layout-allow-overlap>
+            <div class="s1-res" id="s1-res-b" data-layout-allow-overlap><b data-layout-allow-overlap>0</b> resultados</div>
+            <div class="s1-res" id="s1-res-a" data-layout-allow-overlap><b data-layout-allow-overlap>0</b> resultados</div>
+            <div class="s1-res" id="s1-res-main" data-layout-allow-overlap><b data-layout-allow-overlap>0</b> resultados</div>
+          </div>
+
+          <div id="s1-head">
+            <span id="s1-line-a">Si no te encuentran,</span>
+            <span id="s1-line-b">no te eligen.</span>
+            <span id="s1-rule"></span>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          const CHAR_W = 54 * 0.6; // JetBrains Mono: avance fijo de 0.6em
+          const TYPE_AT = 0.7;
+          const TYPE_STEP = 0.085;
+          const ENTER_AT = 1.7;
+          const GLITCH_AT = 1.85;
+
+          // Barra: aparece con rebote
+          tl.fromTo(
+            "#s1-bar",
+            { opacity: 0, scale: 0.86, y: 40 },
+            { opacity: 1, scale: 1, y: 0, duration: 0.55, ease: "back.out(1.8)" },
+            0.25,
+          );
+
+          // Cursor de texto: parpadeo en onda cuadrada hasta que empieza a escribir y después del enter
+          [0.25, 0.55, 2.05, 2.35, 2.65, 2.95, 3.25].forEach((t) => {
+            tl.set("#s1-caret", { opacity: 0 }, t);
+            tl.set("#s1-caret", { opacity: 1 }, t + 0.15);
+          });
+
+          // Escribe "tu negocio" letra por letra; el cursor avanza con cada letra
+          const chars = document.querySelectorAll("#s1-query span");
+          chars.forEach((c, i) => {
+            const t = TYPE_AT + i * TYPE_STEP;
+            tl.set(c, { opacity: 1 }, t);
+            tl.set("#s1-caret", { x: (i + 1) * CHAR_W }, t);
+          });
+
+          // Enter: la barra se hunde y el botón destella
+          tl.fromTo("#s1-bar", { scale: 1 }, { scale: 0.965, duration: 0.08, ease: "power2.in", immediateRender: false }, ENTER_AT);
+          tl.to("#s1-bar", { scale: 1, duration: 0.35, ease: "back.out(2.5)" }, ENTER_AT + 0.08);
+          tl.fromTo("#s1-go", { scale: 1 }, { scale: 0.82, duration: 0.08, ease: "power2.in", immediateRender: false }, ENTER_AT);
+          tl.to("#s1-go", { scale: 1, duration: 0.35, ease: "back.out(3)" }, ENTER_AT + 0.08);
+
+          // "0 resultados" entra con glitch RGB determinista (tiempo cuantizado, sin Math.random)
+          tl.fromTo("#s1-result", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.12, ease: "power2.out" }, GLITCH_AT);
+          const hash = (n) => {
+            const s = Math.sin(n * 127.1 + 311.7) * 43758.5453;
+            return s - Math.floor(s);
+          };
+          const FRAMES = 10;
+          for (let k = 0; k < FRAMES; k++) {
+            const t = GLITCH_AT + k / 30;
+            const amp = 26 * (1 - k / FRAMES);
+            tl.set("#s1-res-a", { opacity: 0.85, x: (hash(k) - 0.5) * 2 * amp, y: (hash(k + 50) - 0.5) * 10 }, t);
+            tl.set("#s1-res-b", { opacity: 0.85, x: (hash(k + 99) - 0.5) * 2 * amp, y: (hash(k + 7) - 0.5) * 10 }, t);
+            tl.set("#s1-res-main", { x: (hash(k + 13) - 0.5) * amp * 0.6 }, t);
+          }
+          tl.set(["#s1-res-a", "#s1-res-b"], { opacity: 0, x: 0, y: 0 }, GLITCH_AT + FRAMES / 30);
+          tl.set("#s1-res-main", { x: 0 }, GLITCH_AT + FRAMES / 30);
+
+          // Titular, dos golpes
+          tl.fromTo(
+            "#s1-line-a",
+            { opacity: 0, y: 70, filter: "blur(12px)" },
+            { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.55, ease: "power3.out" },
+            2.25,
+          );
+          tl.fromTo(
+            "#s1-line-b",
+            { opacity: 0, scale: 1.45, filter: "blur(18px)" },
+            { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "power4.out" },
+            2.95,
+          );
+          tl.fromTo("#s1-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "expo.out" }, 3.15);
+
+          // Salida: zoom a través (empuja hacia la cámara) justo antes del drop
+          tl.to("#s1-stage", { scale: 1.32, opacity: 0, filter: "blur(20px)", duration: 0.42, ease: "power3.in" }, 3.66);
+
+          window.__timelines["s1-hook"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

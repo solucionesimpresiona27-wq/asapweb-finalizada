@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>World — fondo persistente</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: #060c1c;
+        }
+        .w-layer {
+          position: absolute;
+          inset: 0;
+        }
+        /* Brillo cobalto arriba a la derecha */
+        #w-glow-cobalt {
+          position: absolute;
+          left: 360px;
+          top: -380px;
+          width: 1200px;
+          height: 1200px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(61, 107, 255, 0.42) 0%, rgba(61, 107, 255, 0.12) 42%, rgba(61, 107, 255, 0) 70%);
+        }
+        /* Brillo amarillo de marca abajo a la izquierda: late con el bombo */
+        #w-glow-sun {
+          position: absolute;
+          left: -460px;
+          top: 1060px;
+          width: 1150px;
+          height: 1150px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(252, 194, 4, 0.3) 0%, rgba(252, 194, 4, 0.08) 45%, rgba(252, 194, 4, 0) 70%);
+        }
+        /* Retícula de puntos (lenguaje web), enmascarada al centro */
+        #w-grid {
+          position: absolute;
+          left: -60px;
+          top: -60px;
+          width: 1200px;
+          height: 2100px;
+          background-image: radial-gradient(circle, rgba(196, 212, 255, 0.22) 2px, transparent 2.6px);
+          background-size: 48px 48px;
+          -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 50%, #000 20%, transparent 78%);
+          mask-image: radial-gradient(ellipse 70% 55% at 50% 50%, #000 20%, transparent 78%);
+        }
+        /* Órbita fina con un satélite amarillo */
+        #w-orbit {
+          position: absolute;
+          left: -160px;
+          top: 260px;
+          width: 1400px;
+          height: 1400px;
+        }
+        #w-orbit svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        #w-orbit-spin {
+          position: absolute;
+          inset: 0;
+        }
+        #w-sat {
+          position: absolute;
+          left: 688px;
+          top: 92px;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: #fcc204;
+          box-shadow: 0 0 24px 6px rgba(252, 194, 4, 0.55);
+        }
+        /* Viñeta cinematográfica */
+        #w-vignette {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(ellipse 85% 70% at 50% 48%, rgba(6, 12, 28, 0) 55%, rgba(3, 6, 15, 0.75) 100%);
+        }
+      </style>
+
+      <div id="root" data-composition-id="world" data-width="1080" data-height="1920">
+        <div class="w-layer">
+          <div id="w-glow-cobalt"></div>
+          <div id="w-glow-sun"></div>
+          <div id="w-grid"></div>
+          <div id="w-orbit">
+            <svg viewBox="0 0 1400 1400" aria-hidden="true">
+              <circle cx="700" cy="700" r="596" fill="none" stroke="rgba(214,226,255,0.10)" stroke-width="2" />
+              <circle cx="700" cy="700" r="452" fill="none" stroke="rgba(214,226,255,0.07)" stroke-width="2" stroke-dasharray="6 14" />
+            </svg>
+            <div id="w-orbit-spin"><div id="w-sat"></div></div>
+          </div>
+          <div id="w-vignette"></div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const D = 30;
+          const BEAT = 0.5;
+          const tl = gsap.timeline({ paused: true });
+
+          // Entrada suave del mundo
+          tl.fromTo("#w-grid", { opacity: 0 }, { opacity: 1, duration: 1.2, ease: "power2.out" }, 0);
+          tl.fromTo("#w-orbit", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 1.6, ease: "power3.out" }, 0.1);
+
+          // Deriva lenta de la retícula y los brillos (finita, dentro de los 30 s)
+          tl.fromTo("#w-grid", { y: 0 }, { y: -96, duration: D, ease: "none", immediateRender: false }, 0);
+          tl.fromTo("#w-glow-cobalt", { x: 0, y: 0 }, { x: -140, y: 120, duration: D, ease: "sine.inOut" }, 0);
+          tl.fromTo("#w-glow-sun", { x: 0, y: 0 }, { x: 160, y: -180, duration: D, ease: "sine.inOut" }, 0);
+
+          // El satélite recorre la órbita
+          tl.fromTo("#w-orbit-spin", { rotation: -20 }, { rotation: 250, duration: D, ease: "none", transformOrigin: "50% 50%" }, 0);
+
+          // Pulso con el bombo: del drop (4 s) al final del ritmo (25 s)
+          for (let t = 4; t < 25; t += BEAT) {
+            tl.fromTo(
+              "#w-glow-sun",
+              { scale: 1.1, opacity: 1 },
+              { scale: 1, opacity: 0.78, duration: 0.42, ease: "power2.out", immediateRender: false },
+              t,
+            );
+          }
+          // En el intro el brillo respira más lento
+          tl.fromTo("#w-glow-sun", { opacity: 0.55 }, { opacity: 0.78, duration: 3.9, ease: "sine.inOut", immediateRender: false }, 0);
+
+          window.__timelines["world"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

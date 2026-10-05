@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Escena 3 — Diseñamos, desarrollamos, lanzamos</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #f4f6fb;
+          font-family: "Montserrat", sans-serif;
+        }
+        #s3-stage {
+          position: absolute;
+          inset: 0;
+          transform-origin: 540px 960px;
+        }
+
+        /* ---------- Paso actual ---------- */
+        #s3-steps {
+          position: absolute;
+          left: 84px;
+          top: 368px;
+          width: 912px;
+          height: 120px;
+        }
+        #s3-label-mask {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 912px;
+          height: 76px;
+          overflow: hidden;
+        }
+        .s3-label {
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 76px;
+          display: flex;
+          align-items: center;
+          gap: 22px;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        .s3-label b {
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 40px;
+          color: #fcc204;
+        }
+        .s3-label span {
+          font-weight: 900;
+          font-size: 64px;
+          letter-spacing: -0.03em;
+          color: #f4f6fb;
+        }
+        #s3-progress {
+          position: absolute;
+          left: 0;
+          top: 98px;
+          display: flex;
+          gap: 14px;
+        }
+        .s3-seg {
+          position: relative;
+          width: 140px;
+          height: 10px;
+          border-radius: 5px;
+          background: rgba(214, 226, 255, 0.16);
+          overflow: hidden;
+        }
+        .s3-seg i {
+          position: absolute;
+          inset: 0;
+          display: block;
+          border-radius: 5px;
+          background: #fcc204;
+          transform-origin: 0% 50%;
+        }
+
+        /* ---------- Navegador ---------- */
+        #s3-browser {
+          position: absolute;
+          left: 60px;
+          top: 540px;
+          width: 960px;
+          height: 800px;
+          border-radius: 30px;
+          background: #0c1730;
+          border: 3px solid rgba(214, 226, 255, 0.18);
+          box-shadow:
+            0 50px 120px rgba(0, 0, 0, 0.55),
+            0 0 0 1px rgba(61, 107, 255, 0.15);
+          overflow: hidden;
+          opacity: 0;
+        }
+        #s3-chrome {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 76px;
+          border-bottom: 2px solid rgba(214, 226, 255, 0.12);
+          background: rgba(214, 226, 255, 0.04);
+        }
+        .s3-dot {
+          position: absolute;
+          top: 28px;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background: rgba(214, 226, 255, 0.28);
+        }
+        #s3-url {
+          position: absolute;
+          left: 116px;
+          top: 14px;
+          width: 560px;
+          height: 48px;
+          border-radius: 24px;
+          background: rgba(214, 226, 255, 0.08);
+        }
+        #s3-lock {
+          position: absolute;
+          left: 18px;
+          top: 11px;
+          width: 26px;
+          height: 26px;
+        }
+        #s3-lock svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        #s3-url-text {
+          position: absolute;
+          left: 56px;
+          top: 0;
+          height: 48px;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 25px;
+          line-height: 48px;
+          white-space: pre;
+          color: #dfe5f3;
+        }
+        #s3-url-text span {
+          opacity: 0;
+        }
+        #s3-online {
+          position: absolute;
+          right: 22px;
+          top: 15px;
+          height: 46px;
+          padding: 0 18px;
+          border-radius: 23px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          background: rgba(252, 194, 4, 0.14);
+          border: 2px solid rgba(252, 194, 4, 0.55);
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 24px;
+          color: #fcc204;
+          opacity: 0;
+        }
+        #s3-online i {
+          display: block;
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          background: #fcc204;
+          box-shadow: 0 0 12px 3px rgba(252, 194, 4, 0.6);
+        }
+        #s3-page {
+          position: absolute;
+          left: 0;
+          top: 78px;
+          width: 954px;
+          height: 716px;
+        }
+        .s3-layer {
+          position: absolute;
+          inset: 0;
+        }
+        /* Capa de wireframe (boceto) */
+        .s3-w {
+          position: absolute;
+          border-radius: 12px;
+          border: 3px dashed rgba(214, 226, 255, 0.3);
+          background: rgba(214, 226, 255, 0.05);
+          opacity: 0;
+        }
+        .s3-w.solid {
+          border: none;
+          background: rgba(214, 226, 255, 0.16);
+        }
+        #s3-w-img svg {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+        }
+        /* Capa de diseño final */
+        #s3-design {
+          clip-path: inset(0% 0% 100% 0%);
+        }
+        .s3-d {
+          position: absolute;
+        }
+        #s3-d-logo {
+          left: 40px;
+          top: 28px;
+          width: 44px;
+          height: 44px;
+          border-radius: 12px;
+          background: #fcc204;
+        }
+        #s3-d-brand {
+          left: 98px;
+          top: 34px;
+          font-weight: 900;
+          font-size: 28px;
+          letter-spacing: -0.02em;
+          color: #f4f6fb;
+        }
+        .s3-d-nav {
+          top: 44px;
+          width: 64px;
+          height: 12px;
+          border-radius: 6px;
+          background: rgba(214, 226, 255, 0.4);
+        }
+        #s3-d-navbtn {
+          left: 790px;
+          top: 30px;
+          width: 124px;
+          height: 40px;
+          border-radius: 20px;
+          border: 2px solid #fcc204;
+        }
+        #s3-d-h {
+          left: 40px;
+          top: 128px;
+          width: 500px;
+          font-weight: 900;
+          font-size: 56px;
+          line-height: 1.04;
+          letter-spacing: -0.035em;
+          color: #f4f6fb;
+        }
+        #s3-d-h span,
+        #s3-d-h em {
+          display: block;
+        }
+        #s3-d-h em {
+          font-style: normal;
+          color: #fcc204;
+        }
+        .s3-d-sub {
+          left: 40px;
+          height: 14px;
+          border-radius: 7px;
+          background: rgba(214, 226, 255, 0.32);
+        }
+        #s3-d-btn {
+          left: 40px;
+          top: 400px;
+          width: 270px;
+          height: 76px;
+          border-radius: 38px;
+          background: #fcc204;
+          color: #060c1c;
+          font-weight: 900;
+          font-size: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 14px 40px rgba(252, 194, 4, 0.35);
+        }
+        #s3-d-img {
+          left: 566px;
+          top: 116px;
+          width: 350px;
+          height: 360px;
+          border-radius: 26px;
+          overflow: hidden;
+          background: radial-gradient(circle at 30% 20%, #3d6bff 0%, #1b3d6a 55%, #0f2246 100%);
+        }
+        #s3-d-img svg {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+        }
+        .s3-d-card {
+          top: 516px;
+          width: 270px;
+          height: 170px;
+          border-radius: 22px;
+          background: rgba(214, 226, 255, 0.07);
+          border: 2px solid rgba(214, 226, 255, 0.14);
+        }
+        .s3-d-card i {
+          position: absolute;
+          left: 24px;
+          top: 24px;
+          width: 48px;
+          height: 48px;
+          border-radius: 14px;
+          background: #fcc204;
+        }
+        .s3-d-card b {
+          position: absolute;
+          left: 24px;
+          top: 96px;
+          width: 190px;
+          height: 14px;
+          border-radius: 7px;
+          background: rgba(214, 226, 255, 0.42);
+        }
+        .s3-d-card s {
+          position: absolute;
+          left: 24px;
+          top: 124px;
+          width: 140px;
+          height: 14px;
+          border-radius: 7px;
+          background: rgba(214, 226, 255, 0.22);
+        }
+        /* Línea de escaneo */
+        #s3-scan {
+          position: absolute;
+          left: -20px;
+          top: 0;
+          width: 994px;
+          height: 6px;
+          border-radius: 3px;
+          background: #fcc204;
+          box-shadow:
+            0 0 24px 6px rgba(252, 194, 4, 0.65),
+            0 0 80px 20px rgba(252, 194, 4, 0.25);
+          opacity: 0;
+        }
+        /* Onda del clic */
+        .s3-ripple {
+          position: absolute;
+          left: 136px;
+          top: 1061px;
+          width: 120px;
+          height: 120px;
+          margin-left: -60px;
+          margin-top: -60px;
+          border-radius: 50%;
+          border: 5px solid #fcc204;
+          opacity: 0;
+        }
+        /* Cursor */
+        #s3-cursor {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 110px;
+          height: 110px;
+        }
+        #s3-cursor svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+          filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.5));
+        }
+        /* Notificación */
+        #s3-toast {
+          position: absolute;
+          left: 470px;
+          top: 1150px;
+          width: 540px;
+          height: 140px;
+          border-radius: 30px;
+          background: #f4f6fb;
+          box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+          opacity: 0;
+        }
+        #s3-toast-icon {
+          position: absolute;
+          left: 26px;
+          top: 30px;
+          width: 80px;
+          height: 80px;
+          border-radius: 22px;
+          background: #fcc204;
+        }
+        #s3-toast-icon svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        #s3-toast-title {
+          position: absolute;
+          left: 128px;
+          top: 26px;
+          font-weight: 900;
+          font-size: 40px;
+          letter-spacing: -0.02em;
+          color: #060c1c;
+          white-space: nowrap;
+        }
+        #s3-toast-sub {
+          position: absolute;
+          left: 128px;
+          top: 80px;
+          font-weight: 700;
+          font-size: 27px;
+          color: #3a4766;
+          white-space: nowrap;
+        }
+
+        /* ---------- Celular ---------- */
+        #s3-phone {
+          position: absolute;
+          left: 676px;
+          top: 640px;
+          width: 350px;
+          height: 712px;
+          border-radius: 56px;
+          background: #0c1730;
+          border: 10px solid #1d2a48;
+          box-shadow:
+            0 50px 120px rgba(0, 0, 0, 0.6),
+            0 0 0 3px rgba(214, 226, 255, 0.18);
+          overflow: hidden;
+          opacity: 0;
+        }
+        #s3-phone-notch {
+          position: absolute;
+          left: 50%;
+          top: 14px;
+          width: 110px;
+          height: 30px;
+          margin-left: -55px;
+          border-radius: 15px;
+          background: #050a17;
+        }
+        .s3-p {
+          position: absolute;
+        }
+        #s3-p-logo {
+          left: 26px;
+          top: 66px;
+          width: 34px;
+          height: 34px;
+          border-radius: 10px;
+          background: #fcc204;
+        }
+        .s3-p-burger {
+          left: 272px;
+          width: 34px;
+          height: 5px;
+          border-radius: 3px;
+          background: rgba(214, 226, 255, 0.6);
+        }
+        #s3-p-h {
+          left: 26px;
+          top: 128px;
+          width: 290px;
+          font-weight: 900;
+          font-size: 40px;
+          line-height: 1.04;
+          letter-spacing: -0.035em;
+          color: #f4f6fb;
+        }
+        #s3-p-h span,
+        #s3-p-h em {
+          display: block;
+        }
+        #s3-p-h em {
+          font-style: normal;
+          color: #fcc204;
+        }
+        #s3-p-img {
+          left: 26px;
+          top: 266px;
+          width: 278px;
+          height: 210px;
+          border-radius: 20px;
+          overflow: hidden;
+          background: radial-gradient(circle at 30% 20%, #3d6bff 0%, #1b3d6a 55%, #0f2246 100%);
+        }
+        #s3-p-img svg {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+        }
+        #s3-p-btn {
+          left: 26px;
+          top: 500px;
+          width: 278px;
+          height: 66px;
+          border-radius: 33px;
+          background: #fcc204;
+          color: #060c1c;
+          font-weight: 900;
+          font-size: 27px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .s3-p-line {
+          left: 26px;
+          height: 12px;
+          border-radius: 6px;
+          background: rgba(214, 226, 255, 0.3);
+        }
+      </style>
+
+      <div id="root" data-composition-id="s3-build" data-width="1080" data-height="1920">
+        <div id="s3-stage">
+          <!-- Paso del proceso -->
+          <div id="s3-steps">
+            <div id="s3-label-mask">
+              <div class="s3-label" id="s3-label-1"><b>01</b><span>Diseñamos</span></div>
+              <div class="s3-label" id="s3-label-2"><b>02</b><span>Desarrollamos</span></div>
+              <div class="s3-label" id="s3-label-3"><b>03</b><span>Lanzamos</span></div>
+            </div>
+            <div id="s3-progress">
+              <div class="s3-seg"><i id="s3-seg-1"></i></div>
+              <div class="s3-seg"><i id="s3-seg-2"></i></div>
+              <div class="s3-seg"><i id="s3-seg-3"></i></div>
+            </div>
+          </div>
+
+          <!-- Navegador -->
+          <div id="s3-browser">
+            <div id="s3-chrome">
+              <div class="s3-dot" style="left: 26px; background: #fcc204"></div>
+              <div class="s3-dot" style="left: 56px"></div>
+              <div class="s3-dot" style="left: 86px"></div>
+              <div id="s3-url">
+                <div id="s3-lock">
+                  <svg viewBox="0 0 26 26" aria-hidden="true">
+                    <rect x="5" y="11" width="16" height="12" rx="3" fill="#fcc204" />
+                    <path d="M8.5 11 V8 a4.5 4.5 0 0 1 9 0 V11" fill="none" stroke="#fcc204" stroke-width="2.6" />
+                  </svg>
+                </div>
+                <div id="s3-url-text"></div>
+              </div>
+              <div id="s3-online"><i></i>EN LÍNEA</div>
+            </div>
+            <div id="s3-page">
+              <!-- Boceto -->
+              <div class="s3-layer" id="s3-wire">
+                <div class="s3-w solid" style="left: 40px; top: 28px; width: 44px; height: 44px"></div>
+                <div class="s3-w solid" style="left: 98px; top: 38px; width: 150px; height: 22px"></div>
+                <div class="s3-w solid" style="left: 560px; top: 44px; width: 64px; height: 12px"></div>
+                <div class="s3-w solid" style="left: 640px; top: 44px; width: 64px; height: 12px"></div>
+                <div class="s3-w solid" style="left: 720px; top: 44px; width: 52px; height: 12px"></div>
+                <div class="s3-w" style="left: 790px; top: 30px; width: 124px; height: 40px"></div>
+                <div class="s3-w solid s3-w-hero" style="left: 40px; top: 136px; width: 460px; height: 46px"></div>
+                <div class="s3-w solid s3-w-hero" style="left: 40px; top: 194px; width: 420px; height: 46px"></div>
+                <div class="s3-w solid s3-w-hero" style="left: 40px; top: 252px; width: 300px; height: 46px"></div>
+                <div class="s3-w solid s3-w-hero" style="left: 40px; top: 330px; width: 440px; height: 14px"></div>
+                <div class="s3-w solid s3-w-hero" style="left: 40px; top: 358px; width: 360px; height: 14px"></div>
+                <div class="s3-w s3-w-b" style="left: 40px; top: 400px; width: 270px; height: 76px; border-radius: 38px"></div>
+                <div class="s3-w s3-w-b" id="s3-w-img" style="left: 566px; top: 116px; width: 350px; height: 360px; border-radius: 26px">
+                  <svg viewBox="0 0 350 360" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M0 0 L350 360 M350 0 L0 360" stroke="rgba(214,226,255,0.25)" stroke-width="3" />
+                  </svg>
+                </div>
+                <div class="s3-w s3-w-c" style="left: 40px; top: 516px; width: 270px; height: 170px; border-radius: 22px"></div>
+                <div class="s3-w s3-w-c" style="left: 342px; top: 516px; width: 270px; height: 170px; border-radius: 22px"></div>
+                <div class="s3-w s3-w-c" style="left: 644px; top: 516px; width: 270px; height: 170px; border-radius: 22px"></div>
+              </div>
+
+              <!-- Diseño final -->
+              <div class="s3-layer" id="s3-design">
+                <div class="s3-d" id="s3-d-logo"></div>
+                <div class="s3-d" id="s3-d-brand">Tu Marca</div>
+                <div class="s3-d s3-d-nav" style="left: 560px"></div>
+                <div class="s3-d s3-d-nav" style="left: 640px"></div>
+                <div class="s3-d s3-d-nav" style="left: 720px; width: 52px"></div>
+                <div class="s3-d" id="s3-d-navbtn"></div>
+                <div class="s3-d" id="s3-d-h" data-layout-allow-overlap><span>Tu negocio,</span> <em>en todas partes.</em></div>
+                <div class="s3-d s3-d-sub" style="top: 330px; width: 440px"></div>
+                <div class="s3-d s3-d-sub" style="top: 358px; width: 360px"></div>
+                <div class="s3-d" id="s3-d-btn">Contáctanos</div>
+                <div class="s3-d" id="s3-d-img">
+                  <svg viewBox="0 0 350 360" aria-hidden="true">
+                    <circle cx="250" cy="110" r="46" fill="#fcc204" />
+                    <path d="M0 300 L95 190 L165 260 L240 170 L350 290 L350 360 L0 360 Z" fill="#0b1c3d" opacity="0.9" />
+                    <path d="M0 330 L120 250 L210 320 L290 270 L350 310 L350 360 L0 360 Z" fill="#060c1c" />
+                  </svg>
+                </div>
+                <div class="s3-d s3-d-card" style="left: 40px"><i></i><b></b><s></s></div>
+                <div class="s3-d s3-d-card" style="left: 342px"><i></i><b></b><s></s></div>
+                <div class="s3-d s3-d-card" style="left: 644px"><i></i><b></b><s></s></div>
+              </div>
+
+              <div id="s3-scan"></div>
+            </div>
+          </div>
+
+          <!-- Celular (versión móvil) -->
+          <div id="s3-phone">
+            <div id="s3-phone-notch"></div>
+            <div class="s3-p" id="s3-p-logo"></div>
+            <div class="s3-p s3-p-burger" style="top: 72px"></div>
+            <div class="s3-p s3-p-burger" style="top: 81px"></div>
+            <div class="s3-p s3-p-burger" style="top: 90px"></div>
+            <div class="s3-p" id="s3-p-h" data-layout-allow-overlap><span data-layout-allow-overlap>Tu negocio,</span> <em data-layout-allow-overlap>en todas partes.</em></div>
+            <div class="s3-p" id="s3-p-img">
+              <svg viewBox="0 0 278 210" aria-hidden="true">
+                <circle cx="200" cy="64" r="32" fill="#fcc204" />
+                <path d="M0 170 L76 104 L132 150 L192 96 L278 166 L278 210 L0 210 Z" fill="#0b1c3d" opacity="0.9" />
+                <path d="M0 192 L96 142 L168 186 L232 156 L278 180 L278 210 L0 210 Z" fill="#060c1c" />
+              </svg>
+            </div>
+            <div class="s3-p" id="s3-p-btn">Contáctanos</div>
+            <div class="s3-p s3-p-line" style="top: 600px; width: 250px"></div>
+            <div class="s3-p s3-p-line" style="top: 626px; width: 190px"></div>
+          </div>
+
+          <div class="s3-ripple" id="s3-ripple-1"></div>
+          <div class="s3-ripple" id="s3-ripple-2"></div>
+
+          <div id="s3-cursor">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 3 L5 19 L9 15 L12 22 L15 20.5 L11.5 14 L18 14 Z" fill="#f4f6fb" stroke="#060c1c" stroke-width="1.3" stroke-linejoin="round" />
+            </svg>
+          </div>
+
+          <div id="s3-toast">
+            <div id="s3-toast-icon">
+              <svg viewBox="0 0 80 80" aria-hidden="true">
+                <path d="M22 26 h36 a6 6 0 0 1 6 6 v18 a6 6 0 0 1 -6 6 h-20 l-10 9 v-9 h-6 a6 6 0 0 1 -6 -6 v-18 a6 6 0 0 1 6 -6 z" fill="#060c1c" />
+              </svg>
+            </div>
+            <div id="s3-toast-title">¡Nuevo cliente!</div>
+            <div id="s3-toast-sub">Te escribió desde tu web</div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Tiempo local: 0 = 7.85 s del video
+          const tl = gsap.timeline({ paused: true });
+          const IN = 0.15; // 8.0 s
+          const DESIGN = 2.65; // 10.5 s
+          const CLICK = 4.35; // 12.2 s
+          const LAUNCH = 5.0; // 12.85 s
+          const PHONE = 6.43; // 14.28 s
+          const OUT = 7.84; // 15.69 s
+
+          // ---- Etiqueta de paso + barra de progreso
+          tl.fromTo("#s3-label-1", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, IN);
+          tl.fromTo("#s3-steps", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" }, IN);
+          tl.fromTo("#s3-seg-1", { scaleX: 0 }, { scaleX: 1, duration: DESIGN - IN, ease: "none" }, IN);
+          tl.to("#s3-label-1", { opacity: 0, y: -80, duration: 0.35, ease: "power3.in" }, DESIGN - 0.2);
+          tl.fromTo("#s3-label-2", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, DESIGN + 0.05);
+          tl.fromTo("#s3-seg-2", { scaleX: 0 }, { scaleX: 1, duration: LAUNCH - DESIGN, ease: "none" }, DESIGN);
+          tl.to("#s3-label-2", { opacity: 0, y: -80, duration: 0.35, ease: "power3.in" }, LAUNCH - 0.2);
+          tl.fromTo("#s3-label-3", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, LAUNCH + 0.05);
+          tl.fromTo("#s3-seg-3", { scaleX: 0 }, { scaleX: 1, duration: 1.4, ease: "power2.out" }, LAUNCH);
+
+          // ---- 01 Diseñamos: el navegador llega y el boceto se arma
+          tl.fromTo(
+            "#s3-browser",
+            { opacity: 0, y: 140, scale: 0.9, rotationX: 18, transformPerspective: 1800 },
+            { opacity: 1, y: 0, scale: 1, rotationX: 0, transformPerspective: 1800, duration: 0.8, ease: "expo.out" },
+            IN,
+          );
+          const wires = gsap.utils.toArray("#s3-wire .s3-w");
+          const groupAt = (el) =>
+            el.classList.contains("s3-w-c") ? 1.45 : el.classList.contains("s3-w-b") ? 1.1 : 0.75;
+          wires.forEach((el, i) => {
+            tl.fromTo(
+              el,
+              { opacity: 0, scale: 0.7, y: 18 },
+              { opacity: 1, scale: 1, y: 0, duration: 0.42, ease: "back.out(2)" },
+              groupAt(el) + (i % 5) * 0.04,
+            );
+          });
+
+          // ---- 02 Desarrollamos: la línea de escaneo convierte el boceto en diseño
+          const SCAN = 0.95;
+          tl.fromTo("#s3-scan", { opacity: 0 }, { opacity: 1, duration: 0.1, ease: "none" }, DESIGN);
+          tl.fromTo("#s3-scan", { y: 0 }, { y: 712, duration: SCAN, ease: "power2.inOut", immediateRender: false }, DESIGN);
+          tl.fromTo(
+            "#s3-design",
+            { clipPath: "inset(0% 0% 100% 0%)" },
+            { clipPath: "inset(0% 0% 0% 0%)", duration: SCAN, ease: "power2.inOut" },
+            DESIGN,
+          );
+          tl.fromTo(
+            "#s3-wire",
+            { clipPath: "inset(0% 0% 0% 0%)" },
+            { clipPath: "inset(100% 0% 0% 0%)", duration: SCAN, ease: "power2.inOut" },
+            DESIGN,
+          );
+          tl.to("#s3-scan", { opacity: 0, duration: 0.15, ease: "none" }, DESIGN + SCAN - 0.05);
+          // destello del navegador al terminar
+          tl.fromTo(
+            "#s3-browser",
+            { boxShadow: "0 50px 120px rgba(0,0,0,0.55), 0 0 0 1px rgba(61,107,255,0.15)" },
+            {
+              boxShadow: "0 50px 120px rgba(0,0,0,0.55), 0 0 90px 10px rgba(252,194,4,0.35)",
+              duration: 0.3,
+              ease: "power2.out",
+              yoyo: true,
+              repeat: 1,
+              immediateRender: false,
+            },
+            DESIGN + SCAN - 0.1,
+          );
+
+          // ---- Clic en "Contáctanos" → llega un cliente
+          const BTN_X = 60 + 3 + 40 + 135; // centro del botón en el escenario
+          const BTN_Y = 540 + 3 + 78 + 400 + 38;
+          tl.fromTo(
+            "#s3-cursor",
+            { x: 1120, y: 1560, opacity: 1 },
+            { x: BTN_X - 20, y: BTN_Y - 14, duration: 0.6, ease: "power3.out" },
+            CLICK - 0.62,
+          );
+          tl.fromTo("#s3-cursor", { scale: 1 }, { scale: 0.86, duration: 0.08, ease: "power2.in", immediateRender: false }, CLICK);
+          tl.to("#s3-cursor", { scale: 1, duration: 0.3, ease: "back.out(3)" }, CLICK + 0.08);
+          tl.fromTo("#s3-d-btn", { scale: 1 }, { scale: 0.92, duration: 0.08, ease: "power2.in", immediateRender: false }, CLICK);
+          tl.to("#s3-d-btn", { scale: 1, duration: 0.4, ease: "back.out(3)" }, CLICK + 0.08);
+          tl.set([".s3-ripple"], { x: BTN_X - 136, y: BTN_Y - 1061 }, 0);
+          tl.fromTo("#s3-ripple-1", { opacity: 0.9, scale: 0.4 }, { opacity: 0, scale: 3.2, duration: 0.7, ease: "power2.out", immediateRender: false }, CLICK);
+          tl.fromTo("#s3-ripple-2", { opacity: 0.7, scale: 0.4 }, { opacity: 0, scale: 2.2, duration: 0.6, ease: "power2.out", immediateRender: false }, CLICK + 0.1);
+          tl.to("#s3-cursor", { x: 1160, y: 1700, duration: 0.5, ease: "power3.in" }, CLICK + 0.5);
+          tl.fromTo(
+            "#s3-toast",
+            { opacity: 0, y: 60, scale: 0.85 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.8)" },
+            CLICK + 0.22,
+          );
+          tl.to("#s3-toast", { opacity: 0, y: 40, scale: 0.92, duration: 0.3, ease: "power2.in" }, LAUNCH + 0.9);
+
+          // ---- 03 Lanzamos: se escribe la dirección y queda en línea
+          const URL = "www.tunegocio.com";
+          const urlEl = document.getElementById("s3-url-text");
+          [...URL].forEach((ch, i) => {
+            const s = document.createElement("span");
+            s.textContent = ch;
+            urlEl.appendChild(s);
+            tl.set(s, { opacity: 1 }, LAUNCH + 0.13 + i * 0.04);
+          });
+          tl.fromTo("#s3-online", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(2.6)" }, LAUNCH + 1.0);
+          tl.fromTo("#s3-online i", { scale: 1 }, { scale: 1.5, duration: 0.25, ease: "sine.inOut", yoyo: true, repeat: 5, immediateRender: false }, LAUNCH + 1.4);
+
+          // ---- El navegador gira y entra el celular (también se ve perfecto ahí)
+          tl.to(
+            "#s3-browser",
+            { x: -118, y: -30, scale: 0.74, rotationY: 18, transformPerspective: 1800, duration: 0.8, ease: "expo.inOut" },
+            PHONE - 0.1,
+          );
+          tl.fromTo(
+            "#s3-phone",
+            { opacity: 0, x: 520, rotation: 14, y: 80 },
+            { opacity: 1, x: 0, rotation: -3, y: 0, duration: 0.85, ease: "expo.out" },
+            PHONE,
+          );
+          tl.to("#s3-phone", { y: -16, rotation: -2, duration: 0.6, ease: "sine.inOut", yoyo: true, repeat: 1 }, PHONE + 0.85);
+
+          // ---- Salida: desenfoque de paso
+          tl.to("#s3-stage", { scale: 0.94, opacity: 0, filter: "blur(24px)", duration: 0.42, ease: "power2.in" }, OUT);
+
+          window.__timelines["s3-build"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>
