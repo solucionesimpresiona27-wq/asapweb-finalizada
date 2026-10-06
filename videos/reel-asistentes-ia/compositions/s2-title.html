@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Escena 2 — Tu propio asistente de IA</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #f4f6fb;
+          font-family: "Montserrat", sans-serif;
+        }
+        #s2-stage {
+          position: absolute;
+          inset: 0;
+        }
+        /* Texto fantasma de fondo */
+        #s2-ghost {
+          position: absolute;
+          left: -40px;
+          top: 360px;
+          width: 1400px;
+          font-weight: 900;
+          font-size: 420px;
+          line-height: 1;
+          letter-spacing: -0.05em;
+          color: #0a1329;
+          -webkit-text-stroke: 3px rgba(214, 226, 255, 0.14);
+          white-space: nowrap;
+        }
+        #s2-block {
+          position: absolute;
+          left: 84px;
+          top: 560px;
+          width: 920px;
+        }
+        #s2-kicker {
+          display: block;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 32px;
+          letter-spacing: 0.16em;
+          color: #fcc204;
+          margin-bottom: 26px;
+          opacity: 0;
+        }
+        #s2-l1 {
+          display: block;
+          font-weight: 700;
+          font-size: 88px;
+          line-height: 1;
+          letter-spacing: -0.02em;
+          opacity: 0;
+        }
+        #s2-l2 {
+          display: block;
+          margin-top: 18px;
+          font-weight: 900;
+          font-size: 172px;
+          line-height: 0.92;
+          letter-spacing: -0.05em;
+          opacity: 0;
+          transform-origin: 0% 70%;
+        }
+        /* "WEB" sobre un bloque amarillo que se barre de izquierda a derecha */
+        #s2-l3 {
+          position: relative;
+          display: block;
+          margin-top: 18px;
+          width: 600px;
+          height: 236px;
+        }
+        #s2-l3-fill {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 600px;
+          height: 236px;
+          border-radius: 26px;
+          background: #fcc204;
+          box-shadow: 0 0 90px rgba(252, 194, 4, 0.35);
+          transform-origin: 0% 50%;
+        }
+        #s2-l3-text {
+          position: absolute;
+          left: 36px;
+          top: 14px;
+          font-weight: 900;
+          font-size: 224px;
+          line-height: 0.92;
+          letter-spacing: -0.05em;
+          color: #060c1c;
+          white-space: nowrap;
+        }
+        #s2-l4 {
+          display: block;
+          margin-top: 30px;
+          font-weight: 700;
+          font-size: 80px;
+          line-height: 1;
+          letter-spacing: -0.02em;
+          opacity: 0;
+        }
+        #s2-l4 em {
+          font-style: normal;
+          color: #fcc204;
+        }
+        #s2-tags {
+          display: flex;
+          gap: 22px;
+          margin-top: 60px;
+        }
+        .s2-tag {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          height: 64px;
+          padding: 0 24px;
+          border-radius: 32px;
+          border: 2px solid rgba(214, 226, 255, 0.24);
+          background: rgba(214, 226, 255, 0.06);
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 28px;
+          letter-spacing: 0.04em;
+          color: #dfe5f3;
+          opacity: 0;
+        }
+        .s2-tag i {
+          display: block;
+          width: 14px;
+          height: 14px;
+          border-radius: 4px;
+          background: #fcc204;
+        }
+        /* Orbe del asistente de IA: núcleo azul, anillo que gira y destello amarillo */
+        #s2-orb {
+          position: absolute;
+          left: 748px;
+          top: 910px;
+          width: 230px;
+          height: 230px;
+          opacity: 0;
+        }
+        .ai-glow {
+          position: absolute;
+          left: -50%;
+          top: -50%;
+          width: 200%;
+          height: 200%;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(252, 194, 4, 0.42) 0%, rgba(252, 194, 4, 0.12) 35%, rgba(252, 194, 4, 0) 62%);
+        }
+        .ai-ring {
+          position: absolute;
+          left: -10%;
+          top: -10%;
+          width: 120%;
+          height: 120%;
+          border-radius: 50%;
+          background: conic-gradient(from 0deg, rgba(252, 194, 4, 0) 0deg, #fcc204 110deg, #3d6bff 220deg, rgba(61, 107, 255, 0) 330deg);
+          -webkit-mask-image: radial-gradient(circle closest-side, transparent 84%, #000 86%, #000 94%, transparent 96%);
+          mask-image: radial-gradient(circle closest-side, transparent 84%, #000 86%, #000 94%, transparent 96%);
+        }
+        .ai-core {
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          background: radial-gradient(circle at 35% 30%, #2d58a6 0%, #11295a 52%, #071029 100%);
+          border: 3px solid rgba(252, 194, 4, 0.8);
+          box-shadow:
+            inset 0 0 50px rgba(61, 107, 255, 0.55),
+            0 0 50px rgba(252, 194, 4, 0.35);
+        }
+        .ai-spark {
+          position: absolute;
+          left: 27%;
+          top: 27%;
+          width: 46%;
+          height: 46%;
+        }
+        .ai-spark svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+      </style>
+
+      <div id="root" data-composition-id="s2-title" data-width="1080" data-height="1920">
+        <div id="s2-stage">
+          <div id="s2-ghost" data-layout-allow-overflow data-layout-allow-overlap aria-hidden="true">IA IA IA</div>
+          <div id="s2-block">
+            <span id="s2-kicker">// LA SOLUCIÓN</span>
+            <span id="s2-l1">Tu propio</span>
+            <span id="s2-l2" data-layout-allow-overlap>ASISTENTE</span>
+            <div id="s2-l3">
+              <div id="s2-l3-fill"></div>
+              <div id="s2-l3-text">de IA</div>
+            </div>
+            <span id="s2-l4">que trabaja por ti <em>24/7.</em></span>
+            <div id="s2-tags">
+              <div class="s2-tag"><i></i>Responde</div>
+              <div class="s2-tag"><i></i>Agenda</div>
+              <div class="s2-tag"><i></i>Resuelve</div>
+            </div>
+          </div>
+          <div id="s2-orb">
+            <div class="ai-glow"></div>
+            <div class="ai-ring" id="s2-orb-ring"></div>
+            <div class="ai-core"></div>
+            <div class="ai-spark" id="s2-orb-spark"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 4 C54 34 66 46 96 50 C66 54 54 66 50 96 C46 66 34 54 4 50 C34 46 46 34 50 4 Z" fill="#fcc204" /></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Tiempo local: 0 = 3.85 s del video; DROP = 4.0 s
+          const DROP = 0.15;
+          const tl = gsap.timeline({ paused: true });
+
+          // Texto fantasma: entra y deriva
+          tl.fromTo("#s2-ghost", { opacity: 0, x: 120 }, { opacity: 1, x: 0, duration: 0.8, ease: "power2.out" }, DROP);
+          tl.fromTo("#s2-ghost", { xPercent: 0 }, { xPercent: -14, duration: 4.1, ease: "none", immediateRender: false }, DROP);
+
+          tl.fromTo("#s2-kicker", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, 0.0);
+          tl.fromTo("#s2-l1", { opacity: 0, x: -140 }, { opacity: 1, x: 0, duration: 0.45, ease: "expo.out" }, 0.02);
+          // PÁGINA golpea en el drop
+          tl.fromTo(
+            "#s2-l2",
+            { opacity: 0, scale: 1.55, filter: "blur(22px)" },
+            { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "power4.out" },
+            DROP,
+          );
+          // WEB: el bloque amarillo barre y revela la palabra
+          tl.fromTo("#s2-l3-fill", { scaleX: 0 }, { scaleX: 1, duration: 0.42, ease: "expo.inOut" }, DROP + 0.32);
+          tl.fromTo(
+            "#s2-l3-text",
+            { clipPath: "inset(0% 100% 0% 0%)", x: -40 },
+            { clipPath: "inset(0% 0% 0% 0%)", x: 0, duration: 0.42, ease: "expo.inOut" },
+            DROP + 0.4,
+          );
+          tl.fromTo("#s2-l3", { rotation: -3 }, { rotation: 0, duration: 0.8, ease: "back.out(2)" }, DROP + 0.32);
+          // "que impresiona." en el siguiente tiempo fuerte
+          tl.fromTo(
+            "#s2-l4",
+            { opacity: 0, y: 60, rotation: 3 },
+            { opacity: 1, y: 0, rotation: 0, duration: 0.55, ease: "circ.out" },
+            DROP + 1.0,
+          );
+          // Etiquetas con el pulso (5.5, 5.75, 6.0 s)
+          gsap.utils.toArray("#s2-tags .s2-tag").forEach((tag, i) => {
+            tl.fromTo(
+              tag,
+              { opacity: 0, y: 30, scale: 0.8 },
+              { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(2.2)" },
+              1.65 + i * 0.25,
+            );
+          });
+          // Respiración mientras sostiene
+          tl.fromTo("#s2-block", { scale: 1 }, { scale: 1.025, duration: 1.9, ease: "sine.inOut", transformOrigin: "0% 50%" }, 1.9);
+
+          // El orbe del asistente aparece junto a "de IA" y gira
+          tl.fromTo("#s2-orb", { opacity: 0, scale: 0.2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.7, ease: "back.out(1.7)" }, DROP + 0.55);
+          tl.fromTo("#s2-orb-ring", { rotation: 0 }, { rotation: 540, duration: 3.6, ease: "none" }, DROP + 0.55);
+          tl.fromTo("#s2-orb-spark", { scale: 0.6, rotation: -90 }, { scale: 1, rotation: 0, duration: 0.8, ease: "back.out(2.5)" }, DROP + 0.7);
+          tl.to("#s2-orb-spark", { scale: 1.15, duration: 0.25, ease: "sine.inOut", yoyo: true, repeat: 5 }, DROP + 1.65);
+
+          // Salida: barrido hacia arriba con desenfoque de movimiento
+          tl.to("#s2-stage", { y: -260, opacity: 0, filter: "blur(22px)", duration: 0.36, ease: "power3.in" }, 3.84);
+
+          window.__timelines["s2-title"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

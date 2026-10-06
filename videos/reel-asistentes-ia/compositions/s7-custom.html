@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Escena 7 — Hecho a la medida de tu negocio</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #f4f6fb;
+          font-family: "Montserrat", sans-serif;
+        }
+        #s7-stage {
+          position: absolute;
+          inset: 0;
+        }
+        #s7-head {
+          position: absolute;
+          left: 84px;
+          top: 356px;
+          width: 912px;
+        }
+        #s7-kicker {
+          display: block;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 32px;
+          letter-spacing: 0.16em;
+          color: #fcc204;
+          margin-bottom: 14px;
+          opacity: 0;
+        }
+        .s7-line {
+          display: block;
+          font-weight: 900;
+          font-size: 80px;
+          line-height: 1.04;
+          letter-spacing: -0.035em;
+          opacity: 0;
+        }
+        .s7-line em {
+          font-style: normal;
+          color: #fcc204;
+        }
+        #s7-panel {
+          position: absolute;
+          left: 70px;
+          top: 612px;
+          width: 940px;
+          height: 800px;
+          border-radius: 42px;
+          background: #0b1630;
+          border: 3px solid rgba(214, 226, 255, 0.16);
+          box-shadow: 0 50px 120px rgba(0, 0, 0, 0.55);
+          overflow: hidden;
+          opacity: 0;
+        }
+        .s7-cap {
+          position: absolute;
+          left: 40px;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 26px;
+          letter-spacing: 0.1em;
+          color: #9fb0d6;
+          white-space: nowrap;
+        }
+        #s7-type-mask {
+          position: absolute;
+          left: 40px;
+          top: 80px;
+          width: 600px;
+          height: 72px;
+          overflow: hidden;
+        }
+        .s7-type {
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 72px;
+          line-height: 72px;
+          font-weight: 900;
+          font-size: 54px;
+          letter-spacing: -0.02em;
+          color: #fcc204;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        #s7-type-line {
+          position: absolute;
+          left: 40px;
+          top: 156px;
+          width: 300px;
+          height: 6px;
+          border-radius: 3px;
+          background: #fcc204;
+          transform-origin: 0% 50%;
+        }
+        #s7-done svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        #s7-div {
+          position: absolute;
+          left: 40px;
+          top: 196px;
+          width: 860px;
+          height: 2px;
+          background: rgba(214, 226, 255, 0.12);
+        }
+        .s7-row {
+          position: absolute;
+          left: 40px;
+          width: 860px;
+          height: 80px;
+          opacity: 0;
+        }
+        .s7-sw {
+          position: absolute;
+          left: 0;
+          top: 12px;
+          width: 100px;
+          height: 56px;
+          border-radius: 28px;
+          background: rgba(214, 226, 255, 0.18);
+        }
+        .s7-sw-on {
+          position: absolute;
+          inset: 0;
+          border-radius: 28px;
+          background: #fcc204;
+          opacity: 0;
+        }
+        .s7-knob {
+          position: absolute;
+          left: 6px;
+          top: 6px;
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          background: #f4f6fb;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+        }
+        .s7-task {
+          position: absolute;
+          left: 128px;
+          top: 0;
+          height: 80px;
+          line-height: 80px;
+          font-weight: 700;
+          font-size: 37px;
+          white-space: nowrap;
+        }
+        #s7-custom {
+          position: absolute;
+          left: 128px;
+          top: 12px;
+          width: 732px;
+          height: 56px;
+          border-radius: 16px;
+          border: 2px dashed rgba(252, 194, 4, 0.6);
+          background: rgba(252, 194, 4, 0.06);
+        }
+        #s7-custom-text {
+          position: absolute;
+          left: 20px;
+          top: 0;
+          height: 52px;
+          line-height: 52px;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 30px;
+          color: #f4f6fb;
+          white-space: pre;
+        }
+        #s7-custom-text span {
+          opacity: 0;
+        }
+        #s7-caret {
+          position: absolute;
+          left: 20px;
+          top: 9px;
+          width: 4px;
+          height: 34px;
+          border-radius: 2px;
+          background: #fcc204;
+        }
+        #s7-new {
+          position: absolute;
+          right: 0;
+          top: -30px;
+          height: 34px;
+          padding: 0 12px;
+          border-radius: 10px;
+          background: #fcc204;
+          color: #060c1c;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 22px;
+          line-height: 34px;
+          opacity: 0;
+        }
+        #s7-train {
+          position: absolute;
+          left: 40px;
+          top: 650px;
+          width: 860px;
+          height: 110px;
+          opacity: 0;
+        }
+        #s7-pct {
+          position: absolute;
+          right: 0;
+          top: 0;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 30px;
+          color: #fcc204;
+        }
+        #s7-pct span {
+          position: absolute;
+          right: 0;
+          top: 0;
+          opacity: 0;
+        }
+        #s7-bar {
+          position: absolute;
+          left: 0;
+          top: 56px;
+          width: 860px;
+          height: 18px;
+          border-radius: 9px;
+          background: rgba(214, 226, 255, 0.14);
+          overflow: hidden;
+        }
+        #s7-bar i {
+          position: absolute;
+          inset: 0;
+          display: block;
+          border-radius: 9px;
+          background: #fcc204;
+          box-shadow: 0 0 20px rgba(252, 194, 4, 0.6);
+          transform-origin: 0% 50%;
+        }
+        #s7-done {
+          position: absolute;
+          right: 40px;
+          top: 632px;
+          height: 60px;
+          padding: 0 22px 0 12px;
+          border-radius: 30px;
+          background: #fcc204;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-weight: 900;
+          font-size: 30px;
+          color: #060c1c;
+          opacity: 0;
+        }
+        #s7-done svg {
+          width: 38px;
+          height: 38px;
+        }
+      </style>
+
+      <div id="root" data-composition-id="s7-custom" data-width="1080" data-height="1920">
+        <div id="s7-stage">
+          <div id="s7-head">
+            <span id="s7-kicker">// HECHO A TU MEDIDA</span>
+            <span class="s7-line">Lo configuramos</span>
+            <span class="s7-line">para <em>tu negocio</em></span>
+          </div>
+
+          <div id="s7-panel">
+            <div class="s7-cap" style="top: 40px">TIPO DE NEGOCIO</div>
+            <div id="s7-type-mask">
+              <div class="s7-type" id="s7-type-1">Consultorio</div>
+              <div class="s7-type" id="s7-type-2">Barbería</div>
+              <div class="s7-type" id="s7-type-3">Restaurante</div>
+              <div class="s7-type" id="s7-type-4">Tienda</div>
+              <div class="s7-type" id="s7-type-5">Tu negocio</div>
+            </div>
+            <div id="s7-type-line"></div>
+            <div id="s7-done"><svg viewBox="0 0 38 38" aria-hidden="true"><circle cx="19" cy="19" r="17" fill="#060c1c" /><path d="M11 19.5 L17 25.5 L28 13.5" fill="none" stroke="#fcc204" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" /></svg>Listo</div>
+            <div id="s7-div"></div>
+            <div class="s7-cap" style="top: 232px">TAREAS DEL ASISTENTE</div>
+
+            <div class="s7-row" id="s7-row-1" style="top: 284px">
+              <div class="s7-sw"><div class="s7-sw-on"></div><div class="s7-knob"></div></div>
+              <div class="s7-task">Agendar y reagendar citas</div>
+            </div>
+            <div class="s7-row" id="s7-row-2" style="top: 376px">
+              <div class="s7-sw"><div class="s7-sw-on"></div><div class="s7-knob"></div></div>
+              <div class="s7-task">Responder dudas</div>
+            </div>
+            <div class="s7-row" id="s7-row-3" style="top: 468px">
+              <div class="s7-sw"><div class="s7-sw-on"></div><div class="s7-knob"></div></div>
+              <div class="s7-task">Enviar recordatorios</div>
+            </div>
+            <div class="s7-row" id="s7-row-4" style="top: 560px">
+              <div class="s7-sw"><div class="s7-sw-on"></div><div class="s7-knob"></div></div>
+              <div id="s7-custom">
+                <div id="s7-custom-text"></div>
+                <div id="s7-caret"></div>
+                <div id="s7-new">TAREA NUEVA</div>
+              </div>
+            </div>
+
+            <div id="s7-train">
+              <div class="s7-cap" style="left: 0; top: 0">ENTRENANDO CON TU INFORMACIÓN</div>
+              <div id="s7-pct"></div>
+              <div id="s7-bar"><i id="s7-bar-fill"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Tiempo local: 0 = 33.85 s del video
+          const tl = gsap.timeline({ paused: true });
+          const IN = 0.15; // 34.0 s
+          const OUT = 5.84;
+
+          tl.fromTo("#s7-kicker", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, IN);
+          gsap.utils.toArray("#s7-head .s7-line").forEach((el, i) => {
+            tl.fromTo(el, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.55, ease: "power4.out" }, IN + 0.08 + i * 0.14);
+          });
+          tl.fromTo(
+            "#s7-panel",
+            { opacity: 0, y: 150, scale: 0.92, rotationX: 14, transformPerspective: 1800 },
+            { opacity: 1, y: 0, scale: 1, rotationX: 0, transformPerspective: 1800, duration: 0.8, ease: "expo.out" },
+            IN + 0.15,
+          );
+
+          // Tipo de negocio: gira como ruleta y se detiene en "Tu negocio"
+          const TYPES = [0.55, 0.85, 1.15, 1.45, 1.8];
+          TYPES.forEach((t, k) => {
+            const id = "#s7-type-" + (k + 1);
+            const last = k === TYPES.length - 1;
+            tl.fromTo(id, { opacity: 0, y: 72 }, { opacity: 1, y: 0, duration: last ? 0.45 : 0.22, ease: last ? "back.out(2.4)" : "power2.out" }, t);
+            if (!last) tl.to(id, { opacity: 0, y: -72, duration: 0.2, ease: "power2.in" }, TYPES[k + 1] - 0.02);
+          });
+          tl.fromTo("#s7-type-line", { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: "expo.out" }, 1.95);
+
+          // Tareas: aparecen y se encienden en corcheas
+          [1, 2, 3, 4].forEach((n, k) => {
+            tl.fromTo("#s7-row-" + n, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.4, ease: "expo.out" }, 0.75 + k * 0.1);
+          });
+          const switchOn = (n, t) => {
+            const row = "#s7-row-" + n;
+            tl.fromTo(row + " .s7-knob", { x: 0 }, { x: 44, duration: 0.22, ease: "back.out(2)" }, t);
+            tl.fromTo(row + " .s7-sw-on", { opacity: 0 }, { opacity: 1, duration: 0.15, ease: "power1.out" }, t);
+            tl.fromTo(row + " .s7-knob", { backgroundColor: "#f4f6fb" }, { backgroundColor: "#060c1c", duration: 0.15, ease: "none" }, t);
+          };
+          switchOn(1, 2.15);
+          switchOn(2, 2.4);
+          switchOn(3, 2.65);
+
+          // Tarea personalizada: se escribe letra por letra
+          const TXT = "Avisar que el pedido está listo";
+          const CW = 30 * 0.6; // JetBrains Mono: avance fijo de 0.6em
+          const box = document.getElementById("s7-custom-text");
+          const T0 = 2.95;
+          const STEP = 0.032;
+          tl.fromTo("#s7-new", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, T0 - 0.1);
+          [...TXT].forEach((ch, i) => {
+            const s = document.createElement("span");
+            s.textContent = ch;
+            box.appendChild(s);
+            tl.set(s, { opacity: 1 }, T0 + i * STEP);
+            tl.set("#s7-caret", { x: (i + 1) * CW }, T0 + i * STEP);
+          });
+          const TYPED = T0 + TXT.length * STEP;
+          [0.1, 0.4, 0.7, 1.0].forEach((d) => {
+            tl.set("#s7-caret", { opacity: 0 }, TYPED + d);
+            tl.set("#s7-caret", { opacity: 1 }, TYPED + d + 0.15);
+          });
+          switchOn(4, 4.1);
+
+          // Entrenamiento con la información del negocio: barra y porcentaje
+          const TR = 4.35;
+          const TRD = 1.05;
+          tl.fromTo("#s7-train", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, TR - 0.1);
+          tl.fromTo("#s7-bar-fill", { scaleX: 0 }, { scaleX: 1, duration: TRD, ease: "power2.inOut" }, TR);
+          const pct = document.getElementById("s7-pct");
+          const ease = gsap.parseEase("power2.inOut");
+          const STEPS = 20;
+          let prev = null;
+          for (let k = 0; k <= STEPS; k++) {
+            const span = document.createElement("span");
+            span.textContent = Math.round((k / STEPS) * 100) + "%";
+            pct.appendChild(span);
+            // instante en que la barra (power2.inOut) alcanza este porcentaje
+            let lo = 0, hi = 1;
+            for (let it = 0; it < 30; it++) {
+              const mid = (lo + hi) / 2;
+              if (ease(mid) < k / STEPS) lo = mid; else hi = mid;
+            }
+            const t = TR + hi * TRD;
+            tl.set(span, { opacity: 1 }, t);
+            if (prev) tl.set(prev, { opacity: 0 }, t);
+            prev = span;
+          }
+          tl.set(prev, { opacity: 0 }, TR + TRD + 0.05);
+          tl.fromTo("#s7-done", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(2.6)" }, TR + TRD + 0.05);
+
+          // Salida
+          tl.to("#s7-stage", { y: -260, opacity: 0, filter: "blur(20px)", duration: 0.36, ease: "power3.in" }, OUT);
+
+          window.__timelines["s7-custom"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

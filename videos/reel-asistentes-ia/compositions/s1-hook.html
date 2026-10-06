@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Escena 1 — Gancho: mensajes a toda hora</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #f4f6fb;
+          font-family: "Montserrat", sans-serif;
+        }
+        #s1-stage {
+          position: absolute;
+          inset: 0;
+          transform-origin: 540px 960px;
+        }
+        #s1-clock {
+          position: absolute;
+          left: 0;
+          top: 330px;
+          width: 1080px;
+          text-align: center;
+          font-weight: 900;
+          font-size: 150px;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          opacity: 0;
+        }
+        #s1-date {
+          position: absolute;
+          left: 0;
+          top: 494px;
+          width: 1080px;
+          text-align: center;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 32px;
+          letter-spacing: 0.08em;
+          color: #c3cde6;
+          opacity: 0;
+        }
+        .s1-note {
+          position: absolute;
+          left: 70px;
+          top: 580px;
+          width: 940px;
+          height: 122px;
+          border-radius: 34px;
+          background: rgba(26, 38, 70, 0.92);
+          border: 2px solid rgba(214, 226, 255, 0.16);
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+          opacity: 0;
+        }
+        .s1-ico {
+          position: absolute;
+          left: 22px;
+          top: 23px;
+          width: 76px;
+          height: 76px;
+          border-radius: 22px;
+          background: #fcc204;
+        }
+        .s1-ico svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        .s1-name {
+          position: absolute;
+          left: 120px;
+          top: 18px;
+          font-weight: 900;
+          font-size: 34px;
+          letter-spacing: -0.01em;
+          color: #f4f6fb;
+        }
+        .s1-time {
+          position: absolute;
+          right: 56px;
+          top: 24px;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 24px;
+          color: #9fb0d6;
+        }
+        .s1-dot {
+          position: absolute;
+          right: 24px;
+          top: 30px;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: #fcc204;
+        }
+        .s1-msg {
+          position: absolute;
+          left: 120px;
+          top: 64px;
+          font-weight: 400;
+          font-size: 32px;
+          color: #dfe5f3;
+          white-space: nowrap;
+        }
+        #s1-head {
+          position: absolute;
+          left: 84px;
+          top: 1176px;
+          width: 912px;
+        }
+        #s1-line-a {
+          display: block;
+          font-weight: 700;
+          font-size: 66px;
+          line-height: 1.08;
+          letter-spacing: -0.02em;
+          opacity: 0;
+        }
+        #s1-line-b {
+          display: block;
+          margin-top: 6px;
+          font-weight: 900;
+          font-size: 88px;
+          line-height: 1.04;
+          letter-spacing: -0.04em;
+          color: #fcc204;
+          text-shadow: 0 0 60px rgba(252, 194, 4, 0.35);
+          transform-origin: 0% 60%;
+          opacity: 0;
+        }
+        #s1-rule {
+          display: block;
+          margin-top: 24px;
+          width: 220px;
+          height: 10px;
+          border-radius: 5px;
+          background: #f4f6fb;
+          transform-origin: 0% 50%;
+        }
+      </style>
+
+      <div id="root" data-composition-id="s1-hook" data-width="1080" data-height="1920">
+        <div id="s1-stage">
+          <div id="s1-clock">11:47</div>
+          <div id="s1-date">P. M. · MARTES</div>
+
+          <div class="s1-note" id="s1-note-1">
+            <div class="s1-ico"><svg viewBox="0 0 76 76" aria-hidden="true"><path d="M20 22 h36 a6 6 0 0 1 6 6 v16 a6 6 0 0 1 -6 6 h-18 l-10 8 v-8 h-8 a6 6 0 0 1 -6 -6 v-16 a6 6 0 0 1 6 -6 z" fill="#060c1c" /></svg></div>
+            <div class="s1-name">Carlos</div>
+            <div class="s1-time">11:41</div>
+            <div class="s1-dot"></div>
+            <div class="s1-msg">¿Cuál es su horario?</div>
+          </div>
+          <div class="s1-note" id="s1-note-2">
+            <div class="s1-ico"><svg viewBox="0 0 76 76" aria-hidden="true"><path d="M20 22 h36 a6 6 0 0 1 6 6 v16 a6 6 0 0 1 -6 6 h-18 l-10 8 v-8 h-8 a6 6 0 0 1 -6 -6 v-16 a6 6 0 0 1 6 -6 z" fill="#060c1c" /></svg></div>
+            <div class="s1-name">Ana</div>
+            <div class="s1-time">11:43</div>
+            <div class="s1-dot"></div>
+            <div class="s1-msg">Necesito cambiar mi cita al jueves</div>
+          </div>
+          <div class="s1-note" id="s1-note-3">
+            <div class="s1-ico"><svg viewBox="0 0 76 76" aria-hidden="true"><path d="M20 22 h36 a6 6 0 0 1 6 6 v16 a6 6 0 0 1 -6 6 h-18 l-10 8 v-8 h-8 a6 6 0 0 1 -6 -6 v-16 a6 6 0 0 1 6 -6 z" fill="#060c1c" /></svg></div>
+            <div class="s1-name">Luis</div>
+            <div class="s1-time">11:45</div>
+            <div class="s1-dot"></div>
+            <div class="s1-msg">¿Cuánto cuesta el servicio?</div>
+          </div>
+          <div class="s1-note" id="s1-note-4">
+            <div class="s1-ico"><svg viewBox="0 0 76 76" aria-hidden="true"><path d="M20 22 h36 a6 6 0 0 1 6 6 v16 a6 6 0 0 1 -6 6 h-18 l-10 8 v-8 h-8 a6 6 0 0 1 -6 -6 v-16 a6 6 0 0 1 6 -6 z" fill="#060c1c" /></svg></div>
+            <div class="s1-name">María</div>
+            <div class="s1-time">11:47</div>
+            <div class="s1-dot"></div>
+            <div class="s1-msg">¿Tienen cita para mañana?</div>
+          </div>
+
+          <div id="s1-head">
+            <span id="s1-line-a">Te escriben a toda hora.</span>
+            <span id="s1-line-b">¿Quién les responde?</span>
+            <span id="s1-rule"></span>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          const PITCH = 136; // alto de tarjeta (122) + separación
+          const ARRIVE = [0.35, 0.75, 1.1, 1.4]; // cada vez más rápido
+
+          tl.fromTo("#s1-clock", { opacity: 0, y: 40, filter: "blur(14px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "power3.out" }, 0.05);
+          tl.fromTo("#s1-date", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 0.25);
+
+          // Las notificaciones se apilan: la nueva entra arriba y empuja a las demás
+          ARRIVE.forEach((t, k) => {
+            const id = "#s1-note-" + (k + 1);
+            tl.fromTo(id, { opacity: 0, y: -70, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "back.out(1.6)" }, t);
+            for (let j = k + 1; j < ARRIVE.length; j++) {
+              tl.to(id, { y: (j - k) * PITCH, duration: 0.32, ease: "power3.out" }, ARRIVE[j]);
+            }
+          });
+          // Sacudida cuando llega la última: ya son demasiados
+          tl.fromTo(".s1-note", { x: 0 }, { x: 10, duration: 0.05, ease: "none", yoyo: true, repeat: 5, immediateRender: false }, 1.62);
+
+          // Titular en dos golpes
+          tl.fromTo("#s1-line-a", { opacity: 0, y: 70, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.55, ease: "power3.out" }, 2.25);
+          tl.fromTo("#s1-line-b", { opacity: 0, scale: 1.45, filter: "blur(18px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "power4.out" }, 2.95);
+          tl.fromTo("#s1-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "expo.out" }, 3.15);
+
+          // Salida: zoom hacia la cámara justo antes del drop
+          tl.to("#s1-stage", { scale: 1.32, opacity: 0, filter: "blur(20px)", duration: 0.42, ease: "power3.in" }, 3.66);
+
+          window.__timelines["s1-hook"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

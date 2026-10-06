@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Escena 4 — ¿Cómo funciona?</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #f4f6fb;
+          font-family: "Montserrat", sans-serif;
+        }
+        #s4-stage {
+          position: absolute;
+          inset: 0;
+          transform-origin: 540px 960px;
+        }
+        /* ---------- Paso actual ---------- */
+        #s4-steps {
+          position: absolute;
+          left: 84px;
+          top: 360px;
+          width: 912px;
+          height: 180px;
+          opacity: 0;
+        }
+        #s4-label-mask,
+        #s4-sub-mask {
+          position: absolute;
+          left: 0;
+          width: 912px;
+          overflow: hidden;
+        }
+        #s4-label-mask {
+          top: 0;
+          height: 76px;
+        }
+        #s4-sub-mask {
+          top: 118px;
+          height: 44px;
+        }
+        .s4-label,
+        .s4-sub {
+          position: absolute;
+          left: 0;
+          top: 0;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        .s4-label {
+          height: 76px;
+          display: flex;
+          align-items: center;
+          gap: 20px;
+        }
+        .s4-label b {
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 40px;
+          color: #fcc204;
+        }
+        .s4-label span {
+          font-weight: 900;
+          font-size: 60px;
+          letter-spacing: -0.03em;
+        }
+        .s4-sub {
+          height: 44px;
+          line-height: 44px;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 29px;
+          color: #c3cde6;
+        }
+        #s4-progress {
+          position: absolute;
+          left: 0;
+          top: 92px;
+          display: flex;
+          gap: 14px;
+        }
+        .s4-seg {
+          position: relative;
+          width: 140px;
+          height: 10px;
+          border-radius: 5px;
+          background: rgba(214, 226, 255, 0.16);
+          overflow: hidden;
+        }
+        .s4-seg i {
+          position: absolute;
+          inset: 0;
+          display: block;
+          border-radius: 5px;
+          background: #fcc204;
+          transform-origin: 0% 50%;
+        }
+
+        /* ---------- Diagrama ---------- */
+        #s4-wires {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1080px;
+          height: 1920px;
+        }
+        .s4-wire {
+          fill: none;
+          stroke: rgba(252, 194, 4, 0.7);
+          stroke-width: 4;
+          stroke-linecap: round;
+        }
+        .s4-packet {
+          position: absolute;
+          left: -11px;
+          top: -11px;
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+          background: #fff4c2;
+          box-shadow:
+            0 0 14px 4px rgba(252, 194, 4, 0.9),
+            0 0 40px 10px rgba(252, 194, 4, 0.35);
+          opacity: 0;
+        }
+        #s4-msg {
+          position: absolute;
+          left: 150px;
+          top: 568px;
+          width: 780px;
+          height: 108px;
+          border-radius: 34px 34px 34px 10px;
+          background: #f4f6fb;
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+          opacity: 0;
+        }
+        #s4-msg-av {
+          position: absolute;
+          left: 22px;
+          top: 20px;
+          width: 68px;
+          height: 68px;
+          border-radius: 50%;
+          background: #1b3d6a;
+        }
+        #s4-msg-av svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        #s4-msg-text {
+          position: absolute;
+          left: 110px;
+          top: 0;
+          height: 108px;
+          display: flex;
+          align-items: center;
+          font-weight: 700;
+          font-size: 34px;
+          color: #060c1c;
+          white-space: nowrap;
+        }
+        /* Orbe */
+        #s4-orb {
+          position: absolute;
+          left: 410px;
+          top: 850px;
+          width: 260px;
+          height: 260px;
+          opacity: 0;
+        }
+        .ai-glow {
+          opacity: 0.75;
+          position: absolute;
+          left: -50%;
+          top: -50%;
+          width: 200%;
+          height: 200%;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(252, 194, 4, 0.42) 0%, rgba(252, 194, 4, 0.12) 35%, rgba(252, 194, 4, 0) 62%);
+        }
+        .ai-ring {
+          position: absolute;
+          left: -10%;
+          top: -10%;
+          width: 120%;
+          height: 120%;
+          border-radius: 50%;
+          background: conic-gradient(from 0deg, rgba(252, 194, 4, 0) 0deg, #fcc204 110deg, #3d6bff 220deg, rgba(61, 107, 255, 0) 330deg);
+          -webkit-mask-image: radial-gradient(circle closest-side, transparent 84%, #000 86%, #000 94%, transparent 96%);
+          mask-image: radial-gradient(circle closest-side, transparent 84%, #000 86%, #000 94%, transparent 96%);
+        }
+        .ai-core {
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          background: radial-gradient(circle at 35% 30%, #2d58a6 0%, #11295a 52%, #071029 100%);
+          border: 3px solid rgba(252, 194, 4, 0.8);
+          box-shadow:
+            inset 0 0 50px rgba(61, 107, 255, 0.55),
+            0 0 50px rgba(252, 194, 4, 0.35);
+        }
+        .ai-spark {
+          position: absolute;
+          left: 27%;
+          top: 27%;
+          width: 46%;
+          height: 46%;
+        }
+        .ai-spark svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        .s4-ripple {
+          position: absolute;
+          left: 410px;
+          top: 850px;
+          width: 260px;
+          height: 260px;
+          border-radius: 50%;
+          border: 4px solid #fcc204;
+          opacity: 0;
+        }
+        /* Fuentes de información del negocio */
+        .s4-chip {
+          position: absolute;
+          width: 272px;
+          height: 78px;
+          padding: 0 20px 0 18px;
+          border-radius: 39px;
+          background: #13234a;
+          border: 2px solid rgba(214, 226, 255, 0.28);
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-weight: 700;
+          font-size: 32px;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        .s4-chip svg {
+          width: 44px;
+          height: 44px;
+          display: block;
+          flex: none;
+        }
+        /* Respuesta */
+        #s4-out {
+          position: absolute;
+          left: 130px;
+          top: 1186px;
+          width: 820px;
+          height: 156px;
+          border-radius: 34px 34px 10px 34px;
+          background: #13234a;
+          border: 3px solid #fcc204;
+          box-shadow:
+            0 24px 60px rgba(0, 0, 0, 0.45),
+            0 0 50px rgba(252, 194, 4, 0.22);
+          opacity: 0;
+        }
+        #s4-out-text {
+          position: absolute;
+          left: 36px;
+          top: 26px;
+          font-weight: 700;
+          font-size: 36px;
+          white-space: nowrap;
+        }
+        #s4-out-sub {
+          position: absolute;
+          left: 36px;
+          top: 88px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 27px;
+          color: #fcc204;
+          white-space: nowrap;
+        }
+        #s4-out-sub svg {
+          width: 36px;
+          height: 36px;
+          display: block;
+        }
+      </style>
+
+      <div id="root" data-composition-id="s4-how" data-width="1080" data-height="1920">
+        <div id="s4-stage">
+          <div id="s4-steps">
+            <div id="s4-label-mask">
+              <div class="s4-label" id="s4-label-1"><b>01</b><span>Recibe el mensaje</span></div>
+              <div class="s4-label" id="s4-label-2"><b>02</b><span>Entiende y consulta</span></div>
+              <div class="s4-label" id="s4-label-3"><b>03</b><span>Responde y resuelve</span></div>
+            </div>
+            <div id="s4-progress">
+              <div class="s4-seg"><i id="s4-seg-1"></i></div>
+              <div class="s4-seg"><i id="s4-seg-2"></i></div>
+              <div class="s4-seg"><i id="s4-seg-3"></i></div>
+            </div>
+            <div id="s4-sub-mask">
+              <div class="s4-sub" id="s4-sub-1">por WhatsApp, Instagram o tu web</div>
+              <div class="s4-sub" id="s4-sub-2">la información de TU negocio</div>
+              <div class="s4-sub" id="s4-sub-3">al instante y deja todo registrado</div>
+            </div>
+          </div>
+
+          <svg id="s4-wires" viewBox="0 0 1080 1920" aria-hidden="true">
+            <path class="s4-wire" id="s4-w-a" d="M540 680 L540 846" stroke-dasharray="166" stroke-dashoffset="166" />
+            <path class="s4-wire" id="s4-w-b1" d="M318 908 L470 950" stroke-dasharray="158" stroke-dashoffset="158" />
+            <path class="s4-wire" id="s4-w-b2" d="M318 1052 L470 1010" stroke-dasharray="158" stroke-dashoffset="158" />
+            <path class="s4-wire" id="s4-w-b3" d="M762 908 L610 950" stroke-dasharray="158" stroke-dashoffset="158" />
+            <path class="s4-wire" id="s4-w-b4" d="M762 1052 L610 1010" stroke-dasharray="158" stroke-dashoffset="158" />
+            <path class="s4-wire" id="s4-w-c" d="M540 1114 L540 1182" stroke-dasharray="68" stroke-dashoffset="68" />
+          </svg>
+
+          <div id="s4-msg">
+            <div id="s4-msg-av">
+              <svg viewBox="0 0 68 68" aria-hidden="true">
+                <circle cx="34" cy="26" r="11" fill="#f4f6fb" />
+                <path d="M14 56 C16 42 52 42 54 56 Z" fill="#f4f6fb" />
+              </svg>
+            </div>
+            <div id="s4-msg-text">¿Puedo cambiar mi cita al jueves?</div>
+          </div>
+
+          <!-- Fuentes de información: izquierda / derecha del orbe -->
+          <div class="s4-chip" id="s4-chip-1" style="left: 40px; top: 869px">
+            <svg viewBox="0 0 44 44" aria-hidden="true"><rect x="7" y="10" width="30" height="27" rx="5" fill="none" stroke="#fcc204" stroke-width="3.5" /><path d="M7 18 H37 M15 6 V13 M29 6 V13" stroke="#fcc204" stroke-width="3.5" stroke-linecap="round" /></svg>Tu agenda
+          </div>
+          <div class="s4-chip" id="s4-chip-2" style="left: 40px; top: 1013px">
+            <svg viewBox="0 0 44 44" aria-hidden="true"><path d="M22 6 V38 M30 12 H18 a6 6 0 0 0 0 12 h8 a6 6 0 0 1 0 12 H13" fill="none" stroke="#fcc204" stroke-width="3.5" stroke-linecap="round" /></svg>Precios
+          </div>
+          <div class="s4-chip" id="s4-chip-3" style="right: 40px; top: 869px">
+            <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="15" fill="none" stroke="#fcc204" stroke-width="3.5" /><path d="M22 13 V22 L28 26" fill="none" stroke="#fcc204" stroke-width="3.5" stroke-linecap="round" /></svg>Horarios
+          </div>
+          <div class="s4-chip" id="s4-chip-4" style="right: 40px; top: 1013px">
+            <svg viewBox="0 0 44 44" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="3" fill="#fcc204" /><rect x="25" y="8" width="11" height="11" rx="3" fill="#fcc204" /><rect x="8" y="25" width="11" height="11" rx="3" fill="#fcc204" /><rect x="25" y="25" width="11" height="11" rx="3" fill="none" stroke="#fcc204" stroke-width="3" /></svg>Servicios
+          </div>
+
+          <div class="s4-ripple" id="s4-ripple-1"></div>
+          <div class="s4-ripple" id="s4-ripple-2"></div>
+          <div id="s4-orb">
+            <div class="ai-glow" id="s4-orb-glow"></div>
+            <div class="ai-ring" id="s4-orb-ring"></div>
+            <div class="ai-core"></div>
+            <div class="ai-spark" id="s4-orb-spark"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 4 C54 34 66 46 96 50 C66 54 54 66 50 96 C46 66 34 54 4 50 C34 46 46 34 50 4 Z" fill="#fcc204" /></svg></div>
+          </div>
+
+          <div class="s4-packet" id="s4-p-a"></div>
+          <div class="s4-packet" id="s4-p-b1"></div>
+          <div class="s4-packet" id="s4-p-b2"></div>
+          <div class="s4-packet" id="s4-p-b3"></div>
+          <div class="s4-packet" id="s4-p-b4"></div>
+          <div class="s4-packet" id="s4-p-c"></div>
+
+          <div id="s4-out">
+            <div id="s4-out-text">Listo, tu cita cambió al jueves.</div>
+            <div id="s4-out-sub">
+              <svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="16" fill="#fcc204" /><path id="s4-tick" d="M10 18.5 L15.5 24 L26 12.5" fill="none" stroke="#060c1c" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="26" stroke-dashoffset="26" /></svg>
+              Agenda actualizada
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Tiempo local: 0 = 15.85 s del video
+          const tl = gsap.timeline({ paused: true });
+          const S1 = 0.15; // 16.0 s
+          const S2 = 2.65; // 18.5 s
+          const S3 = 5.15; // 21.0 s
+          const OUT = 7.84;
+
+          // ---- Etiquetas de paso, subtítulos y progreso
+          tl.fromTo("#s4-steps", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" }, S1);
+          const swap = (n, t, first) => {
+            tl.fromTo("#s4-label-" + n, { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, t);
+            tl.fromTo("#s4-sub-" + n, { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, t + 0.08);
+            if (!first) {
+              tl.to("#s4-label-" + (n - 1), { opacity: 0, y: -80, duration: 0.32, ease: "power3.in" }, t - 0.2);
+              tl.to("#s4-sub-" + (n - 1), { opacity: 0, y: -44, duration: 0.3, ease: "power3.in" }, t - 0.15);
+            }
+          };
+          swap(1, S1, true);
+          swap(2, S2, false);
+          swap(3, S3, false);
+          tl.fromTo("#s4-seg-1", { scaleX: 0 }, { scaleX: 1, duration: S2 - S1, ease: "none" }, S1);
+          tl.fromTo("#s4-seg-2", { scaleX: 0 }, { scaleX: 1, duration: S3 - S2, ease: "none" }, S2);
+          tl.fromTo("#s4-seg-3", { scaleX: 0 }, { scaleX: 1, duration: 1.6, ease: "power2.out" }, S3);
+
+          const draw = (sel, t, d) => tl.to(sel, { strokeDashoffset: 0, duration: d, ease: "power2.inOut" }, t);
+          const travel = (sel, x0, y0, x1, y1, t, d) => {
+            tl.fromTo(sel, { x: x0, y: y0, opacity: 0, scale: 0.5 }, { x: x1, y: y1, opacity: 1, scale: 1, duration: d, ease: "power2.in" }, t);
+            tl.to(sel, { opacity: 0, scale: 0.3, duration: 0.12, ease: "power1.in" }, t + d);
+          };
+          const orbHit = (t) => {
+            tl.fromTo("#s4-orb", { scale: 1.12 }, { scale: 1, duration: 0.45, ease: "back.out(3)", immediateRender: false }, t);
+            tl.fromTo("#s4-orb-glow", { opacity: 1, scale: 1.25 }, { opacity: 0.75, scale: 1, duration: 0.6, ease: "power2.out", immediateRender: false }, t);
+          };
+
+          // ---- 01 Recibe el mensaje
+          tl.fromTo("#s4-msg", { opacity: 0, y: -60, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.7)" }, 0.35);
+          tl.fromTo("#s4-orb", { opacity: 0, scale: 0.2 }, { opacity: 1, scale: 1, duration: 0.7, ease: "back.out(1.6)" }, 0.5);
+          draw("#s4-w-a", 0.95, 0.35);
+          travel("#s4-p-a", 540, 680, 540, 850, 1.15, 0.35);
+          orbHit(1.5);
+
+          // ---- 02 Entiende y consulta la información del negocio
+          [1, 2, 3, 4].forEach((n, k) => {
+            tl.fromTo("#s4-chip-" + n, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(2.2)" }, S2 + 0.05 + k * 0.15);
+          });
+          ["#s4-w-b1", "#s4-w-b2", "#s4-w-b3", "#s4-w-b4"].forEach((w, k) => draw(w, S2 + 0.3 + k * 0.05, 0.35));
+          travel("#s4-p-b1", 318, 908, 470, 950, S2 + 0.7, 0.4);
+          travel("#s4-p-b2", 318, 1052, 470, 1010, S2 + 0.78, 0.4);
+          travel("#s4-p-b3", 762, 908, 610, 950, S2 + 0.74, 0.4);
+          travel("#s4-p-b4", 762, 1052, 610, 1010, S2 + 0.82, 0.4);
+          orbHit(S2 + 1.2);
+          tl.fromTo("#s4-ripple-1", { opacity: 0.85, scale: 1 }, { opacity: 0, scale: 1.9, duration: 0.9, ease: "power2.out", immediateRender: false }, S2 + 1.2);
+          tl.fromTo("#s4-ripple-2", { opacity: 0.6, scale: 1 }, { opacity: 0, scale: 1.6, duration: 0.8, ease: "power2.out", immediateRender: false }, S2 + 1.55);
+          tl.to("#s4-orb-spark", { scale: 1.18, duration: 0.22, ease: "sine.inOut", yoyo: true, repeat: 5 }, S2 + 1.2);
+
+          // El anillo gira más rápido mientras "piensa"
+          tl.fromTo("#s4-orb-ring", { rotation: 0 }, { rotation: 220, duration: S2 - 0.5, ease: "none" }, 0.5);
+          tl.to("#s4-orb-ring", { rotation: 1000, duration: S3 - S2, ease: "none" }, S2);
+          tl.to("#s4-orb-ring", { rotation: 1240, duration: OUT - S3, ease: "none" }, S3);
+
+          // ---- 03 Responde y resuelve
+          draw("#s4-w-c", S3 + 0.05, 0.25);
+          travel("#s4-p-c", 540, 1114, 540, 1182, S3 + 0.15, 0.25);
+          tl.fromTo("#s4-out", { opacity: 0, y: 40, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.7)" }, S3 + 0.4);
+          tl.to("#s4-tick", { strokeDashoffset: 0, duration: 0.35, ease: "power2.out" }, S3 + 0.75);
+          tl.fromTo("#s4-msg", { boxShadow: "0 24px 60px rgba(0,0,0,0.45)" }, { boxShadow: "0 24px 60px rgba(0,0,0,0.45), 0 0 0 6px rgba(252,194,4,0.9)", duration: 0.3, ease: "power2.out", immediateRender: false }, S3 + 0.75);
+
+          // ---- Salida: zoom hacia el orbe
+          tl.to("#s4-stage", { scale: 1.18, opacity: 0, filter: "blur(18px)", duration: 0.42, ease: "power3.in" }, OUT);
+
+          window.__timelines["s4-how"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

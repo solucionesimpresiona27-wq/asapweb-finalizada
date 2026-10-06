@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Escena 8 — Resuelve los problemas de tu negocio</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #f4f6fb;
+          font-family: "Montserrat", sans-serif;
+        }
+        #s8-stage {
+          position: absolute;
+          inset: 0;
+        }
+        #s8-head {
+          position: absolute;
+          left: 84px;
+          top: 356px;
+          width: 912px;
+        }
+        #s8-kicker {
+          display: block;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 32px;
+          letter-spacing: 0.16em;
+          color: #fcc204;
+          margin-bottom: 14px;
+          opacity: 0;
+        }
+        .s8-line {
+          display: block;
+          font-weight: 900;
+          font-size: 78px;
+          line-height: 1.04;
+          letter-spacing: -0.035em;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        .s8-line em {
+          font-style: normal;
+          color: #fcc204;
+        }
+        .s8-card {
+          position: absolute;
+          left: 70px;
+          width: 940px;
+          height: 210px;
+          border-radius: 38px;
+          background: #0f1d3d;
+          border: 3px solid rgba(214, 226, 255, 0.14);
+          box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
+          opacity: 0;
+        }
+        .s8-prob {
+          position: absolute;
+          left: 40px;
+          top: 30px;
+          height: 50px;
+          line-height: 50px;
+          font-weight: 400;
+          font-size: 36px;
+          color: #9fb0d6;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        .s8-strike {
+          position: absolute;
+          left: -6px;
+          top: 26px;
+          height: 5px;
+          border-radius: 3px;
+          background: #9fb0d6;
+          transform-origin: 0% 50%;
+        }
+        .s8-sol {
+          position: absolute;
+          left: 40px;
+          top: 100px;
+          height: 76px;
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          font-weight: 900;
+          font-size: 50px;
+          letter-spacing: -0.02em;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        .s8-sol svg {
+          width: 64px;
+          height: 64px;
+          display: block;
+          flex: none;
+        }
+        .s8-glow {
+          position: absolute;
+          inset: -3px;
+          border-radius: 38px;
+          border: 4px solid #fcc204;
+          box-shadow:
+            0 0 40px rgba(252, 194, 4, 0.4),
+            inset 0 0 30px rgba(252, 194, 4, 0.12);
+          opacity: 0;
+        }
+      </style>
+
+      <div id="root" data-composition-id="s8-solve" data-width="1080" data-height="1920">
+        <div id="s8-stage">
+          <div id="s8-head">
+            <span id="s8-kicker">// RESULTADOS</span>
+            <span class="s8-line">Resuelve los problemas</span>
+            <span class="s8-line">de <em>tu negocio</em></span>
+          </div>
+
+          <div class="s8-card" id="s8-card-1" style="top: 600px">
+            <div class="s8-glow"></div>
+            <div class="s8-prob">Mensajes sin responder<div class="s8-strike" style="width: 412px"></div></div>
+            <div class="s8-sol"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#fcc204" /><path class="s8-tick" d="M19 33 L28 42 L46 23" fill="none" stroke="#060c1c" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="44" stroke-dashoffset="44" /></svg>Respuesta al instante</div>
+          </div>
+          <div class="s8-card" id="s8-card-2" style="top: 840px">
+            <div class="s8-glow"></div>
+            <div class="s8-prob">Citas olvidadas<div class="s8-strike" style="width: 272px"></div></div>
+            <div class="s8-sol"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#fcc204" /><path class="s8-tick" d="M19 33 L28 42 L46 23" fill="none" stroke="#060c1c" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="44" stroke-dashoffset="44" /></svg>Recordatorios automáticos</div>
+          </div>
+          <div class="s8-card" id="s8-card-3" style="top: 1080px">
+            <div class="s8-glow"></div>
+            <div class="s8-prob">Clientes perdidos de noche<div class="s8-strike" style="width: 492px"></div></div>
+            <div class="s8-sol"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#fcc204" /><path class="s8-tick" d="M19 33 L28 42 L46 23" fill="none" stroke="#060c1c" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="44" stroke-dashoffset="44" /></svg>Atención 24/7</div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Tiempo local: 0 = 39.85 s del video
+          const tl = gsap.timeline({ paused: true });
+          const IN = 0.15; // 40.0 s
+          const ROWS = [0.4, 1.35, 2.3]; // 40.25, 41.2, 42.15 s
+          const OUT = 3.84;
+
+          tl.fromTo("#s8-kicker", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, IN);
+          gsap.utils.toArray("#s8-head .s8-line").forEach((el, i) => {
+            tl.fromTo(el, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.55, ease: "power4.out" }, IN + 0.06 + i * 0.12);
+          });
+
+          ROWS.forEach((t, i) => {
+            const card = "#s8-card-" + (i + 1);
+            tl.fromTo(card, { opacity: 0, x: 160 }, { opacity: 1, x: 0, duration: 0.5, ease: "expo.out" }, t - 0.15);
+            tl.fromTo(card + " .s8-prob", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, t - 0.05);
+            // el problema se tacha…
+            tl.fromTo(card + " .s8-strike", { scaleX: 0 }, { scaleX: 1, duration: 0.28, ease: "power3.inOut" }, t + 0.2);
+            tl.to(card + " .s8-prob", { opacity: 0.55, duration: 0.2, ease: "none" }, t + 0.4);
+            // …y aparece la solución
+            tl.fromTo(card + " .s8-sol", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.45, ease: "back.out(1.8)" }, t + 0.42);
+            tl.to(card + " .s8-tick", { strokeDashoffset: 0, duration: 0.3, ease: "power2.out" }, t + 0.6);
+            tl.fromTo(card + " .s8-glow", { opacity: 0 }, { opacity: 1, duration: 0.15, ease: "power1.out" }, t + 0.42);
+            tl.to(card + " .s8-glow", { opacity: 0, duration: 0.6, ease: "power1.in" }, t + 0.75);
+          });
+
+          // Salida
+          tl.to("#s8-stage", { y: -260, opacity: 0, filter: "blur(18px)", duration: 0.36, ease: "power3.in" }, OUT);
+
+          window.__timelines["s8-solve"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>
