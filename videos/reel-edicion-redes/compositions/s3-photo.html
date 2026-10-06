@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Escena 3 — Fotos: antes y después</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #f4f6fb;
+          font-family: "Montserrat", sans-serif;
+        }
+        #s3-stage {
+          position: absolute;
+          inset: 0;
+        }
+        #s3-head {
+          position: absolute;
+          left: 84px;
+          top: 350px;
+          width: 912px;
+        }
+        #s3-kicker {
+          display: block;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 32px;
+          letter-spacing: 0.16em;
+          color: #fcc204;
+          margin-bottom: 14px;
+          opacity: 0;
+        }
+        .s3-line {
+          display: block;
+          font-weight: 900;
+          font-size: 72px;
+          line-height: 1.04;
+          letter-spacing: -0.035em;
+          opacity: 0;
+        }
+        .s3-line em {
+          font-style: normal;
+          color: #fcc204;
+        }
+        #s3-frame {
+          position: absolute;
+          left: 220px;
+          top: 600px;
+          width: 640px;
+          height: 800px;
+          border-radius: 36px;
+          overflow: hidden;
+          box-shadow:
+            0 50px 120px rgba(0, 0, 0, 0.6),
+            0 0 0 3px rgba(214, 226, 255, 0.16);
+          opacity: 0;
+        }
+        .s3-layer {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+        }
+        .s3-layer img {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 640px;
+          height: 800px;
+          display: block;
+        }
+        #s3-before img {
+          filter: grayscale(0.85) brightness(0.62) contrast(0.72) blur(2px);
+        }
+        #s3-after {
+          clip-path: inset(0% 100% 0% 0%);
+        }
+        #s3-shade {
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 640px;
+          height: 380px;
+          background: linear-gradient(180deg, rgba(20, 8, 4, 0) 0%, rgba(20, 8, 4, 0.82) 100%);
+        }
+        #s3-pill {
+          position: absolute;
+          left: 40px;
+          bottom: 196px;
+          height: 56px;
+          padding: 0 24px;
+          border-radius: 28px;
+          background: #fcc204;
+          color: #060c1c;
+          font-weight: 900;
+          font-size: 28px;
+          line-height: 56px;
+          letter-spacing: 0.04em;
+          opacity: 0;
+        }
+        #s3-name {
+          position: absolute;
+          left: 40px;
+          bottom: 112px;
+          font-weight: 900;
+          font-size: 64px;
+          line-height: 1;
+          letter-spacing: -0.03em;
+          color: #fff8ec;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        #s3-sub {
+          position: absolute;
+          left: 40px;
+          bottom: 56px;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 28px;
+          color: #ffd56b;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        /* Deslizador antes / después */
+        #s3-handle {
+          position: absolute;
+          left: 220px;
+          top: 600px;
+          width: 6px;
+          height: 800px;
+          margin-left: -3px;
+          background: #fcc204;
+          box-shadow: 0 0 24px rgba(252, 194, 4, 0.8);
+          opacity: 0;
+        }
+        #s3-knob {
+          position: absolute;
+          left: -37px;
+          top: 362px;
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          background: #fcc204;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        #s3-knob svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        .s3-tag {
+          position: absolute;
+          top: 626px;
+          height: 46px;
+          padding: 0 18px;
+          border-radius: 23px;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 24px;
+          line-height: 46px;
+          letter-spacing: 0.1em;
+          opacity: 0;
+        }
+        #s3-tag-before {
+          left: 246px;
+          background: rgba(6, 12, 28, 0.7);
+          color: #c3cde6;
+        }
+        #s3-tag-after {
+          right: 246px;
+          background: #fcc204;
+          color: #060c1c;
+        }
+      </style>
+
+      <div id="root" data-composition-id="s3-photo" data-width="1080" data-height="1920">
+        <div id="s3-stage">
+          <div id="s3-head">
+            <span id="s3-kicker">// FOTOS</span>
+            <span class="s3-line">Fotos que <em>detienen</em></span>
+            <span class="s3-line">el scroll.</span>
+          </div>
+
+
+          <div id="s3-frame">
+            <div class="s3-layer" id="s3-before"><img src="assets/scenes/cafe-2.svg" alt="" /></div>
+            <div class="s3-layer" id="s3-after">
+              <img src="assets/scenes/cafe.svg" alt="" />
+              <div id="s3-shade"></div>
+              <div id="s3-pill">NUEVO</div>
+              <div id="s3-name">Café de la casa</div>
+              <div id="s3-sub">Te esperamos hoy</div>
+            </div>
+          </div>
+          <div id="s3-handle">
+            <div id="s3-knob">
+              <svg viewBox="0 0 80 80" aria-hidden="true"><path d="M30 28 L20 40 L30 52 M50 28 L60 40 L50 52" fill="none" stroke="#060c1c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </div>
+          </div>
+          <div class="s3-tag" id="s3-tag-before">ANTES</div>
+          <div class="s3-tag" id="s3-tag-after">DESPUÉS</div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Tiempo local: 0 = 11.85 s del video
+          const tl = gsap.timeline({ paused: true });
+          const IN = 0.15; // 12.0 s
+          const SWEEP = 2.8; // 14.65 s
+          const SWEEP_D = 2.1;
+          const OUT = 7.84;
+
+          tl.fromTo("#s3-kicker", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, IN);
+          gsap.utils.toArray("#s3-head .s3-line").forEach((el, i) => {
+            tl.fromTo(el, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.8, ease: "power4.out" }, IN + 0.15 + i * 0.25);
+          });
+          tl.fromTo("#s3-frame", { opacity: 0, y: 160, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: "expo.out" }, 0.6);
+          tl.fromTo("#s3-tag-before", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 1.5);
+
+          // El deslizador revela la foto editada, despacio
+          tl.fromTo("#s3-handle", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" }, SWEEP - 0.3);
+          tl.fromTo("#s3-handle", { x: 0 }, { x: 640, duration: SWEEP_D, ease: "power2.inOut", immediateRender: false }, SWEEP);
+          tl.fromTo("#s3-after", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: SWEEP_D, ease: "power2.inOut" }, SWEEP);
+          tl.to("#s3-handle", { opacity: 0, duration: 0.35, ease: "power1.in" }, SWEEP + SWEEP_D);
+          tl.to("#s3-tag-before", { opacity: 0.35, duration: 0.4, ease: "none" }, SWEEP + SWEEP_D - 0.3);
+          tl.fromTo("#s3-tag-after", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "back.out(2)" }, SWEEP + SWEEP_D - 0.2);
+
+          // Diseño encima de la foto: etiqueta, nombre y texto
+          const D = SWEEP + SWEEP_D + 0.2;
+          tl.fromTo("#s3-pill", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.55, ease: "back.out(2.2)" }, D);
+          tl.fromTo("#s3-name", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, D + 0.25);
+          tl.fromTo("#s3-sub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, D + 0.5);
+          tl.fromTo("#s3-after img", { scale: 1 }, { scale: 1.05, duration: OUT - SWEEP, ease: "none", transformOrigin: "50% 60%" }, SWEEP);
+
+          // Salida: barrido lateral
+          tl.to("#s3-stage", { x: -300, opacity: 0, filter: "blur(18px)", duration: 0.45, ease: "power3.in" }, OUT);
+
+          window.__timelines["s3-photo"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

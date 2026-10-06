@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Brand — logo persistente y cierre</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          pointer-events: none;
+        }
+        /* Cámara del cierre: el empuje final escala todo desde el centro del cuadro */
+        #b-cam {
+          position: absolute;
+          inset: 0;
+          transform-origin: 540px 960px;
+        }
+        /*
+          El logo se maqueta en su tamaño FINAL (940 px de ancho, centrado en 540,900).
+          Durante el video se reduce a 300 px y sube a la franja superior (centro en 540,245).
+        */
+        #b-logo {
+          position: absolute;
+          left: 70px;
+          top: 734px;
+          width: 940px;
+          height: 332px;
+        }
+        #b-logo img {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        #b-logo-color {
+          opacity: 0;
+        }
+        /* Halo detrás de la bombilla */
+        #b-bulb-glow {
+          position: absolute;
+          left: -93px;
+          top: -96px;
+          width: 420px;
+          height: 420px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(252, 194, 4, 0.55) 0%, rgba(252, 194, 4, 0.16) 38%, rgba(252, 194, 4, 0) 68%);
+          opacity: 0;
+        }
+      </style>
+
+      <div id="root" data-composition-id="brand" data-width="1080" data-height="1920">
+        <div id="b-cam">
+          <div id="b-logo">
+            <div id="b-bulb-glow"></div>
+            <img id="b-logo-light" src="assets/brand/logo-light.png" alt="Soluciones Impresiona" />
+            <img id="b-logo-color" src="assets/brand/logo.png" alt="" />
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const BUG_SCALE = 300 / 940;
+          const BUG_Y = 245 - 900; // del centro final (900) al centro de la marca fija (245)
+          const FLY_AT = 47.35; // despega mientras sale el llamado a la acción
+          const HIT = 48.0; // golpe final de la música
+          const tl = gsap.timeline({ paused: true });
+
+          // Marca fija arriba, aparece con el primer cuadro
+          tl.fromTo(
+            "#b-logo",
+            { y: BUG_Y - 40, scale: BUG_SCALE, opacity: 0 },
+            { y: BUG_Y, scale: BUG_SCALE, opacity: 1, duration: 0.7, ease: "power3.out" },
+            0.05,
+          );
+
+          // La bombilla de la marca se enciende en cada compás desde el drop
+          for (let t = 6; t < 47; t += 2) {
+            tl.fromTo(
+              "#b-bulb-glow",
+              { opacity: 0.85 },
+              { opacity: 0.18, duration: 1.2, ease: "power2.out", immediateRender: false },
+              t,
+            );
+          }
+
+          // Vuelo al centro: crece a pantalla completa justo en el golpe
+          tl.to("#b-logo", { y: 0, scale: 1, duration: HIT - FLY_AT, ease: "expo.inOut" }, FLY_AT);
+          // La luz llena la pantalla: el logo pasa de la versión clara a sus colores originales
+          tl.fromTo("#b-logo-color", { opacity: 0 }, { opacity: 1, duration: 0.28, ease: "power1.out", immediateRender: false }, HIT + 0.02);
+          tl.fromTo("#b-logo-light", { opacity: 1 }, { opacity: 0, duration: 0.28, ease: "power1.in", immediateRender: false }, HIT + 0.02);
+          // Destello de la bombilla al encenderse
+          tl.fromTo(
+            "#b-bulb-glow",
+            { opacity: 1, scale: 0.6 },
+            { opacity: 0.55, scale: 1.25, duration: 1.1, ease: "power2.out", immediateRender: false },
+            HIT,
+          );
+          // Respiración del halo durante el cierre
+          tl.to("#b-bulb-glow", { opacity: 0.8, scale: 1.1, duration: 1.4, ease: "sine.inOut", yoyo: true, repeat: 1 }, HIT + 1.1);
+          // Empuje de cámara lento sobre el logo
+          tl.fromTo("#b-cam", { scale: 1 }, { scale: 1.045, duration: 53 - (HIT + 0.4), ease: "sine.out" }, HIT + 0.4);
+
+          window.__timelines["brand"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

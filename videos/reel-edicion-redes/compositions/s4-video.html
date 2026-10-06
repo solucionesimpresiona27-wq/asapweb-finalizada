@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Escena 4 — Videos que enganchan</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #f4f6fb;
+          font-family: "Montserrat", sans-serif;
+        }
+        #s4-stage {
+          position: absolute;
+          inset: 0;
+        }
+        #s4-head {
+          position: absolute;
+          left: 84px;
+          top: 350px;
+          width: 912px;
+        }
+        #s4-kicker {
+          display: block;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 32px;
+          letter-spacing: 0.16em;
+          color: #fcc204;
+          margin-bottom: 14px;
+          opacity: 0;
+        }
+        .s4-line {
+          display: block;
+          font-weight: 900;
+          font-size: 72px;
+          line-height: 1.04;
+          letter-spacing: -0.035em;
+          opacity: 0;
+        }
+        .s4-line em {
+          font-style: normal;
+          color: #fcc204;
+        }
+        /* Celular con el video */
+        #s4-phone {
+          position: absolute;
+          left: 84px;
+          top: 600px;
+          width: 360px;
+          height: 640px;
+          border-radius: 44px;
+          border: 8px solid #1d2a48;
+          background: #050a17;
+          box-shadow: 0 50px 120px rgba(0, 0, 0, 0.6);
+          overflow: hidden;
+          opacity: 0;
+        }
+        .s4-clip {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          opacity: 0;
+        }
+        .s4-clip img {
+          position: absolute;
+          left: -128px;
+          top: 0;
+          width: 600px;
+          height: 750px;
+          display: block;
+        }
+        #s4-bars {
+          position: absolute;
+          left: 16px;
+          top: 16px;
+          width: 312px;
+          display: flex;
+          gap: 6px;
+        }
+        .s4-bar {
+          position: relative;
+          flex: 1;
+          height: 6px;
+          border-radius: 3px;
+          background: rgba(255, 255, 255, 0.35);
+          overflow: hidden;
+        }
+        .s4-bar i {
+          position: absolute;
+          inset: 0;
+          display: block;
+          background: #ffffff;
+          transform-origin: 0% 50%;
+        }
+        .s4-sub {
+          position: absolute;
+          left: 20px;
+          bottom: 60px;
+          width: 304px;
+          text-align: center;
+          opacity: 0;
+        }
+        .s4-sub span {
+          display: inline-block;
+          padding: 8px 14px;
+          border-radius: 10px;
+          background: rgba(6, 12, 28, 0.78);
+          font-weight: 900;
+          font-size: 28px;
+          line-height: 1.2;
+          color: #ffffff;
+        }
+        .s4-sub b {
+          color: #fcc204;
+        }
+        /* Funciones */
+        .s4-feat {
+          position: absolute;
+          left: 500px;
+          width: 500px;
+          height: 120px;
+          opacity: 0;
+        }
+        .s4-ico {
+          position: absolute;
+          left: 0;
+          top: 14px;
+          width: 88px;
+          height: 88px;
+          border-radius: 26px;
+          background: #fcc204;
+        }
+        .s4-ico svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        .s4-ft {
+          position: absolute;
+          left: 112px;
+          top: 14px;
+          font-weight: 900;
+          font-size: 40px;
+          line-height: 46px;
+          letter-spacing: -0.02em;
+          white-space: nowrap;
+        }
+        .s4-ft span {
+          display: block;
+          font-weight: 700;
+          font-size: 30px;
+          line-height: 40px;
+          color: #fcc204;
+        }
+        /* Línea de tiempo */
+        #s4-tl {
+          position: absolute;
+          left: 84px;
+          top: 1272px;
+          width: 912px;
+          height: 156px;
+          border-radius: 28px;
+          background: #0b1630;
+          border: 3px solid rgba(214, 226, 255, 0.16);
+          overflow: hidden;
+          opacity: 0;
+        }
+        .s4-blk {
+          position: absolute;
+          border-radius: 8px;
+        }
+        .s4-wave {
+          position: absolute;
+          top: 108px;
+          width: 6px;
+          border-radius: 3px;
+          background: rgba(61, 107, 255, 0.85);
+        }
+        #s4-playhead {
+          position: absolute;
+          left: 20px;
+          top: 6px;
+          width: 4px;
+          height: 140px;
+          border-radius: 2px;
+          background: #fcc204;
+          box-shadow: 0 0 14px rgba(252, 194, 4, 0.8);
+        }
+      </style>
+
+      <div id="root" data-composition-id="s4-video" data-width="1080" data-height="1920">
+        <div id="s4-stage">
+          <div id="s4-head">
+            <span id="s4-kicker">// VIDEOS</span>
+            <span class="s4-line">Videos que</span>
+            <span class="s4-line"><em>enganchan.</em></span>
+          </div>
+
+          <div id="s4-phone">
+            <div class="s4-clip" id="s4-clip-1"><img src="assets/scenes/cafe.svg" alt="" /></div>
+            <div class="s4-clip" id="s4-clip-2"><img src="assets/scenes/burger.svg" alt="" /></div>
+            <div class="s4-clip" id="s4-clip-3"><img src="assets/scenes/beauty.svg" alt="" /></div>
+            <div class="s4-clip" id="s4-clip-4"><img src="assets/scenes/cafe-2.svg" alt="" /></div>
+            <div id="s4-bars">
+              <div class="s4-bar"><i id="s4-bar-1"></i></div>
+              <div class="s4-bar"><i id="s4-bar-2"></i></div>
+              <div class="s4-bar"><i id="s4-bar-3"></i></div>
+              <div class="s4-bar"><i id="s4-bar-4"></i></div>
+            </div>
+            <div class="s4-sub" id="s4-sub-1"><span>Así empieza</span></div>
+            <div class="s4-sub" id="s4-sub-2"><span>tu <b>nuevo menú</b></span></div>
+            <div class="s4-sub" id="s4-sub-3"><span>y tus productos</span></div>
+            <div class="s4-sub" id="s4-sub-4"><span><b>¡Te esperamos!</b></span></div>
+          </div>
+
+          <div class="s4-feat" id="s4-feat-1" style="top: 610px">
+            <div class="s4-ico"><svg viewBox="0 0 88 88" aria-hidden="true"><circle cx="30" cy="62" r="9" fill="none" stroke="#060c1c" stroke-width="5" /><circle cx="58" cy="62" r="9" fill="none" stroke="#060c1c" stroke-width="5" /><path d="M36 55 L62 20 M52 55 L26 20" stroke="#060c1c" stroke-width="5" stroke-linecap="round" /></svg></div>
+            <div class="s4-ft">Cortes<span>dinámicos</span></div>
+          </div>
+          <div class="s4-feat" id="s4-feat-2" style="top: 760px">
+            <div class="s4-ico"><svg viewBox="0 0 88 88" aria-hidden="true"><rect x="16" y="22" width="56" height="44" rx="8" fill="none" stroke="#060c1c" stroke-width="5" /><path d="M26 50 H44 M50 50 H62 M26 38 H36 M42 38 H62" stroke="#060c1c" stroke-width="5" stroke-linecap="round" /></svg></div>
+            <div class="s4-ft">Subtítulos<span>claros</span></div>
+          </div>
+          <div class="s4-feat" id="s4-feat-3" style="top: 910px">
+            <div class="s4-ico"><svg viewBox="0 0 88 88" aria-hidden="true"><path d="M36 60 V24 L64 18 V54" fill="none" stroke="#060c1c" stroke-width="5" stroke-linejoin="round" /><circle cx="29" cy="61" r="8" fill="#060c1c" /><circle cx="57" cy="55" r="8" fill="#060c1c" /></svg></div>
+            <div class="s4-ft">Música<span>y sonido</span></div>
+          </div>
+          <div class="s4-feat" id="s4-feat-4" style="top: 1060px">
+            <div class="s4-ico"><svg viewBox="0 0 88 88" aria-hidden="true"><path d="M44 16 C47 34 54 41 72 44 C54 47 47 54 44 72 C41 54 34 47 16 44 C34 41 41 34 44 16 Z" fill="#060c1c" /></svg></div>
+            <div class="s4-ft">Efectos y<span>transiciones</span></div>
+          </div>
+
+          <div id="s4-tl">
+            <div class="s4-blk" style="left: 20px; top: 16px; width: 212px; height: 44px; background: #c87a3c"></div>
+            <div class="s4-blk" style="left: 238px; top: 16px; width: 212px; height: 44px; background: #c8402a"></div>
+            <div class="s4-blk" style="left: 456px; top: 16px; width: 212px; height: 44px; background: #c96a9a"></div>
+            <div class="s4-blk" style="left: 674px; top: 16px; width: 212px; height: 44px; background: #c87a3c"></div>
+            <div class="s4-blk" style="left: 20px; top: 68px; width: 160px; height: 28px; background: #fcc204"></div>
+            <div class="s4-blk" style="left: 238px; top: 68px; width: 180px; height: 28px; background: #fcc204"></div>
+            <div class="s4-blk" style="left: 456px; top: 68px; width: 170px; height: 28px; background: #fcc204"></div>
+            <div class="s4-blk" style="left: 674px; top: 68px; width: 190px; height: 28px; background: #fcc204"></div>
+            <div id="s4-waves"></div>
+            <div id="s4-playhead"></div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Tiempo local: 0 = 19.85 s del video
+          const tl = gsap.timeline({ paused: true });
+          const IN = 0.15; // 20.0 s
+          const PLAY = 1.0; // 20.85 s
+          const CLIP = 1.6; // duración de cada clip
+          const OUT = 7.84;
+
+          // Onda de audio determinista
+          const waves = document.getElementById("s4-waves");
+          for (let k = 0; k < 108; k++) {
+            const h = 8 + Math.abs(Math.sin(k * 0.71) * Math.cos(k * 0.23)) * 34;
+            const b = document.createElement("div");
+            b.className = "s4-wave";
+            b.style.left = 20 + k * 8 + "px";
+            b.style.height = h + "px";
+            b.style.top = 126 - h / 2 + "px";
+            waves.appendChild(b);
+          }
+
+          tl.fromTo("#s4-kicker", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, IN);
+          gsap.utils.toArray("#s4-head .s4-line").forEach((el, i) => {
+            tl.fromTo(el, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.8, ease: "power4.out" }, IN + 0.15 + i * 0.25);
+          });
+          tl.fromTo("#s4-phone", { opacity: 0, y: 140, rotation: -4 }, { opacity: 1, y: 0, rotation: 0, duration: 1.1, ease: "expo.out" }, 0.4);
+          tl.fromTo("#s4-tl", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.9, ease: "expo.out" }, 0.6);
+
+          // Reproducción: cada clip entra con un corte y un acercamiento lento
+          for (let k = 1; k <= 4; k++) {
+            const t = PLAY + (k - 1) * CLIP;
+            tl.fromTo("#s4-clip-" + k, { opacity: 0 }, { opacity: 1, duration: k === 1 ? 0.3 : 0.18, ease: "power1.out" }, t);
+            tl.fromTo("#s4-clip-" + k + " img", { scale: 1.12 }, { scale: 1.0, duration: CLIP + 0.3, ease: "sine.out" }, t);
+            tl.fromTo("#s4-bar-" + k, { scaleX: 0 }, { scaleX: 1, duration: CLIP, ease: "none" }, t);
+            tl.fromTo("#s4-sub-" + k, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, t + 0.15);
+            if (k < 4) tl.to("#s4-sub-" + k, { opacity: 0, duration: 0.15, ease: "none" }, t + CLIP - 0.05);
+          }
+          tl.fromTo("#s4-playhead", { x: 0 }, { x: 866, duration: 4 * CLIP, ease: "none" }, PLAY);
+
+          // Funciones, una por clip
+          for (let k = 1; k <= 4; k++) {
+            const t = PLAY + 0.2 + (k - 1) * CLIP;
+            tl.fromTo("#s4-feat-" + k, { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: 0.7, ease: "expo.out" }, t);
+            tl.fromTo("#s4-feat-" + k + " .s4-ico", { scale: 0, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.6, ease: "back.out(2.2)" }, t + 0.1);
+          }
+
+          // Salida
+          tl.to("#s4-stage", { y: -240, opacity: 0, filter: "blur(18px)", duration: 0.45, ease: "power3.in" }, OUT);
+
+          window.__timelines["s4-video"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>
