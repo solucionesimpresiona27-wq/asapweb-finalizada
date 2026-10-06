@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Escena 5 — Así llegan tus clientes</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #f4f6fb;
+          font-family: "Montserrat", sans-serif;
+        }
+        #s5-stage {
+          position: absolute;
+          inset: 0;
+        }
+        #s5-head {
+          position: absolute;
+          left: 84px;
+          top: 350px;
+          width: 912px;
+        }
+        #s5-kicker {
+          display: block;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 32px;
+          letter-spacing: 0.16em;
+          color: #fcc204;
+          margin-bottom: 14px;
+          opacity: 0;
+        }
+        .s5-line {
+          display: block;
+          font-weight: 900;
+          font-size: 72px;
+          line-height: 1.04;
+          letter-spacing: -0.035em;
+          opacity: 0;
+        }
+        .s5-line em {
+          font-style: normal;
+          color: #fcc204;
+        }
+        .s5-bar {
+          position: absolute;
+          height: 136px;
+          border-radius: 34px;
+          background: linear-gradient(180deg, #24448c 0%, #16295a 100%);
+          border: 2px solid rgba(110, 150, 255, 0.45);
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 16px;
+          font-weight: 900;
+          font-size: 36px;
+          letter-spacing: -0.01em;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        .s5-bar b {
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 28px;
+          color: #fcc204;
+        }
+        #s5-bar-4 {
+          background: #fcc204;
+          border-color: #fcc204;
+          color: #060c1c;
+          box-shadow: 0 0 70px rgba(252, 194, 4, 0.4);
+        }
+        #s5-bar-4 b {
+          color: #1b3d6a;
+        }
+        .s5-p {
+          position: absolute;
+          left: -9px;
+          top: -9px;
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          background: #fff4c2;
+          box-shadow: 0 0 14px 4px rgba(252, 194, 4, 0.8);
+          opacity: 0;
+        }
+        #s5-note {
+          position: absolute;
+          left: 0;
+          top: 1318px;
+          width: 1080px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 14px;
+          font-weight: 700;
+          font-size: 34px;
+          color: #dfe5f3;
+          opacity: 0;
+        }
+        #s5-note svg {
+          width: 48px;
+          height: 48px;
+          display: block;
+        }
+      </style>
+
+      <div id="root" data-composition-id="s5-funnel" data-width="1080" data-height="1920">
+        <div id="s5-stage">
+          <div id="s5-head">
+            <span id="s5-kicker">// EL RECORRIDO</span>
+            <span class="s5-line">Así llegan</span>
+            <span class="s5-line"><em>tus clientes.</em></span>
+          </div>
+
+          <div id="s5-particles"></div>
+          <div class="s5-bar" id="s5-bar-1" style="left: 90px; top: 620px; width: 900px"><b>01</b>Muchas personas ven tu anuncio</div>
+          <div class="s5-bar" id="s5-bar-2" style="left: 170px; top: 788px; width: 740px"><b>02</b>Les interesa y dan clic</div>
+          <div class="s5-bar" id="s5-bar-3" style="left: 250px; top: 956px; width: 580px"><b>03</b>Te escriben o llaman</div>
+          <div class="s5-bar" id="s5-bar-4" style="left: 300px; top: 1124px; width: 480px"><b>04</b>Se vuelven clientes</div>
+
+          <div id="s5-note">
+            <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 38 L18 24 L26 31 L42 12" fill="none" stroke="#fcc204" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" /><path d="M32 12 H42 V22" fill="none" stroke="#fcc204" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            Medimos y mejoramos tu campaña
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Tiempo local: 0 = 27.85 s del video
+          const tl = gsap.timeline({ paused: true });
+          const IN = 0.15; // 28.0 s
+          const OUT = 7.84;
+
+          tl.fromTo("#s5-kicker", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, IN);
+          gsap.utils.toArray("#s5-head .s5-line").forEach((el, i) => {
+            tl.fromTo(el, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.8, ease: "power4.out" }, IN + 0.15 + i * 0.25);
+          });
+
+          // Las etapas del embudo aparecen de arriba abajo
+          [1, 2, 3, 4].forEach((n, k) => {
+            tl.fromTo("#s5-bar-" + n, { opacity: 0, scaleX: 0.3 }, { opacity: 1, scaleX: 1, duration: 0.8, ease: "expo.out" }, 0.9 + k * 0.75);
+          });
+          tl.fromTo("#s5-bar-4", { scale: 1 }, { scale: 1.05, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 3, immediateRender: false }, 4.3);
+
+          // Puntos de luz que bajan por el embudo (personas que se vuelven clientes)
+          const box = document.getElementById("s5-particles");
+          for (let k = 0; k < 16; k++) {
+            const p = document.createElement("div");
+            p.className = "s5-p";
+            box.appendChild(p);
+            const x0 = 150 + ((k * 197) % 780);
+            const t = 1.2 + k * 0.33;
+            tl.fromTo(p, { x: x0, y: 600, opacity: 0 }, { x: 540, y: 1250, opacity: 1, duration: 1.7, ease: "power1.in" }, t);
+            tl.to(p, { opacity: 0, duration: 0.2, ease: "none" }, t + 1.7);
+          }
+
+          tl.fromTo("#s5-note", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 4.6);
+
+          tl.to("#s5-stage", { y: -240, opacity: 0, filter: "blur(18px)", duration: 0.45, ease: "power3.in" }, OUT);
+          window.__timelines["s5-funnel"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

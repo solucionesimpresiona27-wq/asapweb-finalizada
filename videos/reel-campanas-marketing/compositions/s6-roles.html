@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Escena 6 — Nosotros conseguimos los clientes, tú respondes</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #f4f6fb;
+          font-family: "Montserrat", sans-serif;
+        }
+        #s6-stage {
+          position: absolute;
+          inset: 0;
+        }
+        #s6-head {
+          position: absolute;
+          left: 84px;
+          top: 350px;
+          width: 912px;
+        }
+        .s6-line {
+          display: block;
+          font-weight: 900;
+          font-size: 72px;
+          line-height: 1.04;
+          letter-spacing: -0.035em;
+          opacity: 0;
+        }
+        .s6-line em {
+          font-style: normal;
+          color: #fcc204;
+        }
+        .s6-card {
+          position: absolute;
+          left: 70px;
+          width: 940px;
+          border-radius: 38px;
+          background: #0b1630;
+          border: 3px solid rgba(214, 226, 255, 0.16);
+          box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+          opacity: 0;
+        }
+        .s6-pill {
+          position: absolute;
+          left: 36px;
+          top: 34px;
+          height: 54px;
+          padding: 0 22px;
+          border-radius: 27px;
+          background: #fcc204;
+          color: #060c1c;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 28px;
+          line-height: 54px;
+          letter-spacing: 0.08em;
+        }
+        .s6-row {
+          position: absolute;
+          left: 36px;
+          height: 64px;
+          display: flex;
+          align-items: center;
+          gap: 18px;
+          font-weight: 700;
+          font-size: 38px;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        .s6-row svg {
+          width: 50px;
+          height: 50px;
+          display: block;
+        }
+        #s6-you {
+          border-color: #fcc204;
+        }
+        #s6-you-text {
+          position: absolute;
+          left: 36px;
+          top: 112px;
+          display: flex;
+          align-items: center;
+          gap: 22px;
+          font-weight: 900;
+          font-size: 40px;
+          letter-spacing: -0.02em;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        #s6-you-text i {
+          display: block;
+          width: 84px;
+          height: 84px;
+          border-radius: 24px;
+          background: #fcc204;
+        }
+        #s6-you-text svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        #s6-you-text em {
+          font-style: normal;
+          color: #fcc204;
+        }
+      </style>
+
+      <div id="root" data-composition-id="s6-roles" data-width="1080" data-height="1920">
+        <div id="s6-stage">
+          <div id="s6-head">
+            <span class="s6-line">Nosotros conseguimos</span>
+            <span class="s6-line"><em>los clientes.</em></span>
+          </div>
+
+          <div class="s6-card" id="s6-us" style="top: 560px; height: 470px">
+            <div class="s6-pill">NOSOTROS</div>
+            <div class="s6-row" style="top: 124px"><svg viewBox="0 0 50 50" aria-hidden="true"><circle cx="25" cy="25" r="23" fill="#fcc204" /><path class="s6-tick" d="M14 26 L22 34 L37 17" fill="none" stroke="#060c1c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" /></svg>Estrategia para tu negocio</div>
+            <div class="s6-row" style="top: 204px"><svg viewBox="0 0 50 50" aria-hidden="true"><circle cx="25" cy="25" r="23" fill="#fcc204" /><path d="M14 26 L22 34 L37 17" fill="none" stroke="#060c1c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" /></svg>Diseño de los anuncios</div>
+            <div class="s6-row" style="top: 284px"><svg viewBox="0 0 50 50" aria-hidden="true"><circle cx="25" cy="25" r="23" fill="#fcc204" /><path d="M14 26 L22 34 L37 17" fill="none" stroke="#060c1c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" /></svg>Segmentación del público</div>
+            <div class="s6-row" style="top: 364px"><svg viewBox="0 0 50 50" aria-hidden="true"><circle cx="25" cy="25" r="23" fill="#fcc204" /><path d="M14 26 L22 34 L37 17" fill="none" stroke="#060c1c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" /></svg>Optimización constante</div>
+          </div>
+
+          <div class="s6-card" id="s6-you" style="top: 1070px; height: 250px">
+            <div class="s6-pill">TÚ</div>
+            <div id="s6-you-text">
+              <i><svg viewBox="0 0 84 84" aria-hidden="true"><path d="M20 24 h44 a7 7 0 0 1 7 7 v20 a7 7 0 0 1 -7 7 h-22 l-12 10 v-10 h-10 a7 7 0 0 1 -7 -7 v-20 a7 7 0 0 1 7 -7 z" fill="#060c1c" /></svg></i>
+              <span>Solo <em>respondes</em> a tus clientes.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Tiempo local: 0 = 35.85 s del video
+          const tl = gsap.timeline({ paused: true });
+          const IN = 0.15; // 36.0 s
+          const OUT = 5.84;
+
+          gsap.utils.toArray("#s6-head .s6-line").forEach((el, i) => {
+            tl.fromTo(el, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.8, ease: "power4.out" }, IN + i * 0.3);
+          });
+          tl.fromTo("#s6-us", { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 1.0, ease: "expo.out" }, 0.7);
+          gsap.utils.toArray("#s6-us .s6-row").forEach((r, k) => {
+            tl.fromTo(r, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.6, ease: "expo.out" }, 1.2 + k * 0.38);
+          });
+          tl.fromTo("#s6-you", { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 1.0, ease: "expo.out" }, 3.0);
+          tl.fromTo("#s6-you-text", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: "back.out(1.6)" }, 3.4);
+          tl.fromTo("#s6-you", { boxShadow: "0 40px 100px rgba(0,0,0,0.5)" }, { boxShadow: "0 40px 100px rgba(0,0,0,0.5), 0 0 80px 8px rgba(252,194,4,0.35)", duration: 0.7, ease: "power2.out", immediateRender: false }, 3.8);
+
+          tl.to("#s6-stage", { y: -240, opacity: 0, filter: "blur(18px)", duration: 0.45, ease: "power3.in" }, OUT);
+          window.__timelines["s6-roles"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

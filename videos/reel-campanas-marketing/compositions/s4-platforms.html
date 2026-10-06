@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Escena 4 — Google Ads y Meta Ads</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #f4f6fb;
+          font-family: "Montserrat", sans-serif;
+        }
+        #s4-stage {
+          position: absolute;
+          inset: 0;
+        }
+        #s4-head {
+          position: absolute;
+          left: 84px;
+          top: 350px;
+          width: 912px;
+        }
+        #s4-kicker {
+          display: block;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 32px;
+          letter-spacing: 0.16em;
+          color: #fcc204;
+          margin-bottom: 14px;
+          opacity: 0;
+        }
+        .s4-line {
+          display: block;
+          font-weight: 900;
+          font-size: 72px;
+          line-height: 1.04;
+          letter-spacing: -0.035em;
+          opacity: 0;
+        }
+        .s4-line em {
+          font-style: normal;
+          color: #fcc204;
+        }
+        .s4-card {
+          position: absolute;
+          left: 70px;
+          width: 940px;
+          height: 370px;
+          border-radius: 38px;
+          background: #0b1630;
+          border: 3px solid rgba(214, 226, 255, 0.16);
+          box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+          overflow: hidden;
+          opacity: 0;
+        }
+        .s4-name {
+          position: absolute;
+          left: 36px;
+          top: 40px;
+          font-weight: 900;
+          font-size: 48px;
+          letter-spacing: -0.02em;
+          white-space: nowrap;
+        }
+        .s4-desc {
+          position: absolute;
+          left: 36px;
+          top: 110px;
+          width: 360px;
+          font-weight: 700;
+          font-size: 32px;
+          line-height: 42px;
+          color: #c3cde6;
+        }
+        .s4-desc em {
+          font-style: normal;
+          color: #fcc204;
+        }
+        .s4-mock {
+          position: absolute;
+          left: 420px;
+          top: 30px;
+          width: 490px;
+          height: 310px;
+          border-radius: 26px;
+          background: #f4f6fb;
+          color: #060c1c;
+          overflow: hidden;
+        }
+        /* Búsqueda */
+        #s4-search {
+          position: absolute;
+          left: 20px;
+          top: 20px;
+          width: 450px;
+          height: 66px;
+          border-radius: 33px;
+          border: 3px solid #d5dbe8;
+        }
+        #s4-search svg {
+          position: absolute;
+          left: 18px;
+          top: 15px;
+          width: 32px;
+          height: 32px;
+        }
+        #s4-query {
+          position: absolute;
+          left: 62px;
+          top: 0;
+          height: 60px;
+          line-height: 60px;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 26px;
+          white-space: pre;
+        }
+        #s4-query span {
+          opacity: 0;
+        }
+        #s4-result {
+          position: absolute;
+          left: 20px;
+          top: 110px;
+          width: 450px;
+          height: 180px;
+          border-radius: 18px;
+          background: #fff8dd;
+          border: 3px solid #fcc204;
+          opacity: 0;
+        }
+        #s4-result small {
+          position: absolute;
+          left: 20px;
+          top: 16px;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 24px;
+          color: #3a4766;
+          white-space: nowrap;
+        }
+        #s4-result b {
+          position: absolute;
+          left: 20px;
+          top: 56px;
+          font-weight: 900;
+          font-size: 34px;
+          color: #1b3d6a;
+          white-space: nowrap;
+        }
+        #s4-result span {
+          position: absolute;
+          left: 20px;
+          top: 110px;
+          font-weight: 400;
+          font-size: 26px;
+          color: #3a4766;
+          white-space: nowrap;
+        }
+        /* Publicación patrocinada */
+        #s4-post-img {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 490px;
+          height: 220px;
+          overflow: hidden;
+        }
+        #s4-post-img img {
+          position: absolute;
+          left: 0;
+          top: -200px;
+          width: 490px;
+          height: 612px;
+          display: block;
+        }
+        #s4-post-tag {
+          position: absolute;
+          left: 16px;
+          top: 16px;
+          height: 40px;
+          padding: 0 16px;
+          border-radius: 20px;
+          background: rgba(6, 12, 28, 0.75);
+          color: #fcc204;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 24px;
+          line-height: 40px;
+        }
+        #s4-post-bar {
+          position: absolute;
+          left: 20px;
+          top: 236px;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          font-weight: 900;
+          font-size: 28px;
+          color: #1b3d6a;
+        }
+        .s4-heart {
+          width: 44px;
+          height: 44px;
+          display: block;
+          opacity: 0;
+        }
+        #s4-post-btn {
+          position: absolute;
+          right: 20px;
+          top: 232px;
+          height: 56px;
+          padding: 0 22px;
+          border-radius: 16px;
+          background: #fcc204;
+          font-weight: 900;
+          font-size: 26px;
+          line-height: 56px;
+        }
+      </style>
+
+      <div id="root" data-composition-id="s4-platforms" data-width="1080" data-height="1920">
+        <div id="s4-stage">
+          <div id="s4-head">
+            <span id="s4-kicker">// DÓNDE APARECES</span>
+            <span class="s4-line">Donde están</span>
+            <span class="s4-line"><em>tus clientes.</em></span>
+          </div>
+
+          <div class="s4-card" id="s4-google" style="top: 590px">
+            <div class="s4-name">Google Ads</div>
+            <div class="s4-desc">Apareces justo <em>cuando te buscan.</em></div>
+            <div class="s4-mock">
+              <div id="s4-search">
+                <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="13" cy="13" r="9" fill="none" stroke="#1b3d6a" stroke-width="3.5" /><path d="M20 20 L28 28" stroke="#1b3d6a" stroke-width="3.5" stroke-linecap="round" /></svg>
+                <div id="s4-query"></div>
+              </div>
+              <div id="s4-result">
+                <small>Patrocinado · tunegocio.com</small>
+                <b>Tu Negocio · Pide hoy</b>
+                <span>Abierto ahora · A 5 min de ti</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="s4-card" id="s4-meta" style="top: 990px">
+            <div class="s4-name">Meta Ads</div>
+            <div class="s4-desc">Facebook e Instagram: <em>te conocen nuevos clientes.</em></div>
+            <div class="s4-mock">
+              <div id="s4-post-img"><img src="assets/scenes/cafe.svg" alt="" /><div id="s4-post-tag">Publicidad</div></div>
+              <div id="s4-post-bar">
+                <svg class="s4-heart" viewBox="0 0 44 44" aria-hidden="true"><path d="M22 37 C10 28 5 22 5 15 a8.5 8.5 0 0 1 17 -2 a8.5 8.5 0 0 1 17 2 c0 7 -5 13 -17 22 z" fill="#fcc204" /></svg>
+                <svg class="s4-heart" viewBox="0 0 44 44" aria-hidden="true"><path d="M8 10 h28 a5 5 0 0 1 5 5 v12 a5 5 0 0 1 -5 5 h-14 l-8 7 v-7 h-6 a5 5 0 0 1 -5 -5 v-12 a5 5 0 0 1 5 -5 z" fill="#1b3d6a" /></svg>
+                <svg class="s4-heart" viewBox="0 0 44 44" aria-hidden="true"><path d="M6 22 L38 8 L28 38 L22 26 Z" fill="none" stroke="#1b3d6a" stroke-width="3.5" stroke-linejoin="round" /></svg>
+              </div>
+              <div id="s4-post-btn">Enviar mensaje</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Tiempo local: 0 = 19.85 s del video
+          const tl = gsap.timeline({ paused: true });
+          const IN = 0.15; // 20.0 s
+          const OUT = 7.84;
+
+          tl.fromTo("#s4-kicker", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, IN);
+          gsap.utils.toArray("#s4-head .s4-line").forEach((el, i) => {
+            tl.fromTo(el, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.8, ease: "power4.out" }, IN + 0.15 + i * 0.25);
+          });
+
+          // Google: alguien busca y aparece tu anuncio
+          tl.fromTo("#s4-google", { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 1.0, ease: "expo.out" }, 0.6);
+          const Q = "restaurante cerca";
+          const qEl = document.getElementById("s4-query");
+          [...Q].forEach((ch, i) => {
+            const s = document.createElement("span");
+            s.textContent = ch;
+            qEl.appendChild(s);
+            tl.set(s, { opacity: 1 }, 1.4 + i * 0.055);
+          });
+          tl.fromTo("#s4-result", { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "back.out(1.8)" }, 2.6);
+
+          // Meta: tu anuncio aparece en el feed y recibe reacciones
+          tl.fromTo("#s4-meta", { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 1.0, ease: "expo.out" }, 3.7);
+          tl.fromTo("#s4-post-img img", { y: 60 }, { y: 0, duration: 2.5, ease: "sine.out" }, 3.7);
+          gsap.utils.toArray("#s4-meta .s4-heart").forEach((h, k) => {
+            tl.fromTo(h, { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(3)" }, 4.7 + k * 0.3);
+          });
+          tl.fromTo("#s4-post-btn", { scale: 1 }, { scale: 1.08, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: 3, immediateRender: false }, 5.8);
+
+          tl.to("#s4-stage", { y: -240, opacity: 0, filter: "blur(18px)", duration: 0.45, ease: "power3.in" }, OUT);
+          window.__timelines["s4-platforms"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

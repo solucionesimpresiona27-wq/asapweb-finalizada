@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Escena 3 — ¿Cómo funciona?</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #f4f6fb;
+          font-family: "Montserrat", sans-serif;
+        }
+        #s3-stage {
+          position: absolute;
+          inset: 0;
+        }
+        #s3-steps {
+          position: absolute;
+          left: 84px;
+          top: 350px;
+          width: 912px;
+          height: 180px;
+          opacity: 0;
+        }
+        #s3-label-mask,
+        #s3-sub-mask {
+          position: absolute;
+          left: 0;
+          width: 912px;
+          overflow: hidden;
+        }
+        #s3-label-mask {
+          top: 0;
+          height: 76px;
+        }
+        #s3-sub-mask {
+          top: 118px;
+          height: 46px;
+        }
+        .s3-label,
+        .s3-sub {
+          position: absolute;
+          left: 0;
+          top: 0;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        .s3-label {
+          height: 76px;
+          display: flex;
+          align-items: center;
+          gap: 20px;
+        }
+        .s3-label b {
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 40px;
+          color: #fcc204;
+        }
+        .s3-label span {
+          font-weight: 900;
+          font-size: 60px;
+          letter-spacing: -0.03em;
+        }
+        .s3-sub {
+          height: 46px;
+          line-height: 46px;
+          font-weight: 700;
+          font-size: 32px;
+          color: #c3cde6;
+        }
+        #s3-progress {
+          position: absolute;
+          left: 0;
+          top: 92px;
+          display: flex;
+          gap: 14px;
+        }
+        .s3-seg {
+          position: relative;
+          width: 140px;
+          height: 10px;
+          border-radius: 5px;
+          background: rgba(214, 226, 255, 0.16);
+          overflow: hidden;
+        }
+        .s3-seg i {
+          position: absolute;
+          inset: 0;
+          display: block;
+          border-radius: 5px;
+          background: #fcc204;
+          transform-origin: 0% 50%;
+        }
+        .s3-panel {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1080px;
+          height: 1920px;
+          opacity: 0;
+        }
+
+        /* 01 Anuncio */
+        #s3-ad {
+          position: absolute;
+          left: 250px;
+          top: 590px;
+          width: 580px;
+          height: 800px;
+          border-radius: 36px;
+          background: #f4f6fb;
+          color: #060c1c;
+          box-shadow: 0 50px 120px rgba(0, 0, 0, 0.6);
+          overflow: hidden;
+        }
+        #s3-ad-head {
+          position: absolute;
+          left: 24px;
+          top: 20px;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+        }
+        #s3-ad-head i {
+          display: block;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: #1b3d6a;
+          border: 3px solid #fcc204;
+        }
+        #s3-ad-head b {
+          display: block;
+          font-weight: 900;
+          font-size: 30px;
+        }
+        #s3-ad-head span {
+          display: block;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 24px;
+          color: #3a4766;
+        }
+        #s3-ad-img {
+          position: absolute;
+          left: 0;
+          top: 104px;
+          width: 580px;
+          height: 480px;
+          overflow: hidden;
+        }
+        #s3-ad-img img {
+          position: absolute;
+          left: -10px;
+          top: -110px;
+          width: 600px;
+          height: 750px;
+          display: block;
+        }
+        #s3-ad-title {
+          position: absolute;
+          left: 24px;
+          top: 604px;
+          font-weight: 900;
+          font-size: 34px;
+          letter-spacing: -0.02em;
+          white-space: nowrap;
+        }
+        #s3-ad-btn {
+          position: absolute;
+          left: 24px;
+          top: 676px;
+          width: 532px;
+          height: 90px;
+          border-radius: 22px;
+          background: #fcc204;
+          font-weight: 900;
+          font-size: 34px;
+          line-height: 90px;
+          text-align: center;
+        }
+
+        /* 02 Público */
+        #s3-radar {
+          position: absolute;
+          left: 190px;
+          top: 640px;
+          width: 700px;
+          height: 700px;
+        }
+        #s3-radar svg {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+        }
+        #s3-sweep {
+          position: absolute;
+          left: 50px;
+          top: 50px;
+          width: 600px;
+          height: 600px;
+          border-radius: 50%;
+          background: conic-gradient(from 0deg, rgba(252, 194, 4, 0.32) 0deg, rgba(252, 194, 4, 0) 70deg, rgba(252, 194, 4, 0) 360deg);
+        }
+        .s3-dot {
+          position: absolute;
+          width: 22px;
+          height: 22px;
+          margin: -11px 0 0 -11px;
+          border-radius: 50%;
+          background: #3a4766;
+        }
+        .s3-dot.in {
+          background: #fcc204;
+          box-shadow: 0 0 16px rgba(252, 194, 4, 0.7);
+          opacity: 0;
+        }
+        #s3-pin {
+          position: absolute;
+          left: 314px;
+          top: 290px;
+          width: 72px;
+          height: 90px;
+        }
+        #s3-pin svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        .s3-target {
+          position: absolute;
+          height: 64px;
+          padding: 0 24px;
+          border-radius: 32px;
+          background: #13234a;
+          border: 2px solid rgba(252, 194, 4, 0.7);
+          font-weight: 700;
+          font-size: 28px;
+          line-height: 60px;
+          white-space: nowrap;
+          opacity: 0;
+        }
+
+        /* 03 Mensajes */
+        .s3-msg {
+          position: absolute;
+          left: 90px;
+          width: 900px;
+          height: 140px;
+          border-radius: 34px;
+          background: rgba(26, 38, 70, 0.95);
+          border: 2px solid rgba(214, 226, 255, 0.16);
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+          opacity: 0;
+        }
+        .s3-msg i {
+          position: absolute;
+          left: 24px;
+          top: 30px;
+          width: 80px;
+          height: 80px;
+          border-radius: 24px;
+          background: #fcc204;
+        }
+        .s3-msg i svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        .s3-msg b {
+          position: absolute;
+          left: 130px;
+          top: 24px;
+          font-weight: 900;
+          font-size: 34px;
+        }
+        .s3-msg span {
+          position: absolute;
+          left: 130px;
+          top: 76px;
+          font-weight: 400;
+          font-size: 33px;
+          color: #dfe5f3;
+          white-space: nowrap;
+        }
+        .s3-msg em {
+          position: absolute;
+          right: 28px;
+          top: 30px;
+          font-style: normal;
+          font-family: "JetBrains Mono", monospace;
+          font-weight: 700;
+          font-size: 22px;
+          color: #fcc204;
+        }
+      </style>
+
+      <div id="root" data-composition-id="s3-how" data-width="1080" data-height="1920">
+        <div id="s3-stage">
+          <div id="s3-steps">
+            <div id="s3-label-mask">
+              <div class="s3-label" id="s3-label-1"><b>01</b><span>Creamos tu campaña</span></div>
+              <div class="s3-label" id="s3-label-2"><b>02</b><span>Llega a tu público</span></div>
+              <div class="s3-label" id="s3-label-3"><b>03</b><span>Te escriben clientes</span></div>
+            </div>
+            <div id="s3-progress">
+              <div class="s3-seg"><i id="s3-seg-1"></i></div>
+              <div class="s3-seg"><i id="s3-seg-2"></i></div>
+              <div class="s3-seg"><i id="s3-seg-3"></i></div>
+            </div>
+            <div id="s3-sub-mask">
+              <div class="s3-sub" id="s3-sub-1">Anuncios que llaman la atención</div>
+              <div class="s3-sub" id="s3-sub-2">Por zona, edad e intereses</div>
+              <div class="s3-sub" id="s3-sub-3">Personas interesadas en lo que vendes</div>
+            </div>
+          </div>
+
+          <div class="s3-panel" id="s3-p1">
+            <div id="s3-ad">
+              <div id="s3-ad-head"><i></i><div><b>Tu Negocio</b><span>Publicidad</span></div></div>
+              <div id="s3-ad-img"><img src="assets/scenes/burger.svg" alt="" /></div>
+              <div id="s3-ad-title">¡Prueba nuestro nuevo menú!</div>
+              <div id="s3-ad-btn">Enviar mensaje</div>
+            </div>
+          </div>
+
+          <div class="s3-panel" id="s3-p2">
+            <div id="s3-radar">
+              <svg viewBox="0 0 700 700" aria-hidden="true">
+                <circle cx="350" cy="350" r="300" fill="rgba(61,107,255,0.08)" stroke="rgba(214,226,255,0.2)" stroke-width="3" />
+                <circle cx="350" cy="350" r="200" fill="none" stroke="rgba(214,226,255,0.14)" stroke-width="3" stroke-dasharray="8 12" />
+                <circle id="s3-zone" cx="350" cy="350" r="200" fill="rgba(252,194,4,0.12)" stroke="#fcc204" stroke-width="4" />
+              </svg>
+              <div id="s3-sweep"></div>
+              <div id="s3-dots"></div>
+              <div id="s3-pin">
+                <svg viewBox="0 0 72 90" aria-hidden="true"><path d="M36 4 C18 4 6 17 6 34 C6 56 36 86 36 86 C36 86 66 56 66 34 C66 17 54 4 36 4 Z" fill="#fcc204" /><circle cx="36" cy="34" r="12" fill="#060c1c" /></svg>
+              </div>
+            </div>
+            <div class="s3-target" id="s3-t1" style="left: 84px; top: 600px">Cerca de tu negocio</div>
+            <div class="s3-target" id="s3-t2" style="right: 84px; top: 1290px">25 a 45 años</div>
+            <div class="s3-target" id="s3-t3" style="left: 84px; top: 1290px">Les interesa lo que vendes</div>
+          </div>
+
+          <div class="s3-panel" id="s3-p3">
+            <div class="s3-msg" id="s3-m1" style="top: 640px">
+              <i><svg viewBox="0 0 80 80" aria-hidden="true"><path d="M22 24 h36 a6 6 0 0 1 6 6 v16 a6 6 0 0 1 -6 6 h-18 l-10 8 v-8 h-8 a6 6 0 0 1 -6 -6 v-16 a6 6 0 0 1 6 -6 z" fill="#060c1c" /></svg></i>
+              <b>Laura</b><em>VIO TU ANUNCIO</em><span>Hola, ¿tienen servicio a domicilio?</span>
+            </div>
+            <div class="s3-msg" id="s3-m2" style="top: 810px">
+              <i><svg viewBox="0 0 80 80" aria-hidden="true"><path d="M22 24 h36 a6 6 0 0 1 6 6 v16 a6 6 0 0 1 -6 6 h-18 l-10 8 v-8 h-8 a6 6 0 0 1 -6 -6 v-16 a6 6 0 0 1 6 -6 z" fill="#060c1c" /></svg></i>
+              <b>Jorge</b><em>VIO TU ANUNCIO</em><span>¿Cuál es el precio del menú?</span>
+            </div>
+            <div class="s3-msg" id="s3-m3" style="top: 980px">
+              <i><svg viewBox="0 0 80 80" aria-hidden="true"><path d="M22 24 h36 a6 6 0 0 1 6 6 v16 a6 6 0 0 1 -6 6 h-18 l-10 8 v-8 h-8 a6 6 0 0 1 -6 -6 v-16 a6 6 0 0 1 6 -6 z" fill="#060c1c" /></svg></i>
+              <b>Paola</b><em>VIO TU ANUNCIO</em><span>Quiero hacer un pedido para hoy</span>
+            </div>
+            <div class="s3-msg" id="s3-m4" style="top: 1150px">
+              <i><svg viewBox="0 0 80 80" aria-hidden="true"><path d="M22 24 h36 a6 6 0 0 1 6 6 v16 a6 6 0 0 1 -6 6 h-18 l-10 8 v-8 h-8 a6 6 0 0 1 -6 -6 v-16 a6 6 0 0 1 6 -6 z" fill="#060c1c" /></svg></i>
+              <b>Andrés</b><em>VIO TU ANUNCIO</em><span>¿Qué horario tienen el sábado?</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          // Tiempo local: 0 = 11.85 s del video
+          const tl = gsap.timeline({ paused: true });
+          const S1 = 0.15, S2 = 2.75, S3 = 5.25; // 12.0, 14.6, 17.1 s
+          const OUT = 7.84;
+
+          // Puntos del público (deterministas): dentro de la zona se iluminan
+          const dots = document.getElementById("s3-dots");
+          const inside = [];
+          for (let k = 0; k < 34; k++) {
+            const a = k * 2.399;
+            const r = 70 + ((k * 53) % 230);
+            const x = 350 + Math.cos(a) * r;
+            const y = 350 + Math.sin(a) * r;
+            const d = document.createElement("div");
+            d.className = "s3-dot";
+            d.style.left = x + "px";
+            d.style.top = y + "px";
+            dots.appendChild(d);
+            if (r < 190) {
+              const h = document.createElement("div");
+              h.className = "s3-dot in";
+              h.style.left = x + "px";
+              h.style.top = y + "px";
+              dots.appendChild(h);
+              inside.push(h);
+            }
+          }
+
+          tl.fromTo("#s3-steps", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, S1);
+          const swap = (n, t, first) => {
+            tl.fromTo("#s3-label-" + n, { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.7, ease: "expo.out" }, t);
+            tl.fromTo("#s3-sub-" + n, { opacity: 0, y: 46 }, { opacity: 1, y: 0, duration: 0.6, ease: "expo.out" }, t + 0.12);
+            if (!first) {
+              tl.to("#s3-label-" + (n - 1), { opacity: 0, y: -80, duration: 0.4, ease: "power3.in" }, t - 0.3);
+              tl.to("#s3-sub-" + (n - 1), { opacity: 0, y: -46, duration: 0.35, ease: "power3.in" }, t - 0.25);
+            }
+          };
+          swap(1, S1, true);
+          swap(2, S2, false);
+          swap(3, S3, false);
+          tl.fromTo("#s3-seg-1", { scaleX: 0 }, { scaleX: 1, duration: S2 - S1, ease: "none" }, S1);
+          tl.fromTo("#s3-seg-2", { scaleX: 0 }, { scaleX: 1, duration: S3 - S2, ease: "none" }, S2);
+          tl.fromTo("#s3-seg-3", { scaleX: 0 }, { scaleX: 1, duration: 2.2, ease: "power2.out" }, S3);
+
+          // 01 El anuncio se arma
+          tl.fromTo("#s3-p1", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none" }, S1 + 0.2);
+          tl.fromTo("#s3-ad", { y: 160, scale: 0.9, rotation: -3 }, { y: 0, scale: 1, rotation: 0, duration: 1.1, ease: "expo.out" }, S1 + 0.2);
+          tl.fromTo("#s3-ad-img img", { scale: 1.15 }, { scale: 1, duration: 2.2, ease: "sine.out" }, S1 + 0.3);
+          tl.fromTo("#s3-ad-title", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, S1 + 0.9);
+          tl.fromTo("#s3-ad-btn", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(2)" }, S1 + 1.3);
+          tl.to("#s3-p1", { opacity: 0, x: -200, duration: 0.5, ease: "power2.in" }, S2 - 0.35);
+
+          // 02 La campaña encuentra a tu público
+          tl.fromTo("#s3-p2", { opacity: 0, x: 200 }, { opacity: 1, x: 0, duration: 0.8, ease: "expo.out" }, S2);
+          tl.fromTo("#s3-zone", { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, transformOrigin: "50% 50%", duration: 0.9, ease: "back.out(1.4)" }, S2 + 0.3);
+          tl.fromTo("#s3-sweep", { rotation: 0 }, { rotation: 540, duration: 2.6, ease: "none" }, S2);
+          inside.forEach((d, k) => tl.fromTo(d, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1.2, duration: 0.35, ease: "back.out(3)" }, S2 + 0.8 + k * 0.06));
+          ["#s3-t1", "#s3-t2", "#s3-t3"].forEach((t, k) => tl.fromTo(t, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "back.out(2)" }, S2 + 0.9 + k * 0.35));
+          tl.to("#s3-p2", { opacity: 0, x: -200, duration: 0.5, ease: "power2.in" }, S3 - 0.35);
+
+          // 03 Llegan los mensajes
+          tl.fromTo("#s3-p3", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, S3);
+          ["#s3-m1", "#s3-m2", "#s3-m3", "#s3-m4"].forEach((m, k) => {
+            tl.fromTo(m, { opacity: 0, x: 140, scale: 0.92 }, { opacity: 1, x: 0, scale: 1, duration: 0.6, ease: "back.out(1.5)" }, S3 + 0.2 + k * 0.45);
+          });
+
+          tl.to("#s3-stage", { y: -240, opacity: 0, filter: "blur(18px)", duration: 0.45, ease: "power3.in" }, OUT);
+          window.__timelines["s3-how"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

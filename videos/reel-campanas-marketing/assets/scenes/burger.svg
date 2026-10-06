@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+  <defs>
+    <radialGradient id="bg" cx="0.5" cy="0.35" r="0.9"><stop offset="0" stop-color="#ff9e57"/><stop offset="0.55" stop-color="#d9452b"/><stop offset="1" stop-color="#5c1410"/></radialGradient>
+    <linearGradient id="bun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6b65a"/><stop offset="1" stop-color="#c47a2a"/></linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <circle cx="400" cy="420" r="300" fill="#ffd9a0" opacity="0.25"/>
+  <rect y="700" width="800" height="300" fill="#3a120c"/>
+  <ellipse cx="400" cy="760" rx="300" ry="50" fill="#22090600" />
+  <ellipse cx="400" cy="740" rx="270" ry="46" fill="#1d0806" opacity="0.5"/>
+  <path d="M170 650 Q400 760 630 650 L620 690 Q400 780 180 690 Z" fill="url(#bun)"/>
+  <path d="M175 600 Q400 640 625 600 Q640 640 600 650 Q400 690 200 650 Q160 640 175 600 Z" fill="#5a2a14"/>
+  <path d="M160 580 Q230 620 300 585 Q370 625 440 588 Q510 625 580 586 Q620 610 650 580 L640 610 Q400 650 165 612 Z" fill="#f2c230"/>
+  <path d="M170 560 Q240 600 310 565 Q380 605 450 568 Q520 605 590 566 Q625 590 640 560 Q400 600 170 560 Z" fill="#5ab04a"/>
+  <path d="M185 540 L615 540 Q610 570 590 572 Q400 590 210 572 Q190 570 185 540 Z" fill="#d93a2a"/>
+  <path d="M180 545 Q190 380 400 370 Q610 380 620 545 Z" fill="url(#bun)"/>
+  <ellipse cx="320" cy="430" rx="10" ry="6" fill="#fff1c9"/><ellipse cx="400" cy="410" rx="10" ry="6" fill="#fff1c9"/>
+  <ellipse cx="470" cy="440" rx="10" ry="6" fill="#fff1c9"/><ellipse cx="360" cy="470" rx="10" ry="6" fill="#fff1c9"/>
+  <ellipse cx="520" cy="480" rx="10" ry="6" fill="#fff1c9"/><ellipse cx="270" cy="490" rx="10" ry="6" fill="#fff1c9"/>
+</svg>
